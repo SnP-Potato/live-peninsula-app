@@ -12,8 +12,16 @@ import SwiftUI
 class NotchViewModel: NSObject, ObservableObject {
     @ObservedObject var coordinator = Coordinator.shared
     
-    let animation: Animation? = nil
+    let animationManager: AnimationManager = .init(style: .notch)
+    let animation: Animation?
     
     @Published var mainView: NotchMainFeaturesView = .home
     @Published private(set) var notchState: NotchStatus = .off
+    
+    var screen: String?
+    
+    @Published var notchSize: CGSize = offNotchSize()
+    @Published var closedNotchSize: CGSize = offNotchSize() 
+    
+    
 }
