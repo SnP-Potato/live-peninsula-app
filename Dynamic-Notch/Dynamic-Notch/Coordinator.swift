@@ -20,6 +20,7 @@ class Coordinator: ObservableObject {
         }
     }
     
+    @Published var firstLaunch: Bool = true
     // 노치 관련 설정
     @AppStorage("openNotchOnHover") var openNotchOnHover: Bool = true
     @AppStorage("minimumHoverDuration") var minimumHoverDuration: TimeInterval = 0.0
