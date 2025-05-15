@@ -36,3 +36,4 @@ enum notchHeightSize: String, Defaults.Serializable {
     case realNotch = "realNotch Height"
     case custom = "Custom Notch Height"
 }
+
