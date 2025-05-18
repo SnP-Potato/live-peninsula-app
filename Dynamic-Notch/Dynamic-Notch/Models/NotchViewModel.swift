@@ -3,7 +3,7 @@
 //  Dynamic-Notch
 //
 //  Created by PeterPark on 3/17/25.
-//
+//sms
 
 import Defaults
 import Combine
@@ -12,27 +12,28 @@ import SwiftUI
 class NotchViewModel: NSObject, ObservableObject {
     // 노치 상태 (열림/닫힘)
     @Published private(set) var notchState: NotchStatus = .off
-        
-        // 노치 크기
+    
+    // 노치 크기
     @Published var notchSize: CGSize = offNotchSize()
     @Published var closedNotchSize: CGSize = offNotchSize()
-        
-        // 노치 열기
-        func open() {
-            withAnimation(.spring(response: 0.4)) {
-                self.notchSize = CGSize(width: onNotchSize.width, height: onNotchSize.height)
-                self.notchState = .on
-            }
+    
+    // 노치 열기
+    func open() {
+        withAnimation(.spring(response: 0.4)) {
+            self.notchSize = CGSize(width: onNotchSize.width, height: onNotchSize.height)
+            self.notchState = .on
         }
-        
-        // 노치 닫기
-        func close() {
-            withAnimation(.spring(response: 0.4)) {
-                self.notchSize = offNotchSize()
-                closedNotchSize = notchSize
-                self.notchState = .off
-            }
+    }
+    
+    // 노치 닫기
+    func close() {
+        withAnimation(.spring(response: 0.4)) {
+            self.notchSize = offNotchSize()
+            closedNotchSize = notchSize
+            self.notchState = .off
         }
+    }
+    
 //    // 노치 상태 관리
 //    @Published private(set) var notchStatus: NotchStatus = .off
 //    

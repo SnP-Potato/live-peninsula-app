@@ -21,7 +21,7 @@ enum MusicImageSize {
 }
 
 //노치가 활성화될떄 사이즈 초기화
-let onNotchSize: CGSize = .init(width: 610, height: 200)
+let onNotchSize: CGSize = .init(width: 540, height: 200)
 
 //노치가 비활성화일 때 사이즈
 func offNotchSize(screenName: String? = nil) -> CGSize {
