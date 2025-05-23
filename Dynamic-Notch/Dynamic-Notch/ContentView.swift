@@ -24,7 +24,7 @@ struct ContentView: View {
                 .fill(.black)
                 .frame(width: vm.notchSize.width, height: vm.notchSize.height)
                 .mask {
-                    NotchShape(cornerRadius: vm.notchState == .on ? 24 : 10)
+                    NotchShape(cornerRadius: vm.notchState == .on ? 50 : 10)
                 }
             /// MASK:  마우스 호버 감지 및 처리
                 .onHover { hovering in
@@ -37,7 +37,7 @@ struct ContentView: View {
                         
                         // 노치가 닫혀있다면 열기
                         if vm.notchState == .off {
-                            withAnimation(.spring(response: 0.4)) {
+                            withAnimation(.spring(response: 0.5)) {
                                 vm.open()
                             }
                         }
@@ -50,7 +50,7 @@ struct ContentView: View {
                         
                         // 노치가 열려있다면 닫기
                         if vm.notchState == .on {
-                            withAnimation(.spring(response: 0.4)) {
+                            withAnimation(.spring(response: 0.5)) {
                                 vm.close()
                             }
                         }

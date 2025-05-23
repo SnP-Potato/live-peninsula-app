@@ -10,7 +10,7 @@ import Defaults
 
 @main
 struct Dynamic_NotchApp: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
     
     var body: some Scene {
         Settings {
@@ -27,6 +27,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let vm: NotchViewModel = .init()
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // 🖥️ 디버깅: 연결된 모든 모니터 정보 출력
+            printAllScreensInfo()
+        
         // 화면 변경 감지 설정
         NotificationCenter.default.addObserver(
             self,
@@ -60,6 +63,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func screenConfigurationDidChange() {
+        print("\n🔄 화면 구성이 변경되었습니다!")
+        printAllScreensInfo()
         adjustWindowPosition()
     }
     
@@ -112,5 +117,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 )
             }
         }
+    }
+    
+    // 🔍 디버깅용 함수 추가
+    func printAllScreensInfo() {
+        print("\n🖥️ === 연결된 모니터 정보 ===")
+        print("총 모니터 개수: \(NSScreen.screens.count)")
+        
+        for (index, screen) in NSScreen.screens.enumerated() {
+            print("\n📺 모니터 \(index + 1):")
+            print("  이름: \(screen.localizedName)")
+            print("  해상도: \(Int(screen.frame.width)) x \(Int(screen.frame.height))")
+            print("  위치: (\(Int(screen.frame.origin.x)), \(Int(screen.frame.origin.y)))")
+            print("  배율: \(screen.backingScaleFactor)x")
+            
+            // 노치 여부 확인
+            if screen.safeAreaInsets.top > 0 {
+                print("  노치: 있음 (\(screen.safeAreaInsets.top)pt)")
+            } else {
+                print("  노치: 없음")
+            }
+            
+            // 메인 화면 여부
+            if screen == NSScreen.main {
+                print("  타입: 🌟 메인 화면")
+            } else {
+                print("  타입: 외부 모니터")
+            }
+        }
+        print("================================\n")
     }
 }

@@ -48,6 +48,13 @@ struct NotchShape: Shape {
         return path
     }
 }
+
+#Preview {
+    NotchShape(cornerRadius: 20)
+        .frame(width: 200, height: 32)
+        .padding(.all, 100)
+}
+
 //    var topCorner: CGFloat = 5
 //    var bottomCorner: CGFloat = 10
 //    
@@ -78,8 +85,4 @@ struct NotchShape: Shape {
 
 
 
-#Preview {
-    NotchShape(cornerRadius: 20)
-        .frame(width: 200, height: 32)
-        .padding(.all, 100)
-}
+
