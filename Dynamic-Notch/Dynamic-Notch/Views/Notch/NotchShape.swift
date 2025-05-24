@@ -19,8 +19,11 @@ struct NotchShape: Shape {
         var path = Path()
         
         // 노치 모양 정의
-        var topCorner: CGFloat = 5
-        var bottomCorner: CGFloat = 10
+        // 노치 상태에 따라 곡선 크기 조정
+        let isOpen = cornerRadius > 20  // 열렸을 때 판단 기준
+        
+        let topCorner: CGFloat = isOpen ? 15 : 5      // 열렸을 때 더 큰 곡선
+        let bottomCorner: CGFloat = isOpen ? 25 : 10  // 열렸을 때 더 큰 곡선
         
         path.move(to: CGPoint(x: rect.minX, y: rect.minY)) //(0,0)
         

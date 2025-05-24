@@ -27,8 +27,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let vm: NotchViewModel = .init()
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // 🖥️ 디버깅: 연결된 모든 모니터 정보 출력
-            printAllScreensInfo()
+        //  디버깅: 연결된 모든 모니터 정보 출력
+        printAllScreensInfo()
         
         // 화면 변경 감지 설정
         NotificationCenter.default.addObserver(
@@ -41,6 +41,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // 노치 창 생성 (기존 방식)
         if !Defaults[.showOnAllDisplay] {
             window = NotchAreaWindow(
+                //x,y가 0으로 설정 임시 위치 실제 의치 계산은 setFramOrigin에서!
                 contentRect: NSRect(x: 0, y: 0, width: onNotchSize.width, height: onNotchSize.height),
                 styleMask: [.borderless, .nonactivatingPanel, .utilityWindow, .hudWindow],
                 backing: .buffered,
@@ -62,6 +63,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    //notification이 Objective-C 기반이라 필요
     @objc func screenConfigurationDidChange() {
         print("\n🔄 화면 구성이 변경되었습니다!")
         printAllScreensInfo()
@@ -119,7 +121,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    // 🔍 디버깅용 함수 추가
+    // 디버깅용 함수 추가
     func printAllScreensInfo() {
         print("\n🖥️ === 연결된 모니터 정보 ===")
         print("총 모니터 개수: \(NSScreen.screens.count)")
