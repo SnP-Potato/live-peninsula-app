@@ -26,7 +26,9 @@ struct ContentView: View {
                 .frame(width: vm.notchSize.width, height: vm.notchSize.height)
                 .mask {
                     NotchShape(cornerRadius: vm.notchState == .on ? 100 : 10)
+                    
                 }
+            
             /// MASK:  마우스 호버 감지 및 처리
                 .onHover { hovering in
                     if hovering {
@@ -59,6 +61,7 @@ struct ContentView: View {
                 }
         }
         .frame(maxWidth: onNotchSize.width, maxHeight: onNotchSize.height, alignment: .top)
+        .shadow(color: (vm.notchState == .on || vm.notchState == .off) ? .black.opacity(0.8) : .clear, radius: 3.2)
     }
 }
 
