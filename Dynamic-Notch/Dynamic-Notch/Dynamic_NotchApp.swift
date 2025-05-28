@@ -39,7 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         )
         
         // 노치 창 생성 (기존 방식)
-        if !Defaults[.showOnAllDisplay] {
+        if !Defaults[.showOnAllDisplay] { //false일 때
             window = NotchAreaWindow(
                 //x,y가 0으로 설정 임시 위치 실제 의치 계산은 setFramOrigin에서!
                 contentRect: NSRect(x: 0, y: 0, width: onNotchSize.width, height: onNotchSize.height),
@@ -95,6 +95,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     
                     windows[screen] = window
                     viewModels[screen] = viewModel
+                    window.hasShadow = false
                     window.orderFrontRegardless()
                 }
                 
@@ -111,6 +112,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         } else {
             // 메인 화면에만 노치 표시 [기존크드]
             if let screenFrame = NSScreen.main {
+                window.hasShadow = false
                 window.setFrameOrigin(
                     NSPoint(
                         x: screenFrame.frame.width / 2 - window.frame.width / 2,

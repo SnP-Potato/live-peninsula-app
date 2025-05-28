@@ -19,6 +19,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
+            
             // 노치 레이아웃과 콘텐츠
             Rectangle()
                 .fill(.black)
