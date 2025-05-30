@@ -17,11 +17,12 @@ struct ContentView: View {
     @State private var isHovering: Bool = false
     @State private var hoverAnimation: Bool = false
     
+    //첫 실행할 때 사용되는 변수들
+    // 개씨발 좀 되라 병신아
     @State private var firstLaunch: Bool = true
     @State private var showNGlow: Bool = false
-    
-    @State private var showWave: Bool = false
-    @State private var wavePhase: Double = 0
+    @State private var showHelloAnimation: Bool = false
+    @State private var helloAnimationCompleted: Bool = false
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -47,24 +48,79 @@ struct ContentView: View {
                                 value: showNGlow
                             )
                     }
+                    
                 }
+            
                 .overlay {
                     if vm.notchState == .on {
-                        // 노치가 열렸을 때 보여줄 내용 (캘린더, 상세 정보 등)
-                        VStack {
-                            Text("Dynamic Notch")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                            
-                            Text("Expanded View")
-                                .font(.caption)
-                                .foregroundColor(.gray)
+                        // 첫 실행 시 Hello Animation 표시
+                        if firstLaunch && showHelloAnimation && !helloAnimationCompleted {
+                            VStack {
+                                Spacer()
+                                
+                                HelloAnimation(animationDuration: 4.0)
+                                    .frame(width: min(vm.notchSize.width * 0.7, 300),
+                                           height: min(vm.notchSize.height * 0.4, 80))
+                                    .padding(.horizontal, 20)
+                                
+                                Spacer()
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .transition(.opacity.combined(with: .scale))
+                        } else {
+                            // Hello 애니메이션 완료 후 또는 일반적인 호버 시 표시되는 확장된 뷰 콘텐츠
+                            VStack(spacing: 8) {
+                                Text("Dynamic Notch")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                
+                                Text("Expanded View")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                
+                                // 추가 콘텐츠들 (음악 재생, 캘린더 등)
+                                HStack(spacing: 20) {
+                                    // 음악 플레이어 영역
+                                    VStack {
+                                        Image(systemName: "music.note")
+                                            .font(.title2)
+                                            .foregroundColor(.white)
+                                        Text("Music")
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                    }
+                                    
+                                    // 캘린더 영역
+                                    VStack {
+                                        Image(systemName: "calendar")
+                                            .font(.title2)
+                                            .foregroundColor(.white)
+                                        Text("Calendar")
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                    }
+                                    
+                                    // 배터리 영역
+                                    VStack {
+                                        Image(systemName: "battery.100")
+                                            .font(.title2)
+                                            .foregroundColor(.white)
+                                        Text("Battery")
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                                .padding(.top, 10)
+                            }
+                            .padding()
+                            .transition(.opacity.combined(with: .scale))
                         }
-                        .padding()
                     }
                 }
         }
         .onHover { hovering in
+            guard !firstLaunch || helloAnimationCompleted else { return }
+            
             if hovering {
                 // 마우스가 올라갔을 때
                 withAnimation(.spring(response: 0.3)) {
@@ -95,17 +151,63 @@ struct ContentView: View {
         }
         .frame(maxWidth: onNotchSize.width, maxHeight: onNotchSize.height, alignment: .top)
         .shadow(color: (vm.notchState == .on || vm.notchState == .off) ? .black.opacity(0.8) : .clear, radius: 3.2)
+        
+        //        .onAppear {
+        //            if firstLaunch {
+        //                // 1. 글로우 효과 시작
+        //                withAnimation(.easeInOut(duration: 0.5)) {
+        //                    showNGlow = true
+        //                }
+        //
+        //                // 2. 3초 후 글로우 종료하면서 파도 애니메이션 시작
+        //                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+        //                    withAnimation(.easeInOut(duration: 0.5)) {
+        //                        showNGlow = false
+        //                    }
+        //
+        //
+        //                }
+        //            }
+        //        }
         .onAppear {
-            // 간단하게 글로우만!
-            if firstLaunch {
+            startFirstLaunchSequence()
+        }
+    }
+    private func startFirstLaunchSequence() {
+        guard firstLaunch else { return }
+        
+        // 1. 글로우 효과 시작 (3초간)
+        withAnimation(.easeInOut(duration: 0.5)) {
+            showNGlow = true
+        }
+        
+        // 2. 3초 후 글로우 종료하면서 노치 열고 바로 Hello Animation 시작
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            withAnimation(.easeInOut(duration: 0.5)) {
+                showNGlow = false
+            }
+            
+            // 노치 열기와 동시에 Hello Animation 시작
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
+                vm.open()
+                showHelloAnimation = true
+            }
+            
+            // Hello Animation 완료 후 처리
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4.5) {
                 withAnimation(.easeInOut(duration: 0.5)) {
-                    showNGlow = true
+                    showHelloAnimation = false
+                    helloAnimationCompleted = true
                 }
                 
-                // 3초 후 글로우 종료
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                    withAnimation(.spring(response: 0.5)) {
-                        showNGlow = false
+                // 노치 닫기
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    withAnimation(.spring(response: 0.6)) {
+                        vm.close()
+                    }
+                    
+                    // 첫 실행 완료 - 이제 정상적인 호버 인터랙션 가능
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         firstLaunch = false
                     }
                 }
@@ -113,3 +215,4 @@ struct ContentView: View {
         }
     }
 }
+
