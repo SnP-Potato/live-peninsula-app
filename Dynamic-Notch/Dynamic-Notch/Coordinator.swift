@@ -27,7 +27,7 @@ class Coordinator: ObservableObject {
     
     // 뷰 관련 설정
     @AppStorage("alwaysShowTabs") var alwaysShowTabs: Bool = true
-    @Published var currentView: NotchMainFeaturesView = .home
+    @Published var currentView: NotchMainFeaturesView = .studio
     
     private init() {
         setupNotifications()

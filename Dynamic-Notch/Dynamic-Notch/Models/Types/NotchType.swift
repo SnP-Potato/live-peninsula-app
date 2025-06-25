@@ -16,8 +16,25 @@ public enum NotchStyle {
 
 //노치안에 표시될 주요 화면 종류
 public enum NotchMainFeaturesView {
-    case home
+    case studio
     case tray
+    //case setting
+    
+    
+    //25/06/24 update 각 주요 화면에 아이콘, 타이틀 추가함
+    var title: String {
+        switch self {  //switch self 추가안할 시 에러 --분류 에러
+        case .studio: return "Studio"
+        case .tray: return "Tray"
+        }
+    }
+    
+    var icon: String {
+        switch self {
+        case .studio: return "widget.small"
+        case .tray: return "tray.fill"
+        }
+    }
 }
 
 //노치의 상태
