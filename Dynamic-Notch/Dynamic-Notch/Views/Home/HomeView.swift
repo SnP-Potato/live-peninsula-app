@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var currentTab: NotchMainFeaturesView = .tray
+    @State private var currentTab: NotchMainFeaturesView = .studio
     @Namespace private var tabAnimation
     
     // 반복할 탭들 배열
@@ -21,13 +21,13 @@ struct HomeView: View {
             HStack {
                 ForEach(tabs, id: \.self) { tab in
                     Button(action: {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 1.0)) {
                             currentTab = tab
                         }
                     }, label: {
-                        HStack(spacing: 8) {
+                        HStack(spacing: 12) {
                             Image(systemName: tab.icon)
-                                .font(.system(size: 14, weight: .bold))
+                                .font(.system(size: 16, weight: .bold))
                             
                             if currentTab == tab {
                                 Text(tab.title)
@@ -55,9 +55,12 @@ struct HomeView: View {
                 
                 Spacer()
             }
+            .padding(.leading, 8)
             .padding(.vertical, 6)
             .padding(.bottom, 32)
             .frame(height: 32)
+            
+            
             //각 탭 버튼에 맞는 view출력
             switch currentTab {
             case .studio:
