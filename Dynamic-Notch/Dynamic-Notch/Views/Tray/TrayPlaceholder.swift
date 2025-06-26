@@ -9,24 +9,46 @@ import SwiftUI
 
 struct TrayPlaceholder: View {
     var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "tray.fill")
-                .font(.title)
-                .foregroundColor(.white.opacity(0.6))
+        HStack(spacing: 16) {
             
-            Text("Tray")
-                .font(.headline)
-                .foregroundColor(.white)
+            //airdrop button
+            RoundedRectangle(cornerRadius: 12)
+                .fill(.white.opacity(0.1))
+                .frame(width: 120)
+                .overlay {
+                    VStack(spacing: 9) {
+                        Image(systemName: "airplay.audio")
+                            .font(.title2)
+                            .foregroundColor(.gray)
+                        
+                        Text("AirDrop")
+                            .foregroundColor(.gray)
+                            .bold()
+                    }
+                }
             
-            Text("파일 드롭 영역")
-                .font(.caption)
-                .foregroundColor(.gray)
+            
+            
+            //drag file tray
+            RoundedRectangle(cornerRadius: 10)
+                .strokeBorder(style: StrokeStyle(lineWidth: 4, dash: [10, 8]))
+                .foregroundStyle(.white.opacity(0.17))
+                .overlay {
+                    VStack(spacing: 8) {
+                        Image(systemName: "tray.and.arrow.down.fill")
+                        
+                        Text("Drop files here")
+                    }
+                    .foregroundColor(.gray)
+                }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .transition(.opacity.combined(with: .scale))
+        .padding(.horizontal, 8)
     }
 }
 
 #Preview {
     TrayPlaceholder()
+        .frame(width: 400, height: 120)
+        .background(.black)
+        .padding()
 }

@@ -58,7 +58,6 @@ struct HomeView: View {
             .padding(.vertical, 6)
             .padding(.bottom, 32)
             .frame(height: 32)
-            
             //각 탭 버튼에 맞는 view출력
             switch currentTab {
             case .studio:
