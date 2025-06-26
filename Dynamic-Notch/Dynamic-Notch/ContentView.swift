@@ -69,47 +69,6 @@ struct ContentView: View {
                             // Hello 애니메이션 완료 후 또는 일반적인 호버 시 표시되는 확장된 뷰 콘텐츠
                             VStack() {
                                 HomeView()
-//                                Text("Dynamic Notch")
-//                                    .font(.headline)
-//                                    .foregroundColor(.white)
-//                                
-//                                Text("Expanded View")
-//                                    .font(.caption)
-//                                    .foregroundColor(.gray)
-//                                
-//                                // 추가 콘텐츠들 (음악 재생, 캘린더 등)
-//                                HStack(spacing: 20) {
-//                                    // 음악 플레이어 영역
-//                                    VStack {
-//                                        Image(systemName: "music.note")
-//                                            .font(.title2)
-//                                            .foregroundColor(.white)
-//                                        Text("Music")
-//                                            .font(.caption)
-//                                            .foregroundColor(.gray)
-//                                    }
-//                                    
-//                                    // 캘린더 영역
-//                                    VStack {
-//                                        Image(systemName: "calendar")
-//                                            .font(.title2)
-//                                            .foregroundColor(.white)
-//                                        Text("Calendar")
-//                                            .font(.caption)
-//                                            .foregroundColor(.gray)
-//                                    }
-//                                    
-//                                    // 배터리 영역
-//                                    VStack {
-//                                        Image(systemName: "battery.100")
-//                                            .font(.title2)
-//                                            .foregroundColor(.white)
-//                                        Text("Battery")
-//                                            .font(.caption)
-//                                            .foregroundColor(.gray)
-//                                    }
-//                                }
-//                                .padding(.top, 10)
                             }
                             .padding()
                             .transition(.opacity.combined(with: .scale))
