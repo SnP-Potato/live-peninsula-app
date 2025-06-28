@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var currentTab: NotchMainFeaturesView = .studio
+    // 6/28 @State에서 @Binding로 변경 [ContentView에서 제이하기 위해]
+    @Binding var currentTab: NotchMainFeaturesView
     @Namespace private var tabAnimation
     
     // 반복할 탭들 배열
@@ -73,7 +74,7 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    HomeView(currentTab: .constant(.studio))
         .frame(width: 540, height: 175)
         .background(.black)
 }

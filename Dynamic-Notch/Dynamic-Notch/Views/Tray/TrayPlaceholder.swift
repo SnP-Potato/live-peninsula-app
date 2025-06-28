@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TrayPlaceholder: View {
+    @State private var isDropTargeted = false
+    @State private var droppedFiles: [String] = []
     var body: some View {
         HStack(spacing: 16) {
             
@@ -28,18 +30,22 @@ struct TrayPlaceholder: View {
                 }
             
             
-            
             //drag file tray
             RoundedRectangle(cornerRadius: 10)
                 .strokeBorder(style: StrokeStyle(lineWidth: 4, dash: [10, 8]))
                 .foregroundStyle(.white.opacity(0.17))
                 .overlay {
-                    VStack(spacing: 8) {
-                        Image(systemName: "tray.and.arrow.down.fill")
+                    if droppedFiles.isEmpty {
+                        VStack(spacing: 8) {
+                            Image(systemName: "tray.and.arrow.down.fill")
+                            
+                            Text("Drop files here")
+                                .bold()
+                        }
+                        .foregroundColor(.gray)
+                    }else {
                         
-                        Text("Drop files here")
                     }
-                    .foregroundColor(.gray)
                 }
         }
         .padding(.horizontal, 8)

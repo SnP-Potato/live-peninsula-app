@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import AVFoundation
 import Defaults
+import UniformTypeIdentifiers
 
 struct ContentView: View {
     @EnvironmentObject var vm: NotchViewModel
@@ -22,6 +23,11 @@ struct ContentView: View {
     @State private var showNGlow: Bool = false
     @State private var showHelloAnimation: Bool = false
     @State private var helloAnimationCompleted: Bool = false
+    
+    //파일 드롭앤드래그시 사용되는 변수
+    @State private var currentTab : NotchMainFeaturesView = .studio
+    @State private var isDropTargeted = false
+    
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -66,15 +72,27 @@ struct ContentView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .transition(.opacity.combined(with: .scale))
                         } else {
-                            // Hello 애니메이션 완료 후 또는 일반적인 호버 시 표시되는 확장된 뷰 콘텐츠
+                            // Hello 애니메이션 완료 후 또는 일반적인 호버 시 표시되는  View
+                            //@State @Binding으로 제어
                             VStack() {
-                                HomeView()
+                                HomeView(currentTab: $currentTab)
+                                
                             }
                             .padding()
                             .transition(.opacity.combined(with: .scale))
                         }
                     }
                 }
+            
+        }
+        .onDrop(of: [UTType.fileURL], isTargeted: $isDropTargeted) { providers in
+            return true
+        }
+        .onChange(of: isDropTargeted) { _, newValue in
+            if newValue {
+                currentTab = .tray
+                vm.open()
+            }
         }
         .onHover { hovering in
             guard !firstLaunch || helloAnimationCompleted else { return }
