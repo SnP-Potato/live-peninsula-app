@@ -44,7 +44,9 @@ struct TrayPlaceholder: View {
                         }
                         .foregroundColor(.gray)
                     }else {
-                        
+                        ScrollView(.vertical) {
+                            
+                        }
                     }
                 }
         }

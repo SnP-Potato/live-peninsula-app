@@ -35,7 +35,7 @@ struct ContentView: View {
             // 노치 레이아웃과 콘텐츠
             Rectangle()
                 .fill(.black)
-                .frame(width: vm.notchSize.width, height: vm.notchSize.height)
+                .frame(width: vm.notchSize.width, height: vm.notchSize.height + 5)
                 .mask {
                     NotchShape(cornerRadius: vm.notchState == .on ? 100 : 10)
                 }
@@ -85,14 +85,19 @@ struct ContentView: View {
                 }
             
         }
+
         .onDrop(of: [UTType.fileURL], isTargeted: $isDropTargeted) { providers in
             return true
         }
-        .onChange(of: isDropTargeted) { _, newValue in
-            if newValue {
-                currentTab = .tray
-                vm.open()
-            }
+        .onChange(of: isDropTargeted) { oldValue, newValue in
+            print("🔍 isDropTargeted 변화: \(oldValue) → \(newValue)")
+            
+            // true일 때만 처리, false는 무시
+            guard newValue else { return }
+            
+            print("📂 드래그 감지됨!")
+            currentTab = .tray
+            vm.open()
         }
         .onHover { hovering in
             guard !firstLaunch || helloAnimationCompleted else { return }
@@ -110,6 +115,8 @@ struct ContentView: View {
                         vm.open()
                     }
                 }
+                
+                print("마우스 notch위에 있음")
             } else {
                 // 마우스가 벗어났을 때
                 withAnimation(.spring(response: 0.3)) {
@@ -123,6 +130,8 @@ struct ContentView: View {
                         vm.close()
                     }
                 }
+                
+                print("마우스 notch에서 벗어남")
             }
         }
         .frame(maxWidth: onNotchSize.width, maxHeight: onNotchSize.height, alignment: .top)
