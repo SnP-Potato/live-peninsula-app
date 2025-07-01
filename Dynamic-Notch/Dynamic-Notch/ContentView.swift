@@ -35,7 +35,7 @@ struct ContentView: View {
             // 노치 레이아웃과 콘텐츠
             Rectangle()
                 .fill(.black)
-                .frame(width: vm.notchSize.width, height: vm.notchSize.height + 5)
+                .frame(width: vm.notchSize.width, height: vm.notchSize.height)
                 .mask {
                     NotchShape(cornerRadius: vm.notchState == .on ? 100 : 10)
                 }
@@ -95,7 +95,7 @@ struct ContentView: View {
             // true일 때만 처리, false는 무시
             guard newValue else { return }
             
-            print("📂 드래그 감지됨!")
+            print("드래그 감지됨")
             currentTab = .tray
             vm.open()
         }
@@ -157,7 +157,7 @@ struct ContentView: View {
                 }
                 
                 // Hello Animation 완료 후 처리
-                DispatchQueue.main.asyncAfter(deadline: .now() + 4.5) {
+                DispatchQueue.global().asyncAfter(deadline: .now() + 4.5) {
                     withAnimation(.easeInOut(duration: 0.5)) {
                         showHelloAnimation = false
                         helloAnimationCompleted = true
