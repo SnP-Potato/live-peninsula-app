@@ -39,7 +39,16 @@ class TrayManager: ObservableObject {
         }
     }
     
-    func addFile() {
+    func copyfileToTrayStorage(source: URL) -> URL? {
+        let fileName = source.lastPathComponent
         
+        do {
+            try FileManager.default.copyItem(at: source, to: trayStorage.appendingPathComponent(fileName))
+            print("\(fileName)가 trayStorage에 복사됨")
+            return trayStorage.appendingPathComponent(fileName)
+        } catch {
+            print("\(error.localizedDescription)")
+            return nil
+        }
     }
 }
