@@ -12,11 +12,34 @@ import Foundation
 
 class TrayManager: ObservableObject {
    
-    static let fm = TrayManager()
+    static let shared = TrayManager()
     
     @Published var files: [TrayFile] = []
     
-//    let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    private let weStorageURL: URL
+    private let trayStorage: URL
     
+    private init() {
+        let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        self.weStorageURL = directory.appendingPathComponent("Dynamic-Notch")
+        self.trayStorage = weStorageURL.appendingPathComponent("TrayStorage")
+        
+        createDirectory()
+        
+    }
     
+    func createDirectory() {
+        do {
+            try FileManager.default.createDirectory(at: trayStorage, withIntermediateDirectories: true)
+            print("경로는 : \(trayStorage.path)")
+            
+            NSWorkspace.shared.open(trayStorage)
+        } catch {
+            print("경로생성 실패")
+        }
+    }
+    
+    func addFile() {
+        
+    }
 }
