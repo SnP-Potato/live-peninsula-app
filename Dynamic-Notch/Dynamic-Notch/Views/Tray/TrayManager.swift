@@ -16,13 +16,14 @@ class TrayManager: ObservableObject {
     
     @Published var files: [TrayFile] = []
     
-    private let weStorageURL: URL
+//    private let weStorageURL: URL
     private let trayStorage: URL
     
     private init() {
         let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        self.weStorageURL = directory.appendingPathComponent("Dynamic-Notch")
-        self.trayStorage = weStorageURL.appendingPathComponent("TrayStorage")
+//        self.weStorageURL = directory.appendingPathComponent("Dynamic-Notch")
+        //별도의 저장소 생성
+        self.trayStorage = directory.appendingPathComponent("TrayStorage")
         
         createDirectory()
         
@@ -51,4 +52,8 @@ class TrayManager: ObservableObject {
             return nil
         }
     }
+    
+//    func extractFIleInfo(source: URL) -> String {
+//        
+//    }
 }

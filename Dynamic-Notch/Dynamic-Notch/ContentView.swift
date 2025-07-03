@@ -87,6 +87,24 @@ struct ContentView: View {
         }
 
         .onDrop(of: [UTType.fileURL], isTargeted: $isDropTargeted) { providers in
+            
+            print("드래그 감지 On, 드래그된 파일 들어옴")
+            
+            for provider in providers {
+                _ = provider.loadObject(ofClass: URL.self, completionHandler: { url, error in
+                    
+                    //에러체크
+                    //url AND error가 둘다 nil일 떄 (즉, 정상적인 상황일떄)
+                    if let fileURL = url, error == nil {
+                        // 성공한 경우 처리
+                        _ = TrayManager.shared.copyfileToTrayStorage(source: fileURL)
+                    } else {
+                        // 실패한 경우 처리
+                        print("파일 로드 실패")
+                        return
+                    }
+                })
+            }
             return true
         }
         .onChange(of: isDropTargeted) { oldValue, newValue in
