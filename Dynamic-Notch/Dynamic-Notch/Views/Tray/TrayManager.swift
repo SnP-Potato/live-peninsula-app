@@ -22,6 +22,7 @@ class TrayManager: ObservableObject {
     private init() {
         let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 //        self.weStorageURL = directory.appendingPathComponent("Dynamic-Notch")
+        
         //별도의 저장소 생성
         self.trayStorage = directory.appendingPathComponent("TrayStorage")
         
@@ -44,10 +45,11 @@ class TrayManager: ObservableObject {
         let fileName = source.lastPathComponent
         
         do {
-            try FileManager.default.copyItem(at: source, to: trayStorage.appendingPathComponent(fileName))
+            let copiedURL = trayStorage.appendingPathComponent(fileName)
+            try FileManager.default.copyItem(at: source, to: copiedURL)
             print("\(fileName)가 trayStorage에 복사됨")
-            addFile(source: source)
-            return trayStorage.appendingPathComponent(fileName)
+            addFile(source: copiedURL)
+            return copiedURL
         } catch {
             print("\(error.localizedDescription)")
             return nil
@@ -79,13 +81,4 @@ class TrayManager: ObservableObject {
         print(files)
     }
     
-//    func extractFIleInfo(source: URL) -> TrayFile? {
-//        do {
-//            try FileManager.default.fileExists(atPath: source.path())
-//            return
-//        } catch {
-//            print("파일이 존재하지않음 : \(error.localizedDescription)")
-//            return nil
-//        }
-//    }
 }

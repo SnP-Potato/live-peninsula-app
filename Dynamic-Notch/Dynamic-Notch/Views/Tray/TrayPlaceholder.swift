@@ -9,7 +9,8 @@ import SwiftUI
 
 struct TrayPlaceholder: View {
     @State private var isDropTargeted = false
-    @State private var droppedFiles: [String] = []
+    @ObservedObject var trayManager = TrayManager.shared
+    
     var body: some View {
         HStack(spacing: 16) {
             
@@ -35,7 +36,7 @@ struct TrayPlaceholder: View {
                 .strokeBorder(style: StrokeStyle(lineWidth: 4, dash: [10, 8]))
                 .foregroundStyle(.white.opacity(0.17))
                 .overlay {
-                    if droppedFiles.isEmpty {
+                    if trayManager.files.isEmpty {
                         VStack(spacing: 8) {
                             Image(systemName: "tray.and.arrow.down.fill")
                             
@@ -44,8 +45,23 @@ struct TrayPlaceholder: View {
                         }
                         .foregroundColor(.gray)
                     }else {
-                        ScrollView(.horizontal) {
-                            
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {  // 이걸 추가해야 함!
+                                ForEach(trayManager.files) { file in
+                                    VStack {
+                                        // 파일 정보 표시
+                                        Text(file.fileName)
+                                            .font(.caption)
+                                        Text(file.fileExtension)
+                                            .font(.caption2)
+                                            .foregroundColor(.gray)
+                                    }
+                                    .frame(width: 60, height: 60)
+                                    .background(Color.white.opacity(0.1))
+                                    .cornerRadius(8)
+                                }
+                            }
+                            .padding(.horizontal, 8)
                         }
                     }
                 }
