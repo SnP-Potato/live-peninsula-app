@@ -46,6 +46,7 @@ class TrayManager: ObservableObject {
         do {
             try FileManager.default.copyItem(at: source, to: trayStorage.appendingPathComponent(fileName))
             print("\(fileName)가 trayStorage에 복사됨")
+            addFile(source: source)
             return trayStorage.appendingPathComponent(fileName)
         } catch {
             print("\(error.localizedDescription)")
@@ -53,7 +54,38 @@ class TrayManager: ObservableObject {
         }
     }
     
-//    func extractFIleInfo(source: URL) -> String {
-//        
+    func addFile(source: URL) {
+        let isfileExists = FileManager.default.fileExists(atPath: source.path)
+        
+        //파일의 데이터를 추출
+        let fileName = source.lastPathComponent
+        let fileExtension = source.pathExtension
+        let fileThumnail: Data? = nil
+        
+        guard isfileExists else {
+            print("파일이 없어요 다시 확인부탁 ")
+            return
+        }
+        
+        print("파일이 있어요 \(source.lastPathComponent)")
+        let trayFile = TrayFile(
+            id: UUID(),
+            fileName: fileName,
+            fileExtension: fileExtension,
+            thumbnailData: fileThumnail
+        )
+        
+        files.append(trayFile)
+        print(files)
+    }
+    
+//    func extractFIleInfo(source: URL) -> TrayFile? {
+//        do {
+//            try FileManager.default.fileExists(atPath: source.path())
+//            return
+//        } catch {
+//            print("파일이 존재하지않음 : \(error.localizedDescription)")
+//            return nil
+//        }
 //    }
 }

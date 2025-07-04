@@ -32,6 +32,7 @@ struct ContentView: View {
     var body: some View {
         ZStack(alignment: .top) {
             
+            
             // 노치 레이아웃과 콘텐츠
             Rectangle()
                 .fill(.black)
@@ -94,7 +95,7 @@ struct ContentView: View {
                 _ = provider.loadObject(ofClass: URL.self, completionHandler: { url, error in
                     
                     //에러체크
-                    //url AND error가 둘다 nil일 떄 (즉, 정상적인 상황일떄)
+                    //url AND error가 둘다 nil일 떄 (즉, 정상적인 상황일때
                     if let fileURL = url, error == nil {
                         // 성공한 경우 처리
                         _ = TrayManager.shared.copyfileToTrayStorage(source: fileURL)
