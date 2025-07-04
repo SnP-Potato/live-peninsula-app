@@ -52,13 +52,12 @@ struct TrayPlaceholder: View {
                                         // 파일 정보 표시
                                         Text(file.fileName)
                                             .font(.caption)
-                                        Text(file.fileExtension)
+                                            .lineLimit(1)
+                                        Text(". \(file.fileExtension)")
                                             .font(.caption2)
                                             .foregroundColor(.gray)
                                     }
                                     .frame(width: 60, height: 60)
-                                    .background(Color.white.opacity(0.1))
-                                    .cornerRadius(8)
                                 }
                             }
                             .padding(.horizontal, 8)

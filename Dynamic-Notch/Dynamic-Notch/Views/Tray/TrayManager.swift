@@ -77,8 +77,10 @@ class TrayManager: ObservableObject {
             thumbnailData: fileThumnail
         )
         
-        files.append(trayFile)
-        print(files)
+        DispatchQueue.main.async { [weak self] in
+            self?.files.append(trayFile)
+            print(self?.files ?? [])
+        }
     }
     
 }
