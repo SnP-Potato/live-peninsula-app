@@ -33,6 +33,43 @@ struct ContentView: View {
         ZStack(alignment: .top) {
             
             
+            //드래그만 감지하는 view
+            Rectangle()
+                .fill(.clear)
+                .frame(width: vm.notchSize.width + 40, height: vm.notchSize.height + 80)
+                .onDrop(of: [UTType.fileURL], isTargeted: $isDropTargeted) { providers in
+                    
+                    print("드래그 감지 On, 드래그된 파일 들어옴")
+                    
+                    for provider in providers {
+                        _ = provider.loadObject(ofClass: URL.self, completionHandler: { url, error in
+                            
+                            //에러체크
+                            //url AND error가 둘다 nil일 떄 (즉, 정상적인 상황일때
+                            if let fileURL = url, error == nil {
+                                // 성공한 경우 처리
+                                _ = TrayManager.shared.copyfileToTrayStorage(source: fileURL)
+                            } else {
+                                // 실패한 경우 처리
+                                print("파일 로드 실패")
+                                return
+                            }
+                        })
+                    }
+                    return true
+                }
+                .onChange(of: isDropTargeted) { oldValue, newValue in
+                    print("🔍 isDropTargeted 변화: \(oldValue) → \(newValue)")
+                    
+                    // true일 때만 처리, false는 무시
+                    guard newValue else { return }
+                    
+                    print("드래그 감지됨")
+                    currentTab = .tray
+                    vm.open()
+                }
+            
+            
             // 노치 레이아웃과 콘텐츠
             Rectangle()
                 .fill(.black)
@@ -55,7 +92,7 @@ struct ContentView: View {
                     }
                     
                 }
-            
+                
                 .overlay {
                     if vm.notchState == .on {
                         // 첫 실행 시 Hello Animation 표시
@@ -84,74 +121,42 @@ struct ContentView: View {
                         }
                     }
                 }
-            
-        }
-
-        .onDrop(of: [UTType.fileURL], isTargeted: $isDropTargeted) { providers in
-            
-            print("드래그 감지 On, 드래그된 파일 들어옴")
-            
-            for provider in providers {
-                _ = provider.loadObject(ofClass: URL.self, completionHandler: { url, error in
+                .onHover { hovering in
+                    guard !firstLaunch || helloAnimationCompleted else { return }
                     
-                    //에러체크
-                    //url AND error가 둘다 nil일 떄 (즉, 정상적인 상황일때
-                    if let fileURL = url, error == nil {
-                        // 성공한 경우 처리
-                        _ = TrayManager.shared.copyfileToTrayStorage(source: fileURL)
+                    if hovering {
+                        // 마우스가 올라갔을 때
+                        withAnimation(.spring(response: 0.3)) {
+                            hoverAnimation = true
+                            isHovering = true
+                        }
+                        
+                        // 노치가 닫혀있다면 열기
+                        if vm.notchState == .off {
+                            withAnimation(.spring(response: 0.5)) {
+                                vm.open()
+                            }
+                        }
+                        
+                        print("마우스 notch위에 있음")
                     } else {
-                        // 실패한 경우 처리
-                        print("파일 로드 실패")
-                        return
-                    }
-                })
-            }
-            return true
-        }
-        .onChange(of: isDropTargeted) { oldValue, newValue in
-            print("🔍 isDropTargeted 변화: \(oldValue) → \(newValue)")
-            
-            // true일 때만 처리, false는 무시
-            guard newValue else { return }
-            
-            print("드래그 감지됨")
-            currentTab = .tray
-            vm.open()
-        }
-        .onHover { hovering in
-            guard !firstLaunch || helloAnimationCompleted else { return }
-            
-            if hovering {
-                // 마우스가 올라갔을 때
-                withAnimation(.spring(response: 0.3)) {
-                    hoverAnimation = true
-                    isHovering = true
-                }
-                
-                // 노치가 닫혀있다면 열기
-                if vm.notchState == .off {
-                    withAnimation(.spring(response: 0.5)) {
-                        vm.open()
+                        // 마우스가 벗어났을 때
+                        withAnimation(.spring(response: 0.3)) {
+                            hoverAnimation = false
+                            isHovering = false
+                        }
+                        
+                        // 노치가 열려있다면 닫기
+                        if vm.notchState == .on {
+                            withAnimation(.spring(response: 0.5)) {
+                                vm.close()
+                            }
+                        }
+                        
+                        print("마우스 notch에서 벗어남")
                     }
                 }
-                
-                print("마우스 notch위에 있음")
-            } else {
-                // 마우스가 벗어났을 때
-                withAnimation(.spring(response: 0.3)) {
-                    hoverAnimation = false
-                    isHovering = false
-                }
-                
-                // 노치가 열려있다면 닫기
-                if vm.notchState == .on {
-                    withAnimation(.spring(response: 0.5)) {
-                        vm.close()
-                    }
-                }
-                
-                print("마우스 notch에서 벗어남")
-            }
+            
         }
         .frame(maxWidth: onNotchSize.width, maxHeight: onNotchSize.height, alignment: .top)
         .shadow(color: (vm.notchState == .on || vm.notchState == .off) ? .black.opacity(0.8) : .clear, radius: 3.2)
