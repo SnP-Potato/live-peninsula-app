@@ -41,46 +41,34 @@ class TrayManager: ObservableObject {
         }
     }
     
-    func copyfileToTrayStorage(source: URL) -> URL? {
+    func addFileToTray(source: URL) -> URL? {
+        //TrayFile에 맞게 파일 데이터 추출하는 변수
         let fileName = source.lastPathComponent
+        let fileExtension = source.pathExtension
+        let fileThumbnail: Data? = nil
+        
         
         do {
             let copiedURL = trayStorage.appendingPathComponent(fileName)
             try FileManager.default.copyItem(at: source, to: copiedURL)
             print("\(fileName)가 trayStorage에 복사됨")
-            addFile(source: copiedURL)
+            
+            let trayFile = TrayFile(
+                id: UUID(),
+                fileName: fileName,
+                fileExtension: fileExtension,
+                thumbnailData: fileThumbnail
+            )
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.files.append(trayFile)
+                print(self?.files ?? [])
+            }
             return copiedURL
+            
         } catch {
             print("\(error.localizedDescription)")
             return nil
         }
     }
-    
-    func addFile(source: URL) {
-        let isfileExists = FileManager.default.fileExists(atPath: source.path)
-        
-        //파일의 데이터를 추출
-        let fileName = source.lastPathComponent
-        let fileExtension = source.pathExtension
-        let fileThumnail: Data? = nil
-        
-        guard isfileExists else {
-            print("파일이 없어요 다시 확인부탁 ")
-            return
-        }
-        
-        print("파일이 있어요 \(source.lastPathComponent)")
-        let trayFile = TrayFile(
-            id: UUID(),
-            fileName: fileName,
-            fileExtension: fileExtension,
-            thumbnailData: fileThumnail
-        )
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.files.append(trayFile)
-            print(self?.files ?? [])
-        }
-    }
-    
 }

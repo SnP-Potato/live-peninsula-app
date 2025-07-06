@@ -48,7 +48,7 @@ struct ContentView: View {
                             //url AND error가 둘다 nil일 떄 (즉, 정상적인 상황일때
                             if let fileURL = url, error == nil {
                                 // 성공한 경우 처리
-                                _ = TrayManager.shared.copyfileToTrayStorage(source: fileURL)
+                                _ = TrayManager.shared.addFileToTray(source: fileURL)
                             } else {
                                 // 실패한 경우 처리
                                 print("파일 로드 실패")
