@@ -42,33 +42,66 @@ class TrayManager: ObservableObject {
     }
     
     func addFileToTray(source: URL) -> URL? {
-        //TrayFile에 맞게 파일 데이터 추출하는 변수
-        let fileName = source.lastPathComponent
-        let fileExtension = source.pathExtension
-        let fileThumbnail: Data? = nil
-        
+        let originalFileName = source.lastPathComponent
+        let uniqueFileName = modifyDuplicatefileName(fileName: originalFileName)
         
         do {
-            let copiedURL = trayStorage.appendingPathComponent(fileName)
+            let copiedURL = trayStorage.appendingPathComponent(uniqueFileName)
             try FileManager.default.copyItem(at: source, to: copiedURL)
-            print("\(fileName)가 trayStorage에 복사됨")
+            print("\(uniqueFileName)가 trayStorage에 복사됨")
             
             let trayFile = TrayFile(
                 id: UUID(),
-                fileName: fileName,
-                fileExtension: fileExtension,
-                thumbnailData: fileThumbnail
+                fileName: (uniqueFileName as NSString).deletingPathExtension,
+                fileExtension: (uniqueFileName as NSString).pathExtension,
+                thumbnailData: nil
             )
             
             DispatchQueue.main.async { [weak self] in
                 self?.files.append(trayFile)
                 print(self?.files ?? [])
             }
+            
             return copiedURL
             
         } catch {
             print("\(error.localizedDescription)")
             return nil
         }
+    }
+    
+    // fileName에 "photo.png"형태로 이렇게 들어옴 그래서 여기서 확장자랑 파일이름을 분리해서 파일이름이 중복된 경우 (1)증가해서 저장
+    func modifyDuplicatefileName(fileName: String) -> String {
+        let nsString = fileName as NSString // 문자열로 변환 그래야 deletingPathExtension사용가능
+        let nameOnly = nsString.deletingPathExtension
+        let fileExtension = nsString.pathExtension
+        
+        print("🔍 원본: \(fileName)")
+            print("🔍 이름: \(nameOnly)")
+            print("🔍 확장자: '\(fileExtension)'")
+            print("🔍 확장자 비어있나?: \(fileExtension.isEmpty)")
+        let originalPath = trayStorage.appendingPathComponent(fileName)
+        if !FileManager.default.fileExists(atPath: originalPath.path) {
+            return fileName  // 중복 없으면 원본 그대로
+        }
+        
+        var count = 1
+        var newFileName = ""
+        
+        while true {
+            if fileExtension.isEmpty {                      //확장자가 없는 경우 ex) README파일 등등
+                newFileName = "\(nameOnly)(\(count))"
+            } else {                                        //확장자가 있는 경우
+                newFileName = "\(nameOnly)(\(count)).\(fileExtension)"
+            }
+            
+            //만약에 중복된 파일에 네버링을 추가해서 복사했는데 또 같은 파일이 들어오는 경우
+            let newpath = trayStorage.appending(component: newFileName)
+            if !FileManager.default.fileExists(atPath: newpath.path) {
+                break
+            }
+            count += 1
+        }
+        return newFileName
     }
 }
