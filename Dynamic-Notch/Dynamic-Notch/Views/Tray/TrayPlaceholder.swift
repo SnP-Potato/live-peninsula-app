@@ -47,21 +47,52 @@ struct TrayPlaceholder: View {
                         .foregroundColor(.gray)
                     }else {
                         ScrollView(.horizontal, showsIndicators: false) {
-                            HStack {  // 이걸 추가해야 함!
+                            HStack(spacing: 12) {
                                 ForEach(trayManager.files) { file in
-                                    VStack {
-                                        // 파일 정보 표시
-                                        Text(file.fileName)
-                                            .font(.caption)
-                                            .lineLimit(1)
-                                        Text(". \(file.fileExtension)")
-                                            .font(.caption2)
-                                            .foregroundColor(.gray)
+                                    ZStack(alignment: .topTrailing) {
+                                        // 파일 카드
+                                        VStack(spacing: 6) {
+                                            // 파일 아이콘
+                                            Image(systemName: "doc.fill")
+                                                .font(.title)
+                                                .foregroundColor(.gray)
+                                            
+                                            // 파일명 (확장자 제거)
+                                            Text((file.fileName as NSString).deletingPathExtension)
+                                                .font(.caption)
+                                                .lineLimit(1)
+                                                .truncationMode(.middle)
+                                                .foregroundColor(.white)
+                                            
+                                            // 확장자 (있을 때만)
+                                            if !file.fileExtension.isEmpty {
+                                                Text(file.fileExtension.uppercased())
+                                                    .font(.caption2)
+                                                    .foregroundColor(.gray)
+                                                    .padding(.horizontal, 4)
+                                                    .padding(.vertical, 1)
+                                                    .background(Color.gray.opacity(0.2))
+                                                    .cornerRadius(3)
+                                            }
+                                        }
+                                        .frame(width: 70, height: 80)
+                                        .background(Color.black.opacity(0.3))
+                                        .cornerRadius(8)
+                                        
+                                        // 삭제 버튼 (우측 상단)
+                                        Button(action: {
+                                            TrayManager.shared.deleteFile(fileName: file.fileName)
+                                        }) {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .font(.system(size: 14))
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
+                                        .offset(x: 4, y: -4) 
                                     }
-                                    .frame(width: 60, height: 60)
                                 }
                             }
-                            .padding(.horizontal, 8)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
                         }
                     }
                 }

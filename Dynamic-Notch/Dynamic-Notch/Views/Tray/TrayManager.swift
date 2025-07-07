@@ -52,7 +52,7 @@ class TrayManager: ObservableObject {
             
             let trayFile = TrayFile(
                 id: UUID(),
-                fileName: (uniqueFileName as NSString).deletingPathExtension,
+                fileName: uniqueFileName,/*(uniqueFileName as NSString).deletingPathExtension*/
                 fileExtension: (uniqueFileName as NSString).pathExtension,
                 thumbnailData: nil
             )
