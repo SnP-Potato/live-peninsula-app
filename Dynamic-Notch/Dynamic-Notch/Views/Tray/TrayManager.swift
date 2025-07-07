@@ -76,10 +76,6 @@ class TrayManager: ObservableObject {
         let nameOnly = nsString.deletingPathExtension
         let fileExtension = nsString.pathExtension
         
-        print("🔍 원본: \(fileName)")
-            print("🔍 이름: \(nameOnly)")
-            print("🔍 확장자: '\(fileExtension)'")
-            print("🔍 확장자 비어있나?: \(fileExtension.isEmpty)")
         let originalPath = trayStorage.appendingPathComponent(fileName)
         if !FileManager.default.fileExists(atPath: originalPath.path) {
             return fileName  // 중복 없으면 원본 그대로
@@ -104,4 +100,38 @@ class TrayManager: ObservableObject {
         }
         return newFileName
     }
+    
+    //저장된 파일을 삭제하는 함수(TrayFile배열이랑 TrayStorage에서도 삭제 하게끔)
+    func deleteFile(fileName: String) {
+        
+        let filePath = trayStorage.appendingPathComponent(fileName)
+        if !FileManager.default.fileExists(atPath: filePath.path) {
+            print("디렉토리에 저장되어있지않음")
+        } else {
+            
+            do {
+                //TraySotrage에서 삭제
+                try FileManager.default.removeItem(at: filePath)
+                print("디렉토리에 \(fileName)이 삭제 되었습니다.")
+                
+                //TrayFile배열도 삭제  [Point 매인스레드로 변경해서 삭제]
+                DispatchQueue.main.async { [weak self] in
+                    if let index = self?.files.firstIndex(where: { $0.fileName == fileName }) {
+                        self?.files.remove(at: index)
+                        print("배열에서 제거 완료: \(fileName)")
+                    }
+                }
+                
+            } catch {
+                print("파일삭제 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    //파일의 썸네일(미리보기) 추출하는 함수
+//    func extractfileThumbnail(source: URL) -> Data? {
+//        
+//    }
+    
+    //
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import QuickLook //파일 미리보기(썸네일)
 
 struct TrayPlaceholder: View {
     @State private var isDropTargeted = false
