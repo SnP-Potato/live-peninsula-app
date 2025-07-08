@@ -9,19 +9,20 @@
 // 파일 등 드래그시 복사해서 저장
 import SwiftUI
 import Foundation
+import QuickLookThumbnailing
 
 class TrayManager: ObservableObject {
-   
+    
     static let shared = TrayManager()
     
     @Published var files: [TrayFile] = []
     
-//    private let weStorageURL: URL
+    //    private let weStorageURL: URL
     private let trayStorage: URL
     
     private init() {
         let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-//        self.weStorageURL = directory.appendingPathComponent("Dynamic-Notch")
+        //        self.weStorageURL = directory.appendingPathComponent("Dynamic-Notch")
         
         //별도의 저장소 생성
         self.trayStorage = directory.appendingPathComponent("TrayStorage")
@@ -41,6 +42,34 @@ class TrayManager: ObservableObject {
         }
     }
     
+//    func addFileToTray(source: URL) -> URL? {
+//        let originalFileName = source.lastPathComponent
+//        let uniqueFileName = modifyDuplicatefileName(fileName: originalFileName)
+//        
+//        do {
+//            let copiedURL = trayStorage.appendingPathComponent(uniqueFileName)
+//            try FileManager.default.copyItem(at: source, to: copiedURL)
+//            print("\(uniqueFileName)가 trayStorage에 복사됨")
+//            
+//            let trayFile = TrayFile(
+//                id: UUID(),
+//                fileName: uniqueFileName,/*(uniqueFileName as NSString).deletingPathExtension*/
+//                fileExtension: (uniqueFileName as NSString).pathExtension,
+//                thumbnailData: nil
+//            )
+//            
+//            DispatchQueue.main.async { [weak self] in
+//                self?.files.append(trayFile)
+//                print(self?.files ?? [])
+//            }
+//            
+//            return copiedURL
+//            
+//        } catch {
+//            print("\(error.localizedDescription)")
+//            return nil
+//        }
+//    }
     func addFileToTray(source: URL) -> URL? {
         let originalFileName = source.lastPathComponent
         let uniqueFileName = modifyDuplicatefileName(fileName: originalFileName)
@@ -50,16 +79,19 @@ class TrayManager: ObservableObject {
             try FileManager.default.copyItem(at: source, to: copiedURL)
             print("\(uniqueFileName)가 trayStorage에 복사됨")
             
-            let trayFile = TrayFile(
-                id: UUID(),
-                fileName: uniqueFileName,/*(uniqueFileName as NSString).deletingPathExtension*/
-                fileExtension: (uniqueFileName as NSString).pathExtension,
-                thumbnailData: nil
-            )
-            
-            DispatchQueue.main.async { [weak self] in
-                self?.files.append(trayFile)
-                print(self?.files ?? [])
+            // 🔥 여기가 핵심! 썸네일 생성 호출 추가
+            generateThumbnail(for: copiedURL) { [weak self] thumbnailData in
+                let trayFile = TrayFile(
+                    id: UUID(),
+                    fileName: uniqueFileName,
+                    fileExtension: (uniqueFileName as NSString).pathExtension,
+                    thumbnailData: thumbnailData // 🎯 썸네일 데이터 설정!
+                )
+                
+                DispatchQueue.main.async {
+                    self?.files.append(trayFile)
+                    print("파일 + 썸네일 추가 완료: \(uniqueFileName)")
+                }
             }
             
             return copiedURL
@@ -69,6 +101,7 @@ class TrayManager: ObservableObject {
             return nil
         }
     }
+
     
     // fileName에 "photo.png"형태로 이렇게 들어옴 그래서 여기서 확장자랑 파일이름을 분리해서 파일이름이 중복된 경우 (1)증가해서 저장
     func modifyDuplicatefileName(fileName: String) -> String {
@@ -128,10 +161,25 @@ class TrayManager: ObservableObject {
         }
     }
     
-    //파일의 썸네일(미리보기) 추출하는 함수
-//    func extractfileThumbnail(source: URL) -> Data? {
-//        
-//    }
     
-    //
+    
+    //파일의 썸네일(미리보기) 추출하는 함수
+    func generateThumbnail(for fileURL: URL, completion: @escaping (Data?) -> Void) {
+        let request = QLThumbnailGenerator.Request(
+            fileAt: fileURL,
+            size: CGSize(width: 100, height: 100),
+            scale: 2.0,
+            representationTypes: .thumbnail
+        )
+        
+        QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { representation, error in
+            if let nsImage = representation?.nsImage,
+               let pngData = nsImage.tiffRepresentation {
+                completion(pngData)
+            } else {
+                completion(nil)
+            }
+        }
+    }
 }
+

@@ -53,9 +53,7 @@ struct TrayPlaceholder: View {
                                         // 파일 카드
                                         VStack(spacing: 6) {
                                             // 파일 아이콘
-                                            Image(systemName: "doc.fill")
-                                                .font(.title)
-                                                .foregroundColor(.gray)
+                                            ThumbnailImage(file: file)
                                             
                                             // 파일명 (확장자 제거)
                                             Text((file.fileName as NSString).deletingPathExtension)
@@ -101,9 +99,34 @@ struct TrayPlaceholder: View {
     }
 }
 
-#Preview {
-    TrayPlaceholder()
-        .frame(width: 400, height: 120)
-        .background(.black)
-        .padding()
+
+struct ThumbnailImage: View {
+    let file: TrayFile
+    @State private var thumbnailImage: NSImage?
+    
+    var body: some View {
+        Group {
+            if let thumbnailImage = thumbnailImage {
+                Image(nsImage: thumbnailImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            } else {
+                Image(systemName: "doc.fill")
+                    .font(.title)
+                    .foregroundColor(.gray)
+            }
+        }
+        .onAppear {
+            if let data = file.thumbnailData {
+                thumbnailImage = NSImage(data: data)
+            }
+        }
+    }
 }
+//
+//#Preview {
+//    TrayPlaceholder()
+//        .frame(width: 400, height: 120)
+//        .background(.black)
+//        .padding()
+//}
