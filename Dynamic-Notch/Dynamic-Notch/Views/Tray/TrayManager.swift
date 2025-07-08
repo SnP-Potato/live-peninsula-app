@@ -29,6 +29,7 @@ class TrayManager: ObservableObject {
         
         createDirectory()
         
+        cleanDirectory()
     }
     
     func createDirectory() {
@@ -42,34 +43,32 @@ class TrayManager: ObservableObject {
         }
     }
     
-//    func addFileToTray(source: URL) -> URL? {
-//        let originalFileName = source.lastPathComponent
-//        let uniqueFileName = modifyDuplicatefileName(fileName: originalFileName)
-//        
-//        do {
-//            let copiedURL = trayStorage.appendingPathComponent(uniqueFileName)
-//            try FileManager.default.copyItem(at: source, to: copiedURL)
-//            print("\(uniqueFileName)가 trayStorage에 복사됨")
-//            
-//            let trayFile = TrayFile(
-//                id: UUID(),
-//                fileName: uniqueFileName,/*(uniqueFileName as NSString).deletingPathExtension*/
-//                fileExtension: (uniqueFileName as NSString).pathExtension,
-//                thumbnailData: nil
-//            )
-//            
-//            DispatchQueue.main.async { [weak self] in
-//                self?.files.append(trayFile)
-//                print(self?.files ?? [])
-//            }
-//            
-//            return copiedURL
-//            
-//        } catch {
-//            print("\(error.localizedDescription)")
-//            return nil
-//        }
-//    }
+    //앱 실행하면 TraySotrage를 다 비우는 함수
+    func cleanDirectory() {
+        
+        //먼저 디렉토리 여부 확인
+        if FileManager.default.fileExists(atPath: trayStorage.path) {
+            do {
+                let contents = try FileManager.default.contentsOfDirectory(at: trayStorage, includingPropertiesForKeys: nil)
+                for item in contents {
+                    try FileManager.default.removeItem(at: item)
+                }
+                print("TrayStorage 정리 완료")
+            } catch {
+                print("TrayStorage 정리 실패: \(error)")
+            }
+            
+            // 3. files 배열도 비우기
+            files.removeAll()
+            print("TrayFile배열도 정리 완료")
+            
+        } else {
+            print("디렉토리가 생성되지 않았습니다")
+            createDirectory()
+        }
+        
+    }
+    
     func addFileToTray(source: URL) -> URL? {
         let originalFileName = source.lastPathComponent
         let uniqueFileName = modifyDuplicatefileName(fileName: originalFileName)
