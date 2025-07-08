@@ -18,7 +18,7 @@ class TrayManager: ObservableObject {
     @Published var files: [TrayFile] = []
     
     //    private let weStorageURL: URL
-    private let trayStorage: URL
+     let trayStorage: URL
     
     private init() {
         let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -179,6 +179,20 @@ class TrayManager: ObservableObject {
                 completion(nil)
             }
         }
+    }
+    
+    func openAirDrop(with fileURLs: [URL]) {
+        guard let sharingService = NSSharingService(named: .sendViaAirDrop) else {
+            print("AirDrop을 사용할 수 없습니다")
+            return
+        }
+        
+        guard sharingService.canPerform(withItems: fileURLs) else {
+            print("선택한 파일들은 AirDrop으로 공유할 수 없습니다")
+            return
+        }
+        
+        sharingService.perform(withItems: fileURLs)
     }
 }
 

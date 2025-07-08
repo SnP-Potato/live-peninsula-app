@@ -7,6 +7,7 @@
 
 import SwiftUI
 import QuickLook //파일 미리보기(썸네일)
+import UniformTypeIdentifiers
 
 struct TrayPlaceholder: View {
     @State private var isDropTargeted = false
@@ -15,9 +16,9 @@ struct TrayPlaceholder: View {
     var body: some View {
         HStack(spacing: 16) {
             
-            //airdrop button
+            //airdrop
             RoundedRectangle(cornerRadius: 12)
-                .fill(.white.opacity(0.1))
+                .fill(isDropTargeted ? .blue.opacity(0.2) : .white.opacity(0.1))
                 .frame(width: 120)
                 .overlay {
                     VStack(spacing: 9) {
@@ -30,6 +31,26 @@ struct TrayPlaceholder: View {
                             .bold()
                     }
                 }
+                .onDrop(of: [UTType.fileURL], isTargeted: $isDropTargeted) { providers in
+                    var fileURLs: [URL] = []
+                    
+                    for provider in providers {
+                        _ = provider.loadObject(ofClass: URL.self) { url, error in
+                            if let fileURL = url, error == nil {
+                                fileURLs.append(fileURL)
+                                
+                                // 모든 파일 로드 완료 후 AirDrop 실행
+                                if fileURLs.count == providers.count {
+                                    DispatchQueue.main.async {
+                                        TrayManager.shared.openAirDrop(with: fileURLs)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return true
+                }
+                
             
             
             //drag file tray
@@ -76,6 +97,10 @@ struct TrayPlaceholder: View {
                                         .frame(width: 70, height: 80)
                                         .background(Color.black.opacity(0.3))
                                         .cornerRadius(8)
+                                        .onDrag {
+                                            let fileURL = TrayManager.shared.trayStorage.appendingPathComponent(file.fileName)
+                                            return NSItemProvider(object: fileURL as NSURL)
+                                        }
                                         
                                         // 삭제 버튼 (우측 상단)
                                         Button(action: {
