@@ -18,7 +18,7 @@ class TrayManager: ObservableObject {
     @Published var files: [TrayFile] = []
     
     //    private let weStorageURL: URL
-     let trayStorage: URL
+    let trayStorage: URL
     
     private init() {
         let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -37,7 +37,7 @@ class TrayManager: ObservableObject {
             try FileManager.default.createDirectory(at: trayStorage, withIntermediateDirectories: true)
             print("경로는 : \(trayStorage.path)")
             
-            NSWorkspace.shared.open(trayStorage)
+            //NSWorkspace.shared.open(trayStorage)
         } catch {
             print("경로생성 실패")
         }
@@ -78,7 +78,7 @@ class TrayManager: ObservableObject {
             try FileManager.default.copyItem(at: source, to: copiedURL)
             print("\(uniqueFileName)가 trayStorage에 복사됨")
             
-            // 🔥 여기가 핵심! 썸네일 생성 호출 추가
+            // 썸네일 생성 호출 추가
             generateThumbnail(for: copiedURL) { [weak self] thumbnailData in
                 let trayFile = TrayFile(
                     id: UUID(),
@@ -100,10 +100,11 @@ class TrayManager: ObservableObject {
             return nil
         }
     }
-
+    
     
     // fileName에 "photo.png"형태로 이렇게 들어옴 그래서 여기서 확장자랑 파일이름을 분리해서 파일이름이 중복된 경우 (1)증가해서 저장
     func modifyDuplicatefileName(fileName: String) -> String {
+        
         let nsString = fileName as NSString // 문자열로 변환 그래야 deletingPathExtension사용가능
         let nameOnly = nsString.deletingPathExtension
         let fileExtension = nsString.pathExtension
@@ -147,9 +148,9 @@ class TrayManager: ObservableObject {
                 print("디렉토리에 \(fileName)이 삭제 되었습니다.")
                 
                 //TrayFile배열도 삭제  [Point 매인스레드로 변경해서 삭제]
-                DispatchQueue.main.async { [weak self] in
-                    if let index = self?.files.firstIndex(where: { $0.fileName == fileName }) {
-                        self?.files.remove(at: index)
+                DispatchQueue.main.async {
+                    if let index = self.files.firstIndex(where: { $0.fileName == fileName }) {
+                        self.files.remove(at: index)
                         print("배열에서 제거 완료: \(fileName)")
                     }
                 }
