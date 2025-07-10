@@ -9,23 +9,50 @@ import SwiftUI
 
 struct StudioPlaceholder: View {
     var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "widget.small")
-                .font(.title)
-                .foregroundColor(.white.opacity(0.6))
+        HStack(spacing: 12) {
             
-            Text("Studio")
-                .font(.headline)
-                .foregroundColor(.white)
+            //음악 영역
+            HStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(.white.opacity(0.1))
+                    .frame(width: 120)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(.white)
+                            .frame(width: 30, height: 30)
+                            .offset(x: 50, y: 40)
+                    }
+                
+                VStack {
+                    Spacer()
+                    
+                    HStack(spacing: 17) {
+                        Image(systemName: "arrowtriangle.backward.fill")
+                        
+                        Image(systemName: "pause.fill")
+                        
+                        Image(systemName: "arrowtriangle.forward.fill")
+                        
+                    }
+                    .frame(width: 120)
+                    .foregroundColor(.white)
+                    .font(.system(size: 20))
+                    .padding(.bottom, 8)
+                }
+            }
             
-            Text("음악, 미디어 컨트롤")
-                .font(.caption)
-                .foregroundColor(.gray)
+            
+            //메모장
+            Spacer()
+            
+            //타이머, 갤린더
+            Spacer()
         }
+        .padding(.horizontal, 8)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .transition(.opacity.combined(with: .scale))
     }
 }
 #Preview {
-    StudioPlaceholder()
+    HomeView(currentTab: .constant(.studio))
+        .frame(width: 540, height: 175)
 }
