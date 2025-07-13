@@ -149,11 +149,22 @@ struct ThumbnailImage: View {
     }
 }
 
-
-
-#Preview {
-    TrayPlaceholder()
-        .frame(width: 400, height: 120)
-        .background(.black)
-        .padding()
+struct TrayPlaceholder_preview: PreviewProvider {
+    static var previews: some View {
+        TrayPlaceholder()
+            .environmentObject(NotchViewModel())
+            .padding(.horizontal, 12)  // 실제 노치 패딩
+            .padding(.vertical, 8)
+            .frame(width: onNotchSize.width, height: onNotchSize.height)
+            .background(Color.black)
+            .clipShape(NotchShape(cornerRadius: 20))
+    }
 }
+
+
+//#Preview {
+//    TrayPlaceholder()
+//        .frame(width: 400, height: 120)
+//        .background(.black)
+//        .padding()
+//}
