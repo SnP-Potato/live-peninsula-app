@@ -27,11 +27,11 @@ struct StudioPlaceholder: View {
                     Spacer()
                     
                     HStack(spacing: 17) {
-                        Image(systemName: "arrowtriangle.backward.fill")
+                        Image(systemName: "backward.fill")
                         
                         Image(systemName: "pause.fill")
                         
-                        Image(systemName: "arrowtriangle.forward.fill")
+                        Image(systemName: "forward.fill")
                         
                     }
                     .frame(width: 120)

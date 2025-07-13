@@ -148,10 +148,12 @@ struct ThumbnailImage: View {
         }
     }
 }
-//
-//#Preview {
-//    TrayPlaceholder()
-//        .frame(width: 400, height: 120)
-//        .background(.black)
-//        .padding()
-//}
+
+
+
+#Preview {
+    TrayPlaceholder()
+        .frame(width: 400, height: 120)
+        .background(.black)
+        .padding()
+}

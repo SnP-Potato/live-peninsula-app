@@ -169,7 +169,7 @@ class TrayManager: ObservableObject {
             fileAt: fileURL,
             size: CGSize(width: 100, height: 100),
             scale: 2.0,
-            representationTypes: .thumbnail
+            representationTypes: .all
         )
         
         QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { representation, error in
