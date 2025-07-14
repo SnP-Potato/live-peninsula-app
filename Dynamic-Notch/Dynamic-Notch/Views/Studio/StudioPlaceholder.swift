@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct StudioPlaceholder: View {
+    
+    @State private var isTap: Bool = false
+    
     var body: some View {
         HStack(spacing: 12) {
             
             HStack(spacing: 8) {
                 //음악 영역
-                HStack(spacing: 18) {
+                HStack(spacing: 15) {
                     Image("musicImage 1")
                         .resizable()
                         .frame(width: 100, height: 100)
@@ -74,63 +77,72 @@ struct StudioPlaceholder: View {
                 
                 //기능들
                 VStack(alignment: .center, spacing: 12) {
-                    ZStack {
+                    VStack {
+//                        HStack() {
+//                            Text("MEMO")
+//                                .font(.system(size: 9, weight: .black))
+//                                .foregroundColor(Color("memoText"))
+//                            
+//                            Spacer()
+//                                .frame(width: 140)
+//
+//                        }
+//                        .frame(width: 180)
+                        
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(
-                                LinearGradient(
-                                    colors: [
-                                        Color("memoYellow"),
-                                        Color("memoYellow2"),
-                                        Color("memoYellow3")
-                                    ],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
-                            )
-                            .frame(width: 200, height: 45)
-                            .offset(x: 0, y: -7)
-//                            .overlay {
-//                                Text("MEMO")
-//                                    .font(.system(size: 5, weight: .black))
-//                                    .foregroundColor(Color("memoText"))
-//                                    .offset(x: -80, y:-27)
-//                            }
-                        
-                        
-                        Rectangle()
                             .frame(width: 201, height: 45)
                             .foregroundColor(Color("memoColor"))
-                            .clipShape(
-                                .rect(
-                                    topLeadingRadius: 0,
-                                    bottomLeadingRadius: 8,
-                                    bottomTrailingRadius: 8,
-                                    topTrailingRadius: 0
-                                )
-                            )
+                            .overlay {
+                                HStack {
+                                    
+                                    Image(systemName: "pencil.and.scribble")
+                                        .font(.system(size: 12, weight: .regular))
+                                        .foregroundColor(.gray.opacity(0.7))
+                                        .padding(.leading, 12)
+                                        
+                                    Text("Start Writing...")
+                                        .font(.system(size: 12, weight: .regular))
+                                        .foregroundColor(.gray.opacity(0.7))
+                                        
+                                    
+                                    Spacer()
+                                    
+                                    Text("31")
+                                        .padding(.trailing)
+                                }
+                            }
                         
                     }
-//                    .padding(.top, 15)
-//                    .frame(height: 60)
-                    
                     
                     //집중모드, 타이머, 녹화 버튼
                     HStack(spacing: 10) {
-                        // 다크모드 토글
-                        Circle()
-                            .fill(.blue.opacity(0.2))
-                            .frame(width: 35, height: 35)
-                            .overlay {
-                                Image(systemName: "moon.fill")
-                                    .foregroundStyle(.blue)
-                                    .font(.system(size: 14))
-                            }
+                        //집중모드
+                        
+                        Button(action: {
+                            isTap.toggle()
+                                if isTap {
+                                    enableFocusMode()
+                                } else {
+                                    disableFocusMode()
+                                }
+                        }, label: {
+                            Circle()
+                                .fill(isTap ? Color.blue.opacity(0.2) : Color("3buttonColor"))
+                                .frame(width: 35, height: 35)
+                                .overlay {
+                                    Image(systemName: "moon.fill")
+                                        .foregroundStyle(.blue)
+                                        .font(.system(size: 14))
+                                }
+                        })
+                        .buttonStyle(PlainButtonStyle())
+                        
                         
                         Spacer()
                         
                         // 포모도로 타이머
                         Circle()
-                            .fill(.orange.opacity(0.2))
+                            .fill(Color("3buttonColor"))
                             .frame(width: 35, height: 35)
                             .overlay {
                                 Image(systemName: "timer")
@@ -142,7 +154,7 @@ struct StudioPlaceholder: View {
                         
                         // 화면 녹화
                         Circle()
-                            .fill(.red.opacity(0.2))
+                            .fill(Color("3buttonColor"))
                             .frame(width: 35, height: 35)
                             .overlay {
                                 Image(systemName: "record.circle")
@@ -152,21 +164,54 @@ struct StudioPlaceholder: View {
                     }
                     .frame(width: 180)
                 }
-//                .padding(.bottom, 10)
             }
         }
         .padding(.horizontal, 8)
     }
+    
+    func enableFocusMode() {
+        let script = """
+        tell application "System Events"
+            tell process "ControlCenter"
+                try
+                    click menu bar item "Control Center" of menu bar 1
+                    delay 0.5
+                    click button "Focus" of window 1
+                end try
+            end tell
+        end tell
+        """
+        
+        executeAppleScript(script)
+    }
+
+    func disableFocusMode() {
+        // 같은 방식으로 다시 클릭하여 끄기
+        enableFocusMode()
+    }
+
+    func executeAppleScript(_ script: String) {
+        DispatchQueue.global(qos: .background).async {
+            if let appleScript = NSAppleScript(source: script) {
+                var error: NSDictionary?
+                appleScript.executeAndReturnError(&error)
+                if let error = error {
+                    print("AppleScript 오류: \(error)")
+                }
+            }
+        }
+    }
+    struct StudioPlaceholder_Previews: PreviewProvider {
+        static var previews: some View {
+            HomeView(currentTab: .constant(.studio))
+                .environmentObject(NotchViewModel())
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .frame(width: onNotchSize.width, height: onNotchSize.height)
+                .background(Color.black)
+                .clipShape(NotchShape(cornerRadius: 20))
+        }
+    }
+
 }
 
-struct StudioPlaceholder_Previews: PreviewProvider {
-    static var previews: some View {
-        StudioPlaceholder()
-            .environmentObject(NotchViewModel())
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .frame(width: onNotchSize.width, height: onNotchSize.height)
-            .background(Color.black)
-            .clipShape(NotchShape(cornerRadius: 20))
-    }
-}

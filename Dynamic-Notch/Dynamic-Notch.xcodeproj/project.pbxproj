@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		351A5D0D2E24DCFE00BCEA2A /* MediaRemote in Frameworks */ = {isa = PBXBuildFile; productRef = 351A5D0C2E24DCFE00BCEA2A /* MediaRemote */; };
+		351A5D0F2E24DCFE00BCEA2A /* PrivateMediaRemote in Frameworks */ = {isa = PBXBuildFile; productRef = 351A5D0E2E24DCFE00BCEA2A /* PrivateMediaRemote */; };
 		35C4B5CD2D88019400561BBA /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CC2D88019400561BBA /* Defaults */; };
 		35C4B5CF2D88019400561BBA /* DefaultsMacros in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CE2D88019400561BBA /* DefaultsMacros */; };
 		35C4B5D22D8801A100561BBA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5D12D8801A100561BBA /* KeyboardShortcuts */; };
@@ -32,6 +34,8 @@
 				35C4B5CD2D88019400561BBA /* Defaults in Frameworks */,
 				35C4B5CF2D88019400561BBA /* DefaultsMacros in Frameworks */,
 				35C4B5D22D8801A100561BBA /* KeyboardShortcuts in Frameworks */,
+				351A5D0D2E24DCFE00BCEA2A /* MediaRemote in Frameworks */,
+				351A5D0F2E24DCFE00BCEA2A /* PrivateMediaRemote in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +81,8 @@
 				35C4B5CC2D88019400561BBA /* Defaults */,
 				35C4B5CE2D88019400561BBA /* DefaultsMacros */,
 				35C4B5D12D8801A100561BBA /* KeyboardShortcuts */,
+				351A5D0C2E24DCFE00BCEA2A /* MediaRemote */,
+				351A5D0E2E24DCFE00BCEA2A /* PrivateMediaRemote */,
 			);
 			productName = "Dynamic-Notch";
 			productReference = 35C4B5982D87FD3300561BBA /* Dynamic-Notch.app */;
@@ -109,6 +115,7 @@
 			packageReferences = (
 				35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */,
 				35C4B5D02D8801A100561BBA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				351A5D0B2E24DCFE00BCEA2A /* XCRemoteSwiftPackageReference "MediaRemote" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 35C4B5992D87FD3300561BBA /* Products */;
@@ -198,6 +205,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				NEW_SETTING = "";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -257,6 +265,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				NEW_SETTING = "";
 				SDKROOT = macosx;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -343,6 +352,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		351A5D0B2E24DCFE00BCEA2A /* XCRemoteSwiftPackageReference "MediaRemote" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PrivateFrameworks/MediaRemote.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Defaults";
@@ -362,6 +379,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		351A5D0C2E24DCFE00BCEA2A /* MediaRemote */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 351A5D0B2E24DCFE00BCEA2A /* XCRemoteSwiftPackageReference "MediaRemote" */;
+			productName = MediaRemote;
+		};
+		351A5D0E2E24DCFE00BCEA2A /* PrivateMediaRemote */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 351A5D0B2E24DCFE00BCEA2A /* XCRemoteSwiftPackageReference "MediaRemote" */;
+			productName = PrivateMediaRemote;
+		};
 		35C4B5CC2D88019400561BBA /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */;
