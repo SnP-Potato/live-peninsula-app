@@ -34,6 +34,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         //trayStorage 폴더 생성 확인
         _ = TrayManager.shared
         
+        
+        //MediaRemote 초기화 호출
+        _ = MusicManager.shared
         // 화면 변경 감지 설정
         NotificationCenter.default.addObserver(
             self,
@@ -125,6 +128,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 )
             }
         }
+    }
+    
+    func initializeMediaRemote() {
+        print("🎵 MediaRemote 초기화 시작...")
+        let musicManager = MusicManager.shared
+        musicManager.loadMediaRemoteFramwork()
     }
     
     // 디버깅용 함수 추가

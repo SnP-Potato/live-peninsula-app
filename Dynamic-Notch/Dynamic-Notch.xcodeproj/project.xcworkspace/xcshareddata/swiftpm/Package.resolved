@@ -1,5 +1,5 @@
 {
-  "originHash" : "dc7c42b7aedf8d28ebddb6ee417f3185e6524f8fa91e8ccb1b1dce7ae2f049c8",
+  "originHash" : "3ea245c086c56179053e7829d96ef4ea5b203185c4d42e463f2c7cea2c1c71f8",
   "pins" : [
     {
       "identity" : "defaults",
@@ -17,24 +17,6 @@
       "state" : {
         "revision" : "045cf174010beb335fa1d2567d18c057b8787165",
         "version" : "2.3.0"
-      }
-    },
-    {
-      "identity" : "mediaremote",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/PrivateFrameworks/MediaRemote.git",
-      "state" : {
-        "revision" : "ee5ae0cc17c0f759049d50e6ea95e1cf718dfda5",
-        "version" : "0.1.0"
-      }
-    },
-    {
-      "identity" : "protocolbuffer",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/PrivateFrameworks/ProtocolBuffer",
-      "state" : {
-        "revision" : "d4c569d9ce5e146e9185ebc056fdbaaf9784ec5d",
-        "version" : "0.1.1"
       }
     },
     {
