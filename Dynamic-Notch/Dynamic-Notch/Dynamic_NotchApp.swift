@@ -130,12 +130,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    func initializeMediaRemote() {
-        print("🎵 MediaRemote 초기화 시작...")
-        let musicManager = MusicManager.shared
-        musicManager.loadMediaRemoteFramwork()
-    }
-    
     // 디버깅용 함수 추가
     func printAllScreensInfo() {
         print("\n🖥️ === 연결된 모니터 정보 ===")
