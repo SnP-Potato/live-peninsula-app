@@ -56,29 +56,96 @@ class MusicManager: ObservableObject {
     @Published var musicAppIcon: Image? = nil
     @Published var albumColor: Color = .white
     
+    private var getMusicInfo: (@convention(c) (DispatchQueue, @escaping ([String: Any]) -> Void) -> Void)?
+    private var getPlayingStatus: (@convention(c) (DispatchQueue, @escaping (Bool) -> Void) -> Void)?
+    private var sendMusicCommand: (@convention(c) (Int, AnyObject?) -> Void)?
+    private var registerMusicNotifications: (@convention(c) (DispatchQueue) -> Void)?
+    private var getCurrentMusicApp: (@convention(c) (DispatchQueue, @escaping (Any?) -> Void) -> Void)?
+    private var setElapsedTime: (@convention(c) (Double) -> Void)?
+    
+    private var mediaRemoteBundle: CFBundle?
     
     private init() {
-        loadMediaRemoteFramwork()
+        connectToMusicsystem()
     }
     
     
-    func loadMediaRemoteFramwork() {
-        let url = NSURL(fileURLWithPath: "/System/Library/PrivateFrameworks/MediaRemote.framework")
-        guard let bundle = CFBundleCreate(kCFAllocatorDefault, url) else {
-            print("MediaRemote 프레임워크를 로드할 수 없습니다")
+    //진행할 단게: [1단계] 프레임워크 찾기, [2단계] 프레임워크 로드하기, [3단계] 함수별 포인트 연결
+    func connectToMusicsystem() {
+        
+        /// [1단계] 프레임워크 찾기
+        guard let frameworkURL = URL(string: "/System/Library/PrivateFrameworks/MediaRemote.framework") else {
+            print("MediaRemote의 경로을 찾을 수 없음")
+            return
+        }
+        /// [2단계] 프레임워크 로드하기& 메모리에 올리기
+        guard let bundle = CFBundleCreate(kCFAllocatorDefault, frameworkURL as CFURL) else {
+            print(" MediaRemote 프레임워크를 로드할 수 없습니다")
             return
         }
         
-        print("MediaRemote 프레임워크를 로드했습니다: \(bundle)")
+        // 나중에 또 사용하기 해야되서 변수 따로 저장
+        self.mediaRemoteBundle = bundle
+        print("✅ MediaRemote 프레임워크 로드 성공")
         
-        //위에서 로드했는지 못했는지 확인했고 음악정보 가져오기
-        guard let functionPointer = CFBundleGetFunctionPointerForName(bundle, "MRMediaRemoteGetNowPlayingInfo" as CFString) else {
-            print("함수 포인트 가져오기 실패")
+        
+        /// [3단계] 함수별 포인트 연결
+        if let functionPointer = CFBundleGetFunctionPointerForName(bundle, "MRMediaRemoteGetNowPlayingInfo" as CFString) {
+            //unsafeBitCast은 강제 타입변환
+            //unsafeBitCast(원본, to: 바꿀타입.self)
+            getMusicInfo = unsafeBitCast(functionPointer, to: (@convention(c) (DispatchQueue, @escaping ([String: Any]) -> Void) -> Void).self)
+            print("음악 정보 가져오기 성공")
+        } else {
+            print(" 음악 정보 가져오기 함수 연결 실패")
             return
         }
         
-        print("함수 포인트 가져오기 성공!")
+        // 재생확인상태
+        if let functionPointer = CFBundleGetFunctionPointerForName(bundle, "MRMediaRemoteGetNowPlayingApplicationIsPlaying" as CFString) {
+            getPlayingStatus = unsafeBitCast(functionPointer, to: (@convention(c) (DispatchQueue, @escaping (Bool) -> Void) -> Void).self)
+            print("✅ 재생 상태 확인 함수 연결 성공")
+        } else {
+            print("❌ 재생 상태 확인 함수 연결 실패")
+            return
+        }
         
+        // 4. 미디어 제어 명령 함수
+        if let functionPointer = CFBundleGetFunctionPointerForName(bundle, "MRMediaRemoteSendCommand" as CFString) {
+            sendMusicCommand = unsafeBitCast(functionPointer, to: (@convention(c) (Int, AnyObject?) -> Void).self)
+            print("✅ 미디어 제어 명령 함수 연결 성공")
+        } else {
+            print("❌ 미디어 제어 명령 함수 연결 실패")
+            return
+        }
+        
+        // 5. 알림 등록 함수
+        if let functionPointer = CFBundleGetFunctionPointerForName(bundle, "MRMediaRemoteRegisterForNowPlayingNotifications" as CFString) {
+            registerMusicNotifications = unsafeBitCast(functionPointer, to: (@convention(c) (DispatchQueue) -> Void).self)
+            print("✅ 알림 등록 함수 연결 성공")
+        } else {
+            print("❌ 알림 등록 함수 연결 실패")
+            return
+        }
+        
+        // 6. 현재 음악 앱 정보 가져오기 함수
+        if let functionPointer = CFBundleGetFunctionPointerForName(bundle, "MRMediaRemoteGetNowPlayingClient" as CFString) {
+            getCurrentMusicApp = unsafeBitCast(functionPointer, to: (@convention(c) (DispatchQueue, @escaping (Any?) -> Void) -> Void).self)
+            print("✅ 음악 앱 정보 가져오기 함수 연결 성공")
+        } else {
+            print("❌ 음악 앱 정보 가져오기 함수 연결 실패")
+            return
+        }
+        
+        // 7. 재생 위치 설정 함수
+        if let functionPointer = CFBundleGetFunctionPointerForName(bundle, "MRMediaRemoteSetElapsedTime" as CFString) {
+            setElapsedTime = unsafeBitCast(functionPointer, to: (@convention(c) (Double) -> Void).self)
+            print("✅ 재생 위치 설정 함수 연결 성공")
+        } else {
+            print("❌ 재생 위치 설정 함수 연결 실패")
+        }
+        
+        print("🎵 음악 시스템 연결 완료!")
+        return
     }
     
     func playPause() {
