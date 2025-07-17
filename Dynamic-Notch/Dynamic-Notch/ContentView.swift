@@ -12,6 +12,7 @@ import Defaults
 import UniformTypeIdentifiers
 
 struct ContentView: View {
+    @StateObject private var musicManager = MusicManager() ?? MusicManager()!
     @EnvironmentObject var vm: NotchViewModel
     
     // 호버 상태 관리를 위한 변수들

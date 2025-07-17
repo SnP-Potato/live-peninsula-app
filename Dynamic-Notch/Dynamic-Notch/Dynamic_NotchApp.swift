@@ -36,7 +36,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         
         //MediaRemote 초기화 호출
-        _ = MusicManager.shared
+        if let musicManager = MusicManager() {
+            // MusicManager 초기화 성공
+            print("MusicManager 초기화 성공")
+        } else {
+            print("MusicManager 초기화 실패")
+        }
         // 화면 변경 감지 설정
         NotificationCenter.default.addObserver(
             self,
