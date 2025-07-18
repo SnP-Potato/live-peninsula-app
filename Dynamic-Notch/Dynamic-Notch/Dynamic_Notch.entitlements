@@ -14,7 +14,11 @@
 	<true/>
 	<key>com.apple.security.temporary-exception.mach-lookup.global-name</key>
 	<array>
-		<string>com.apple.Music</string>
+		<string>com.apple.mediaremote.control</string>
+		<string>com.apple.mediaremote.sendcommand</string>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)-spki</string>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)-spks
+</string>
 	</array>
 </dict>
 </plist>

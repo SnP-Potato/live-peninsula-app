@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		357A0BCF2E2945C5005162FF /* MediaRemote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 357A0BCE2E2945C5005162FF /* MediaRemote.framework */; };
 		35C4B5CD2D88019400561BBA /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CC2D88019400561BBA /* Defaults */; };
 		35C4B5CF2D88019400561BBA /* DefaultsMacros in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CE2D88019400561BBA /* DefaultsMacros */; };
 		35C4B5D22D8801A100561BBA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5D12D8801A100561BBA /* KeyboardShortcuts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		357A0BCE2E2945C5005162FF /* MediaRemote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaRemote.framework; path = ../../../../../../../System/Library/PrivateFrameworks/MediaRemote.framework; sourceTree = "<group>"; };
 		35C4B5982D87FD3300561BBA /* Dynamic-Notch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dynamic-Notch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -42,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				357A0BCF2E2945C5005162FF /* MediaRemote.framework in Frameworks */,
 				35C4B5CD2D88019400561BBA /* Defaults in Frameworks */,
 				35C4B5CF2D88019400561BBA /* DefaultsMacros in Frameworks */,
 				35C4B5D22D8801A100561BBA /* KeyboardShortcuts in Frameworks */,
@@ -54,6 +57,7 @@
 		357A0BC02E2810DC005162FF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				357A0BCE2E2945C5005162FF /* MediaRemote.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -337,9 +341,12 @@
 				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_ENABLE_EXPLICIT_MODULES = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Dynamic-Notch/Dynamic-Notch-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Dynamic-Notch/Dynamic-Notch-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
+					/System/Library/PrivateFrameworks,
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
 			};
 			name = Debug;
 		};
@@ -394,9 +401,12 @@
 				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_ENABLE_EXPLICIT_MODULES = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Dynamic-Notch/Dynamic-Notch-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Dynamic-Notch/Dynamic-Notch-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
+					/System/Library/PrivateFrameworks,
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
 			};
 			name = Release;
 		};

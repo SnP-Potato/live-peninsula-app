@@ -26,6 +26,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow! // 기존 창 (메인 화면용)
     let vm: NotchViewModel = .init()
     
+    var musicManager: MusicManager?
+    
     func applicationDidFinishLaunching(_ notification: Notification) {
         //  디버깅: 연결된 모든 모니터 정보 출력
         printAllScreensInfo()
@@ -36,12 +38,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         
         //MediaRemote 초기화 호출
-        if let musicManager = MusicManager() {
-            // MusicManager 초기화 성공
-            print("MusicManager 초기화 성공")
-        } else {
-            print("MusicManager 초기화 실패")
-        }
+//        musicManager = MusicManager()
+//        if let manager = musicManager {
+//            print("✅ MusicManager 초기화 성공")
+//        } else {
+//            print("❌ MusicManager 초기화 실패")
+//        }
         // 화면 변경 감지 설정
         NotificationCenter.default.addObserver(
             self,
@@ -103,6 +105,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     window.contentView = NSHostingView(
                         rootView: ContentView()
                             .environmentObject(viewModel)
+//                            .environmentObject(musicManager!) // 
                     )
                     
                     windows[screen] = window
