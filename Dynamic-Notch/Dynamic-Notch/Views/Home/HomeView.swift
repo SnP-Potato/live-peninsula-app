@@ -57,9 +57,9 @@ struct HomeView: View {
                 Spacer()
             }
             .padding(.leading, 8)
-            .padding(.vertical, 6)
-            .padding(.bottom, 32)
-            .frame(height: 32)
+//            .padding(.vertical, 6)
+//            .padding(.bottom, 32)
+//            .frame(height: 32)
             
             
             //각 탭 버튼에 맞는 view출력

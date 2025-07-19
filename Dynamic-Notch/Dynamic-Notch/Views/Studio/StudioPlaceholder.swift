@@ -116,11 +116,11 @@ struct StudioPlaceholder: View {
                     SelectedFeatureView
                 }
             }
-            .frame(width: 230, height: 106)
+            .frame(width: 180, height: 90)
             .animation(.easeInOut(duration: 0.2), value: currentActivity)
             
             Spacer()
-                .frame(width: 20)
+                .frame(width: 24)
         }
         .frame(height: 90)
         .padding(.vertical, 8)
@@ -215,7 +215,7 @@ struct StudioPlaceholder: View {
                 Spacer()
                 
                 Button(action: {
-                    currentActivity = .none
+                    resetToDefaultView()
                 }, label: {
                     Image(systemName: "x.circle")
                         .font(.system(size: 16, weight: .semibold))
@@ -232,11 +232,19 @@ struct StudioPlaceholder: View {
                     MemoFeatureView()
                 case .timer:
                     TimerView()
-                                        }
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
             Spacer()
+        }
+    }
+    private func resetToDefaultView() {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            currentActivity = .none
+            isMemo = false
+            isTimer = false
+            // isRecord와 isDND는 토글 형태이므로 유지
         }
     }
 }
