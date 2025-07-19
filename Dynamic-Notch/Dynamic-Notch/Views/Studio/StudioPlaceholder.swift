@@ -9,8 +9,17 @@ import SwiftUI
 
 struct StudioPlaceholder: View {
     
-    @State private var isTap: Bool = false
-    @State private var istimer: Bool = false
+    @State private var isDND: Bool = false
+    @State private var isTimer: Bool = false
+    @State private var isRecord: Bool = false
+    @State private var isMemo: Bool = false
+    @State private var currentActivity: ActivityFeatures = .none
+    
+    enum ActivityFeatures {
+        case none
+        case memo
+        case timer
+    }
     
     var body: some View {
         HStack(spacing: 0) {
@@ -97,95 +106,170 @@ struct StudioPlaceholder: View {
             }
             .frame(width: 242)
             
-            
             Spacer()
             
-           
+            //다른 기능들
             VStack(alignment: .center, spacing: 10) {
-                // 메모 영역
-                RoundedRectangle(cornerRadius: 8)
-                    .frame(width: 180, height: 42)
-                    .foregroundColor(Color("memoColor"))
-                    .overlay {
-                        HStack(spacing: 8) {
-                            Image(systemName: "pencil.and.scribble")
-                                .font(.system(size: 11))
-                                .foregroundColor(.gray.opacity(0.7))
-                            
-                            Text("Start Writing...")
-                                .font(.system(size: 11))
-                                .foregroundColor(.gray.opacity(0.7))
-                            
-                            Spacer()
-                            
-                            Text("31")
-                                .font(.system(size: 11, weight: .medium))
-                                .foregroundColor(.gray.opacity(0.7))
-                        }
-                        .padding(.horizontal, 10)
-                    }
-                
-                // 집중모드 & 타이머 & 화면녹화 기능들
-                HStack(spacing: 12) {
-                    // 집중모드
-                    Button(action: {
-                        isTap.toggle()
-                    }) {
-                        Circle()
-                            .fill(isTap ? Color.blue.opacity(0.2) : Color("3buttonColor"))
-                            .frame(width: 32, height: 32)
-                            .overlay {
-                                Image(systemName: "moon.fill")
-                                    .foregroundStyle(.blue)
-                                    .font(.system(size: 12))
-                            }
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    
-                    //  타이머
-                    Button(action: {
-                        istimer.toggle()
-                    }) {
-                        Circle()
-                            .fill(Color("3buttonColor"))
-                            .frame(width: 32, height: 32)
-                            .overlay {
-                                if istimer {
-                                    TimerView()
-                                        .frame(width: 24, height: 24)
-                                } else {
-                                    Image(systemName: "timer")
-                                        .foregroundStyle(.orange)
-                                        .font(.system(size: 12))
-                                }
-                            }
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    
-                    // 화면 녹화
-                    Button(action: {
-                        //
-                    }) {
-                        Circle()
-                            .fill(Color("3buttonColor"))
-                            .frame(width: 32, height: 32)
-                            .overlay {
-                                Image(systemName: "record.circle")
-                                    .foregroundStyle(.red)
-                                    .font(.system(size: 12))
-                            }
-                    }
-                    .buttonStyle(PlainButtonStyle())
+                if currentActivity == .none {
+                    DefaultView
+                } else {
+                    SelectedFeatureView
                 }
             }
-            .frame(width: 180)
-            
+            .frame(width: 230, height: 106)
+            .animation(.easeInOut(duration: 0.2), value: currentActivity)
             
             Spacer()
-                .frame(width: 24)
+                .frame(width: 20)
         }
         .frame(height: 90)
         .padding(.vertical, 8)
+    }
+    
+    @ViewBuilder
+    private var DefaultView: some View {
+        // 메모 영역
+        Button(action: {
+            isMemo = true
+            currentActivity = .memo
+        }) {
+            RoundedRectangle(cornerRadius: 8)
+                .frame(width: 180, height: 42)
+                .foregroundColor(Color("memoColor"))
+                .overlay {
+                    HStack(spacing: 8) {
+                        Image(systemName: "pencil.and.scribble")
+                            .font(.system(size: 11))
+                            .foregroundColor(.gray.opacity(0.7))
+                        
+                        Text("Start Writing...")
+                            .font(.system(size: 11))
+                            .foregroundColor(.gray.opacity(0.7))
+                        
+                        Spacer()
+                        
+                        Text("31")
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(.gray.opacity(0.7))
+                    }
+                    .padding(.horizontal, 10)
+                }
+        }
+        .buttonStyle(PlainButtonStyle())
+        
+        // 집중모드 & 타이머 & 화면녹화 기능들
+        HStack(spacing: 20) {
+            // 집중모드
+            Button(action: {
+                isDND.toggle()
+            }) {
+                Circle()
+                    .fill(isDND ? Color.blue.opacity(0.2) : Color("3buttonColor"))
+                    .frame(width: 40, height: 40)
+                    .overlay {
+                        Image(systemName: "moon.fill")
+                            .foregroundStyle(.blue)
+                            .font(.system(size: 16))
+                    }
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            //  타이머
+            Button(action: {
+                isTimer = true
+                currentActivity = .timer
+            }) {
+                Circle()
+                    .fill(isTimer ? Color.orange.opacity(0.2) : Color("3buttonColor"))
+                    .frame(width: 40, height: 40)
+                    .overlay {
+                        Image(systemName: "timer")
+                            .foregroundStyle(.orange)
+                            .font(.system(size: 16))
+                    }
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            // 화면 녹화
+            Button(action: {
+                isRecord.toggle()
+            }) {
+                Circle()
+                    .fill(isRecord ? Color.red.opacity(0.2) : Color("3buttonColor"))
+                    .frame(width: 40, height: 40)
+                    .overlay {
+                        Image(systemName: "record.circle")
+                            .foregroundStyle(.red)
+                            .font(.system(size: 20))
+                    }
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
+    }
+    
+    @ViewBuilder
+    private var SelectedFeatureView: some View {
+        VStack {
+            
+            HStack {
+                Spacer()
+                
+                Button(action: {
+                    currentActivity = .none
+                }, label: {
+                    Image(systemName: "x.circle")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.gray)
+                })
+                .buttonStyle(PlainButtonStyle())
+            }
+            
+            Group {
+                switch currentActivity {
+                case .none:
+                    EmptyView()
+                case .memo:
+                    MemoFeatureView()
+                case .timer:
+                    TimerView()
+                                        }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            Spacer()
+        }
+    }
+}
+
+
+//// MARK: - 각 기능별 뷰들
+struct MemoFeatureView: View {
+    var body: some View {
+        VStack {
+            Text("메모")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(.white)
+            Text("메모 기능이 여기에 표시됩니다")
+                .font(.system(size: 10))
+                .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
+        }
+    }
+}
+
+struct TimerFeatureView: View {
+    var body: some View {
+        VStack {
+            Image(systemName: "timer")
+                .foregroundStyle(.orange)
+                .font(.system(size: 20))
+            Text("타이머")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(.white)
+            Text("00:00:00")
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(.orange)
+        }
     }
 }
 

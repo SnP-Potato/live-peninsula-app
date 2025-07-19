@@ -10,69 +10,74 @@ import SwiftUI
 struct TimerView: View {
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 22)
-                .fill(.black.opacity(0.2))
+            RoundedRectangle(cornerRadius: 8)
+                .fill(.black.opacity(0.1))
             
-            HStack {
-                //왼쪽
-                VStack(spacing: 20) {
+            HStack(spacing: 8) {
+                VStack(spacing: 8) {
                     Image("Group 50")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 38, height: 38)
                     
                     Text("Timer")
-                        .font(.system(size: 26, weight: .bold))
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.white)
                 }
+                .frame(height: 80)
                 
-                VStack(spacing: 14) {
-                    RoundedRectangle(cornerRadius: 12)
+                // 오른쪽 - 시간과 버튼들
+                VStack(spacing: 12) {
+                    // 시간 표시
+                    RoundedRectangle(cornerRadius: 6)
                         .fill(.white.opacity(0.2))
-                        .frame(width: 230, height: 60)
+                        .frame(width: 120, height: 34)
                         .overlay {
-                            HStack {
-                                Text("00 : 00 : 00")
-                                    .font(.system(size: 30, weight: .bold))
-                            }
+                            Text("00 : 00 : 00")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(.white)
                         }
                     
-                    HStack {
-                        
+                    // 버튼들
+                    HStack(spacing: 18) {
                         Button(action: {
                             
-                        }, label:  {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(.white.opacity(0.2))
-                                .frame(width: 70, height: 40)
+                        }) {
+                            Circle()
+                                .fill(.orange.opacity(0.2))
+                                .frame(width: 40, height: 40)
                                 .overlay {
                                     Text("Restart")
-                                        .font(.system(size: 14, weight: .semibold))
+                                        .font(.system(size: 10, weight: .semibold))
+                                        .foregroundColor(.white)
                                 }
-                        })
+                        }
                         .buttonStyle(PlainButtonStyle())
-                        
-                        Spacer()
-                            .frame(width: 70)
                         
                         Button(action: {
                             
-                        }, label:  {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(.white.opacity(0.2))
-                                .frame(width: 70, height: 40)
+                        }) {
+                            Circle()
+                                .fill(.green.opacity(0.2))
+                                .frame(width: 37, height: 37)
                                 .overlay {
                                     Text("Start")
-                                        .font(.system(size: 14, weight: .semibold))
+                                        .font(.system(size: 10, weight: .semibold))
+                                        .foregroundColor(.white)
                                 }
-                        })
+                        }
                         .buttonStyle(PlainButtonStyle())
                     }
                 }
-                
             }
+            .padding(.horizontal, 8)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
 #Preview {
     TimerView()
         .frame(width: 480, height:  500)
-        
+    
 }
