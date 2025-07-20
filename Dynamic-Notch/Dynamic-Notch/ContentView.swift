@@ -106,3 +106,8 @@ struct ContentView: View {
 
 // onchange을 ZStack에 통합으로 관리하는 이유 -> 더 간단하기 때문 ㅋㅋㅋㅋ
 // 원리 개별에 onChange을 구현햇는데 조건문이 복잡해져서 그냥 통합으로 관리
+
+#Preview {
+    ContentView()
+        .environmentObject(NotchViewModel())
+}

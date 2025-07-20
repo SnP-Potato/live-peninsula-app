@@ -25,14 +25,14 @@ struct StudioPlaceholder: View {
         HStack(spacing: 0) {
             
             Spacer()
-                .frame(width: 24)
+                .frame(width: 20)
             
             // 음악 영역
             HStack(spacing: 12) {
                 // 음악 이미지
                 Image("musicImage 1")
                     .resizable()
-                    .frame(width: 90, height: 90)
+                    .frame(width: 100, height: 100)
                     .scaledToFill()
                     .cornerRadius(12)
                     .overlay {
@@ -120,9 +120,9 @@ struct StudioPlaceholder: View {
             .animation(.easeInOut(duration: 0.2), value: currentActivity)
             
             Spacer()
-                .frame(width: 24)
+                .frame(width: 10)
         }
-        .frame(height: 90)
+        .frame(width: 500, height: 100)
         .padding(.vertical, 8)
     }
     
