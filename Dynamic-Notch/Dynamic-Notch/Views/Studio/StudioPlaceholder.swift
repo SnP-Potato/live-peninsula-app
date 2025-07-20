@@ -122,7 +122,7 @@ struct StudioPlaceholder: View {
             Spacer()
                 .frame(width: 10)
         }
-        .frame(width: 500, height: 100)
+//        .frame(width: 500, height: 100)
         .padding(.vertical, 8)
     }
     
@@ -135,7 +135,8 @@ struct StudioPlaceholder: View {
         }) {
             RoundedRectangle(cornerRadius: 8)
                 .frame(width: 180, height: 42)
-                .foregroundColor(Color("memoColor"))
+                .foregroundColor(Color("3buttonColor"))
+                .opacity(0.5)
                 .overlay {
                     HStack(spacing: 8) {
                         Image(systemName: "pencil.and.scribble")
@@ -164,7 +165,8 @@ struct StudioPlaceholder: View {
                 isDND.toggle()
             }) {
                 Circle()
-                    .fill(isDND ? Color.blue.opacity(0.2) : Color("3buttonColor"))
+                    .fill(isDND ? Color.blue.opacity(0.3) : Color("3buttonColor"))
+                    .opacity(0.5)
                     .frame(width: 40, height: 40)
                     .overlay {
                         Image(systemName: "moon.fill")
@@ -180,7 +182,8 @@ struct StudioPlaceholder: View {
                 currentActivity = .timer
             }) {
                 Circle()
-                    .fill(isTimer ? Color.orange.opacity(0.2) : Color("3buttonColor"))
+                    .fill(isTimer ? Color.orange.opacity(0.3) : Color("3buttonColor"))
+                    .opacity(0.5)
                     .frame(width: 40, height: 40)
                     .overlay {
                         Image(systemName: "timer")
@@ -195,7 +198,8 @@ struct StudioPlaceholder: View {
                 isRecord.toggle()
             }) {
                 Circle()
-                    .fill(isRecord ? Color.red.opacity(0.2) : Color("3buttonColor"))
+                    .fill(isRecord ? Color.red.opacity(0.3) : Color("3buttonColor"))
+                    .opacity(0.5)
                     .frame(width: 40, height: 40)
                     .overlay {
                         Image(systemName: "record.circle")

@@ -28,11 +28,11 @@ struct HomeView: View {
                     }, label: {
                         HStack(spacing: 12) {
                             Image(systemName: tab.icon)
-                                .font(.system(size: 16, weight: .bold))
+                                .font(.system(size: 16, weight: .medium))
                             
                             if currentTab == tab {
                                 Text(tab.title)
-                                    .font(.system(size: 13, weight: .bold))
+                                    .font(.system(size: 13, weight: .medium))
                             }
                         }
                     })
@@ -42,10 +42,10 @@ struct HomeView: View {
                     .background {
                         if currentTab == tab {
                             Capsule()
-                                .fill(.white.opacity(0.1))
+                                .fill(.black.opacity(0.2))
                                 .overlay {
                                     Capsule()
-                                        .strokeBorder(.white.opacity(0.3), lineWidth: 2)
+                                        .strokeBorder(.white.opacity(0.4), lineWidth: 1)
                                 }
                                 .matchedGeometryEffect(id: "selectedTab", in: tabAnimation)
                         }
@@ -56,26 +56,29 @@ struct HomeView: View {
                 
                 Spacer()
             }
+            .frame(width: 500, height: 30)
             .padding(.leading, 8)
-//            .padding(.vertical, 6)
-//            .padding(.bottom, 32)
-//            .frame(height: 32)
             
-            
-            //각 탭 버튼에 맞는 view출력
-            switch currentTab {
-            case .studio:
-                StudioPlaceholder()
-            case .tray:
-                TrayPlaceholder()
+            VStack {
+                //각 탭 버튼에 맞는 view출력
+                switch currentTab {
+                case .studio:
+                    StudioPlaceholder()
+                case .tray:
+                    TrayPlaceholder()
+                }
             }
+            .frame(width: 500, height: 100)
+            
+            //총합 500, 130
         }
+        .frame(width: 540, height: 175)
     }
 }
 
 #Preview {
     HomeView(currentTab: .constant(.studio))
-        .frame(width: 540, height: 175)
+        .frame(width: onNotchSize.width, height: onNotchSize.height)
         .background(.black)
 }
 
