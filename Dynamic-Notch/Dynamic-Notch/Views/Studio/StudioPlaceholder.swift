@@ -231,7 +231,7 @@ struct StudioPlaceholder: View {
                 case .memo:
                     MemoFeatureView()
                 case .timer:
-                    TimerView()
+                    TimerFeatureView()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -266,6 +266,7 @@ struct MemoFeatureView: View {
 }
 
 struct TimerFeatureView: View {
+    
     var body: some View {
         VStack {
             Image(systemName: "timer")

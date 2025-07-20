@@ -540,8 +540,8 @@ class MusicManager: ObservableObject {
     func musicIsPaused(state: Bool, bypass: Bool = false, setIdle: Bool = false) {
         if musicToggledManually && !bypass { return }
         
-        let previousState = isPlaying
-        let hasContent = !songTitle.isEmpty && !artistName.isEmpty
+        _ = isPlaying
+        _ = !songTitle.isEmpty && !artistName.isEmpty
         
         withAnimation(.smooth) {
             // Batch related state updates
