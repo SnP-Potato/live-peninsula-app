@@ -8,6 +8,7 @@
 import Defaults
 import Combine
 import SwiftUI
+import Foundation
 
 class NotchViewModel: NSObject, ObservableObject {
     // 노치 상태 (열림/닫힘)
