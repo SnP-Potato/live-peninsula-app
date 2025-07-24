@@ -500,9 +500,7 @@ struct StudioPlaceholder: View {
             
             // 화면 녹화 - 간단한 토글
             Button(action: {
-                print("🔴 화면 녹화 버튼 클릭!")
                 isRecord.toggle()
-                print("💡 Cmd + Shift + 5를 직접 눌러서 화면 녹화를 시작하세요")
             }) {
                 Circle()
                     .fill(isRecord ? Color.red.opacity(0.3) : Color("3buttonColor"))
