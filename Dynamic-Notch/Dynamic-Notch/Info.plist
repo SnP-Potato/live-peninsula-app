@@ -7,9 +7,9 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>SUEnable</key>
-	<string></string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>Show calender events inside the notch</string>
+	<key>SUEnable</key>
+	<string></string>
 </dict>
 </plist>

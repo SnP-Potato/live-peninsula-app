@@ -59,6 +59,9 @@ struct HomeView: View {
             .frame(width: 500, height: 30)
             .padding(.leading, 8)
             
+//            Spacer()
+//                .frame(height: 40)
+            
             VStack {
                 //각 탭 버튼에 맞는 view출력
                 switch currentTab {
@@ -68,9 +71,9 @@ struct HomeView: View {
                     TrayPlaceholder()
                 }
             }
-            .frame(width: 500, height: 100)
+            .frame(width: 500, height: 130)
             
-            //총합 500, 130
+            //총합 500, 160
         }
         .frame(width: 540, height: 175)
     }
