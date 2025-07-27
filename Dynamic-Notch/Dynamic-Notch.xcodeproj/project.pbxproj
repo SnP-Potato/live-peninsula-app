@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3518DA382E360758000772DE /* GlassEffect in Frameworks */ = {isa = PBXBuildFile; productRef = 3518DA372E360758000772DE /* GlassEffect */; };
 		35C4B5CD2D88019400561BBA /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CC2D88019400561BBA /* Defaults */; };
 		35C4B5CF2D88019400561BBA /* DefaultsMacros in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CE2D88019400561BBA /* DefaultsMacros */; };
 		35C4B5D22D8801A100561BBA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5D12D8801A100561BBA /* KeyboardShortcuts */; };
@@ -44,6 +45,7 @@
 			files = (
 				35C4B5CD2D88019400561BBA /* Defaults in Frameworks */,
 				35C4B5CF2D88019400561BBA /* DefaultsMacros in Frameworks */,
+				3518DA382E360758000772DE /* GlassEffect in Frameworks */,
 				35C4B5D22D8801A100561BBA /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -90,6 +92,7 @@
 				35C4B5CC2D88019400561BBA /* Defaults */,
 				35C4B5CE2D88019400561BBA /* DefaultsMacros */,
 				35C4B5D12D8801A100561BBA /* KeyboardShortcuts */,
+				3518DA372E360758000772DE /* GlassEffect */,
 			);
 			productName = "Dynamic-Notch";
 			productReference = 35C4B5982D87FD3300561BBA /* Dynamic-Notch.app */;
@@ -122,6 +125,7 @@
 			packageReferences = (
 				35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */,
 				35C4B5D02D8801A100561BBA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				3518DA362E360758000772DE /* XCRemoteSwiftPackageReference "GlassEffect" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 35C4B5992D87FD3300561BBA /* Products */;
@@ -432,6 +436,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3518DA362E360758000772DE /* XCRemoteSwiftPackageReference "GlassEffect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Czajnikowski/GlassEffect.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Defaults";
@@ -451,6 +463,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3518DA372E360758000772DE /* GlassEffect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3518DA362E360758000772DE /* XCRemoteSwiftPackageReference "GlassEffect" */;
+			productName = GlassEffect;
+		};
 		35C4B5CC2D88019400561BBA /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */;

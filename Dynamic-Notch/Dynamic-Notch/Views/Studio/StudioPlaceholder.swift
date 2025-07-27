@@ -29,24 +29,9 @@ struct StudioPlaceholder: View {
             Spacer()
                 .frame(width: 20)
             
-            // 음악 영역
             HStack(spacing: 12) {
-                // 음악 이미지
-//                Image("musicImage 1")
-//                    .resizable()
-//                    .frame(width: 100, height: 100)
-//                    .scaledToFill()
-//                    .cornerRadius(12)
-//                    .overlay {
-//                        Image("musicApp")
-//                            .resizable()
-//                            .frame(width: 22, height: 22)
-//                            .scaledToFill()
-//                            .cornerRadius(6)
-//                            .offset(x: 34, y: 34)
-//                    }
+                // MARK: 음악제어
                 VStack {
-                    
                     Button(action: {
                         musicCardclick.toggle()
                     }, label: {
@@ -66,63 +51,35 @@ struct StudioPlaceholder: View {
                 }
                     
                 
-                // 음악 정보 및 컨트롤
-                VStack(alignment: .center, spacing: 12) {
+                // MARK: 캘린더
+                HStack(alignment: .center, spacing: 12) {
                     
-                    VStack(alignment: .center, spacing: 2) {
-                        Text("Heat Waves")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.white)
-                            .lineLimit(1)
+                    VStack {
+                        Text("Jal")
+                            .font(.system(size: 20, weight: .heavy))
                         
-                        Text("Grass Animals")
-                            .font(.system(size: 11, weight: .regular))
-                            .foregroundColor(.white.opacity(0.5))
-                            .lineLimit(1)
+                        Circle()
+                            .fill(.blue)
+                            
+                            .frame(width: 35, height: 35)
+                            .overlay {
+                                Text("4")
+                                    .font(.system(size: 18, weight: .semibold))
+                            }
                     }
-                    .frame(width: 140)
                     
-                    
-                    Rectangle()
-                        .fill(.white.opacity(0.1))
-                        .frame(width: 140, height: 3)
-                        .overlay(alignment: .leading) {
-                            Rectangle()
-                                .fill(.white)
-                                .frame(width: 140 * 0.6) // 60%
+                    HStack {
+                        ScrollView(.vertical, showsIndicators: false) {
+                            Circle()
+                                .fill(.green.opacity(0.2))
+                                .opacity(0.5)
+                                .frame(width: 20, height: 20)
+                                .overlay {
+                                    Image(systemName: "checkmark")
+                                        .font(.system(size: 10, weight: .light))
+                                }
                         }
-                        .cornerRadius(1.5)
-                    
-                    // 컨트롤 버튼
-                    HStack(spacing: 18) {
-                        Button(action: {
-                            //
-                        }) {
-                            Image(systemName: "backward.fill")
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(.white)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        
-                        Button(action: {
-                            //
-                        }) {
-                            Image(systemName: "pause.fill")
-                                .font(.system(size: 16, weight: .medium))
-                                .foregroundColor(.white)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        
-                        Button(action: {
-                            //
-                        }) {
-                            Image(systemName: "forward.fill")
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(.white)
-                        }
-                        .buttonStyle(PlainButtonStyle())
                     }
-                    .frame(width: 140)
                 }
                 .frame(width: 140)
             }
@@ -130,7 +87,7 @@ struct StudioPlaceholder: View {
             
             Spacer()
             
-            //다른 기능들
+            // MARK: 단축어 모음
             VStack(alignment: .center, spacing: 10) {
                 if currentActivity == .none {
                     DefaultView
