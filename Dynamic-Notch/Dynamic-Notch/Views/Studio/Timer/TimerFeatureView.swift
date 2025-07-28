@@ -145,7 +145,6 @@ struct TimerFeatureView: View {
                     Circle()
                         .trim(from: 0, to: 0.5)
                         .stroke(Color.orange.opacity(0.3), lineWidth: 6)
-                        .blur(radius: 8)
                         .frame(width: 120, height: 120)
                    
                     Circle()
@@ -335,7 +334,7 @@ struct TimerFeatureView: View {
 
 #Preview {
     TimerFeatureView()
-        .environmentObject(TimerManager())
+        .environmentObject(TimerManager.shared)
         .frame(width: 400, height: 200)
         .background(Color.black)
 }

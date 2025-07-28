@@ -153,15 +153,6 @@
 //    }
 //    .frame(width: 400, height: 300)
 //}
-
-
-//
-//  MusicCardView.swift
-//  Dynamic-Notch
-//
-//  Created by PeterPark on 7/25/25.
-//
-
 import SwiftUI
 
 struct MusicCardView: View {

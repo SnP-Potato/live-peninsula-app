@@ -14,7 +14,7 @@ class RecordManager: ObservableObject {
     @Published var isRecord: Bool = false {
         didSet {
             UserDefaults.standard.set(isRecord, forKey: "isRecord")
-            print("집중모드 상태 저장 완료")
+            print("녹음모드 상태 저장 완료")
         }
     }
     
@@ -34,14 +34,14 @@ class RecordManager: ObservableObject {
     func recordModeActivation() {
         executeShortcut()
         isRecord = true
-        print("집중모드 활성화")
+        print("녹음모드 활성화")
     }
     
     
     func recordModeDeactivate() {
         executeShortcut()
         isRecord = false
-        print("집중모드 비활성화")
+        print("녹음모드 비활성화")
     }
     
     func executeShortcut() {

@@ -28,6 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     let focusManager = FocusManager.shared
     let recordManager = RecordManager.shared
+    let timerManager = TimerManager.shared
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         //  디버깅: 연결된 모든 모니터 정보 출력
@@ -61,6 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     .environmentObject(vm)
                     .environmentObject(focusManager)
                     .environmentObject(recordManager)
+                    .environmentObject(timerManager)
             )
             
             // 창 위치 조정 및 표시
@@ -102,6 +104,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             .environmentObject(viewModel)
                             .environmentObject(focusManager)
                             .environmentObject(recordManager)
+                            .environmentObject(timerManager)
                     )
                     
                     windows[screen] = window

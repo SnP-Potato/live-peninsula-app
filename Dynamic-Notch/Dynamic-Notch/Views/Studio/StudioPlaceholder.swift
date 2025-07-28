@@ -13,6 +13,7 @@ struct StudioPlaceholder: View {
     @State private var isMemo: Bool = false
     @State private var currentActivity: ActivityFeatures = .none
     @State private var isRecord: Bool = false
+    @State private var isHovered: Bool = false
     
     @State private var musicCardclick: Bool = false
     @EnvironmentObject var focusManager: FocusManager // 상태 계속 유지ㅣ하기윟ㅎ
@@ -27,7 +28,7 @@ struct StudioPlaceholder: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            
+            //도합 width: 462 height: 150
             Spacer()
                 .frame(width: 20)
             
@@ -88,20 +89,21 @@ struct StudioPlaceholder: View {
             .frame(width: 242)
             
             Spacer()
+                
             
             // MARK: 단축어 모음
-            VStack(alignment: .center, spacing: 10) {
-                if currentActivity == .none {
-                    DefaultView
-                } else {
-                    SelectedFeatureView
-                }
+            VStack(alignment: .trailing, spacing: 10) {
+                Circle()
+                    .fill(.white.opacity(0.1))
+                    .opacity(0.5)
+                    .onHover { hovered in
+                        isHovered = hovered
+                    }
+                    .frame(width: isHovered ? 180 : 70, height: isHovered ? 130 : 70)
+                    .animation(.bouncy(duration: 0.4, extraBounce: 0.2), value: isHovered)
             }
-            .frame(width: 180, height: 90)
-            .animation(.easeInOut(duration: 0.2), value: currentActivity)
+            .frame(width: 200, height: 150)
             
-            Spacer()
-                .frame(width: 10)
         }
         .padding(.vertical, 8)
     }
@@ -138,7 +140,7 @@ struct StudioPlaceholder: View {
         }
         .buttonStyle(PlainButtonStyle())
         
-        // 집중모드 & 타이머 & 화면녹화 기능들
+        // 집중모드
         HStack(spacing: 20) {
             // 집중모드 - 글로벌 상태 사용
             Button(action: {
@@ -146,7 +148,7 @@ struct StudioPlaceholder: View {
             }) {
                 Circle()
                     .fill(focusManager.isFocused ? Color.blue.opacity(0.3) : Color("3buttonColor"))
-                    .opacity(0.5)
+                    .opacity(0.3)
                     .frame(width: 40, height: 40)
                     .overlay {
                         Image(systemName: "moon.fill")
@@ -255,7 +257,7 @@ struct StudioPlaceholder_Previews: PreviewProvider {
         HomeView(currentTab: .constant(.studio))
             .environmentObject(NotchViewModel())
             .environmentObject(FocusManager.shared)
-            .environmentObject(TimerManager())
+            .environmentObject(TimerManager.shared)
             .environmentObject(RecordManager.shared)
             .padding(.horizontal, 12)
             .padding(.vertical, 8)

@@ -8,7 +8,10 @@
 import Foundation
 
 
-class TimerManager: NSObject,  ObservableObject {
+class TimerManager: ObservableObject {
+    
+    static let shared = TimerManager()
+    
     @Published var process: CGFloat = 1
     @Published var value: String = "00:00"
     @Published var hour: Int = 0
@@ -20,8 +23,14 @@ class TimerManager: NSObject,  ObservableObject {
     private var totalTime: Int = 0
     private var remainingTime: Int = 0
     
-    override init() {
-        super.init()
+    private init() {
+        self.process = 1
+        self.value = "00:00"
+        self.hour = 0
+        self.min = 0
+        self.second = 0
+        self.totalTime = 0
+        self.remainingTime = 0
     }
     
     func startTimer() {

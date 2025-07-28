@@ -24,7 +24,7 @@ struct TrayPlaceholder: View {
                 //airdrop
                 RoundedRectangle(cornerRadius: 12)
                     .fill(isDropTargeted ? .blue.opacity(0.2) : .white.opacity(0.1))
-//                    .opacity(0.5)
+                    .opacity(0.5)
                     .frame(width: 100)
                     .overlay {
                         VStack(spacing: 9) {
