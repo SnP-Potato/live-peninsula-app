@@ -27,6 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let vm: NotchViewModel = .init()
     
     let focusManager = FocusManager.shared
+    let recordManager = RecordManager.shared
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         //  디버깅: 연결된 모든 모니터 정보 출력
@@ -59,6 +60,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 ContentView()
                     .environmentObject(vm)
                     .environmentObject(focusManager)
+                    .environmentObject(recordManager)
             )
             
             // 창 위치 조정 및 표시
@@ -99,6 +101,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         rootView: ContentView()
                             .environmentObject(viewModel)
                             .environmentObject(focusManager)
+                            .environmentObject(recordManager)
                     )
                     
                     windows[screen] = window

@@ -250,7 +250,7 @@ struct MusicCardView: View {
     ) -> some View {
         Button(action: action) {
             LiquidGlassBackground(
-                variant: .v8,
+                variant: .v18,
                 cornerRadius: isMain ? 15 : 12 // 모서리 반경 축소
             ) {
                 Image(systemName: icon)
@@ -274,23 +274,14 @@ struct MusicCardView: View {
             .scaledToFill()
             .clipShape(RoundedRectangle(cornerRadius: 6))
             .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
-            .offset(x: 34, y: 34)
+            .offset(x: 40, y: 40)
             .transition(.scale.combined(with: .opacity))
     }
 }
 
 #Preview("Music Card - Fixed Size") {
     ZStack {
-        LinearGradient(
-            colors: [.blue, .purple, .pink],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        
         VStack(spacing: 30) {
-            Text("Fixed Size Music Card")
-                .foregroundColor(.white)
-                .font(.title)
             
             HStack(spacing: 20) {
                 // 클릭 안된 상태
@@ -299,10 +290,6 @@ struct MusicCardView: View {
                 // 클릭된 상태
                 MusicCardView(musicCardclick: .constant(true))
             }
-            
-            Text("Both cards are same size (110x110)")
-                .foregroundColor(.white.opacity(0.8))
-                .font(.caption)
         }
     }
     .frame(width: 600, height: 400)

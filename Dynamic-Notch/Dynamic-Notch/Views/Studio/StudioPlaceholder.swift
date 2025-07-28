@@ -16,6 +16,8 @@ struct StudioPlaceholder: View {
     
     @State private var musicCardclick: Bool = false
     @EnvironmentObject var focusManager: FocusManager // 상태 계속 유지ㅣ하기윟ㅎ
+    @EnvironmentObject var recordManager: RecordManager
+    @EnvironmentObject var timerManager: TimerManager
     
     enum ActivityFeatures {
         case none
@@ -173,15 +175,15 @@ struct StudioPlaceholder: View {
             
             // 화면 녹화 - 간단한 토글
             Button(action: {
-                isRecord.toggle()
+                recordManager.toggleRecordMode()
             }) {
                 Circle()
-                    .fill(isRecord ? Color.red.opacity(0.3) : Color("3buttonColor"))
+                    .fill(recordManager.isRecord ? Color.red.opacity(0.3) : Color("3buttonColor"))
                     .opacity(0.5)
                     .frame(width: 40, height: 40)
                     .overlay {
                         Image(systemName: isRecord ? "record.circle.fill" : "record.circle")
-                            .foregroundStyle(.red)
+                            .foregroundStyle(recordManager.isRecord ? .red : .red)
                             .font(.system(size: 20))
                     }
             }
@@ -227,7 +229,6 @@ struct StudioPlaceholder: View {
             currentActivity = .none
             isMemo = false
             isTimer = false
-            // 집중모드와 화면녹화는 독립적으로 유지
         }
     }
 }
@@ -247,27 +248,15 @@ struct MemoFeatureView: View {
     }
 }
 
-struct TimerFeatureView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "timer")
-                .foregroundStyle(.orange)
-                .font(.system(size: 20))
-            Text("타이머")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.white)
-            Text("00:00:00")
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(.orange)
-        }
-    }
-}
+
 
 struct StudioPlaceholder_Previews: PreviewProvider {
     static var previews: some View {
         HomeView(currentTab: .constant(.studio))
             .environmentObject(NotchViewModel())
             .environmentObject(FocusManager.shared)
+            .environmentObject(TimerManager())
+            .environmentObject(RecordManager.shared)
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .frame(width: onNotchSize.width, height: onNotchSize.height)
