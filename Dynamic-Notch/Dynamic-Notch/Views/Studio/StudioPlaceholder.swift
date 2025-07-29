@@ -86,7 +86,7 @@ struct StudioPlaceholder: View {
                 }
                 .frame(width: 140)
             }
-            .frame(width: 242)
+            .frame(width: 300)
             
             Spacer()
                 
@@ -102,7 +102,7 @@ struct StudioPlaceholder: View {
                     .frame(width: isHovered ? 180 : 70, height: isHovered ? 130 : 70)
                     .animation(.bouncy(duration: 0.4, extraBounce: 0.2), value: isHovered)
             }
-            .frame(width: 200, height: 150)
+            .frame(width: 170, height: 150)
             
         }
         .padding(.vertical, 8)

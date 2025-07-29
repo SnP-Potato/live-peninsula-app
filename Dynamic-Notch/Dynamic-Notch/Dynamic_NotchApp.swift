@@ -29,7 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let focusManager = FocusManager.shared
     let recordManager = RecordManager.shared
     let timerManager = TimerManager.shared
-    
+    let calenarManager = CalendarManager.shared
     func applicationDidFinishLaunching(_ notification: Notification) {
         //  디버깅: 연결된 모든 모니터 정보 출력
         printAllScreensInfo()
@@ -37,6 +37,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         //trayStorage 폴더 생성 확인
         _ = TrayManager.shared
+        
+        _ = CalendarManager.shared
         
         // 화면 변경 감지 설정
         NotificationCenter.default.addObserver(
