@@ -40,6 +40,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         _ = CalendarManager.shared
         
+        Task {
+            await CalendarManager.shared.requestCalendarAccess()
+        }
+        
         // 화면 변경 감지 설정
         NotificationCenter.default.addObserver(
             self,

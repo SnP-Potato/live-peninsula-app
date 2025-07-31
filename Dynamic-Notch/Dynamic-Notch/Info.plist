@@ -8,7 +8,7 @@
 		<true/>
 	</dict>
 	<key>NSCalendarsFullAccessUsageDescription</key>
-	<string>Show calender events inside the notch</string>
+	<string>요청을 권합니다</string>
 	<key>SUEnable</key>
 	<string></string>
 </dict>
