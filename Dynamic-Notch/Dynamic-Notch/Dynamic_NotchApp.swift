@@ -30,6 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let recordManager = RecordManager.shared
     let timerManager = TimerManager.shared
     let calenarManager = CalendarManager.shared
+   
     func applicationDidFinishLaunching(_ notification: Notification) {
         //  디버깅: 연결된 모든 모니터 정보 출력
         printAllScreensInfo()
@@ -39,6 +40,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         _ = TrayManager.shared
         
         _ = CalendarManager.shared
+        
         
         Task {
             await CalendarManager.shared.requestCalendarAccess()
@@ -69,6 +71,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     .environmentObject(focusManager)
                     .environmentObject(recordManager)
                     .environmentObject(timerManager)
+                    .environmentObject(calenarManager)
+                    
             )
             
             // 창 위치 조정 및 표시
@@ -111,6 +115,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             .environmentObject(focusManager)
                             .environmentObject(recordManager)
                             .environmentObject(timerManager)
+                            .environmentObject(calenarManager)
+
                     )
                     
                     windows[screen] = window

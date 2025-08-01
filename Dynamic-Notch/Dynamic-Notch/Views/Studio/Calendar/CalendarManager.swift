@@ -99,21 +99,56 @@ class CalendarManager: NSObject, ObservableObject {
     }
     
     func loadEventForDate(_ date: Date)  {
-        let today = Calendar.current.startOfDay(for: date)
+        guard accessStatus == .fullAccess else {
+            print("권한이 없다")
+            return
+        }
         
+        let startDay = Calendar.current.startOfDay(for: date)
+        let endDay = Calendar.current.date(byAdding: .day, value: 1, to: startDay) ?? date
+        
+        //선택된 캘ㄹㄴ더 목록만 보여주기
+        let selectedCalendars = availableCalendars.filter {
+            selectedCalendarIDs.contains($0.calendarIdentifier)
+        }
+        
+        let predicate = eventStore.predicateForEvents(
+            withStart: startDay,    // 언제부터 찾을 건지
+            end: endDay,           // 언제까지 찾을 건지
+            calendars: selectedCalendars.isEmpty ? nil : selectedCalendars          // 어느 캘린더에서 찾을 건지
+        )
+        
+        let event = eventStore.events(matching: predicate)
+        focusDayEvent = event/*.sorted{ $0.startDate < $1.startDate}*/
+        
+        print("오늘 \(date.formatted(.dateTime.month().day()))의 이벤트 \(focusDayEvent.count)개:")
+            for events in focusDayEvent {
+                print("  - \(events.title ?? "제목없음"): \(events.startDate.formatted(.dateTime.hour().minute()))")
+            }
     }
     
     //MARK: 날짜 관리
-    func updateFocusDate() {
-        
+    func updateFocusDate(_ newDate: Date) {
+        focusDate = newDate
+        loadEventForDate(focusDate)
     }
     
-    func sortEventByTime() {
-        
-    }
     
     //MARK: 선책 관리
-    func filterSelectedCalendars() {
-        
+    func toggleCalendarSelection(_ calendar: EKCalendar) {
+        if selectedCalendarIDs.contains(calendar.calendarIdentifier) {
+                // 현재 선택됨 → 선택 해제
+                selectedCalendarIDs.remove(calendar.calendarIdentifier)
+                print("캘린더 해제: \(calendar.title)")
+            } else {
+                // 현재 해제됨 → 선택
+                selectedCalendarIDs.insert(calendar.calendarIdentifier)
+                print("캘린더 선택: \(calendar.title)")
+            }
+            
+            // 선택 변경 후 현재 날짜의 이벤트 다시 로드
+            loadEventForDate(focusDate)
+            
+            print("현재 선택된 캘린더: \(selectedCalendarIDs.count)개")
     }
 }

@@ -19,6 +19,7 @@ struct StudioPlaceholder: View {
     @EnvironmentObject var focusManager: FocusManager // 상태 계속 유지ㅣ하기윟ㅎ
     @EnvironmentObject var recordManager: RecordManager
     @EnvironmentObject var timerManager: TimerManager
+    @EnvironmentObject var calendarManager: CalendarManager
     
     enum ActivityFeatures {
         case none
@@ -52,57 +53,23 @@ struct StudioPlaceholder: View {
                         }
                         .cornerRadius(1.5)
                 }
-                    
+                .frame(width: 110, height: 110)
                 
                 // MARK: 캘린더
                 HStack(alignment: .center, spacing: 12) {
                     
-                    VStack {
-                        Text("Jal")
-                            .font(.system(size: 20, weight: .heavy))
-                        
-                        Circle()
-                            .fill(.blue)
-                            
-                            .frame(width: 35, height: 35)
-                            .overlay {
-                                Text("4")
-                                    .font(.system(size: 18, weight: .semibold))
-                            }
-                    }
-                    
-                    HStack {
-                        ScrollView(.vertical, showsIndicators: false) {
-                            Circle()
-                                .fill(.green.opacity(0.2))
-                                .opacity(0.5)
-                                .frame(width: 20, height: 20)
-                                .overlay {
-                                    Image(systemName: "checkmark")
-                                        .font(.system(size: 10, weight: .light))
-                                }
-                        }
-                    }
+                    CalendarView()
+                        .font(.system(size: 12))
                 }
-                .frame(width: 140)
+                .frame(width: 200, height: 120)
             }
-            .frame(width: 300)
+            
             
             Spacer()
                 
             
             // MARK: 단축어 모음
-            VStack(alignment: .trailing, spacing: 10) {
-                Circle()
-                    .fill(.white.opacity(0.1))
-                    .opacity(0.5)
-                    .onHover { hovered in
-                        isHovered = hovered
-                    }
-                    .frame(width: isHovered ? 180 : 70, height: isHovered ? 130 : 70)
-                    .animation(.bouncy(duration: 0.4, extraBounce: 0.2), value: isHovered)
-            }
-            .frame(width: 170, height: 150)
+            
             
         }
         .padding(.vertical, 8)
@@ -259,6 +226,7 @@ struct StudioPlaceholder_Previews: PreviewProvider {
             .environmentObject(FocusManager.shared)
             .environmentObject(TimerManager.shared)
             .environmentObject(RecordManager.shared)
+            .environmentObject(CalendarManager.shared)
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .frame(width: onNotchSize.width, height: onNotchSize.height)
@@ -266,4 +234,3 @@ struct StudioPlaceholder_Previews: PreviewProvider {
             .clipShape(NotchShape(cornerRadius: 20))
     }
 }
-

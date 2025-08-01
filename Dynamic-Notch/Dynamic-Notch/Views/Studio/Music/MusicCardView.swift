@@ -285,3 +285,4 @@ struct MusicCardView: View {
     }
     .frame(width: 600, height: 400)
 }
+

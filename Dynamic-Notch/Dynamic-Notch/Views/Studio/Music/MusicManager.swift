@@ -81,20 +81,20 @@
 import Foundation
 import SwiftUI
 
-class MusicManager: ObservableObject {
-    static let shared = MusicManager()
-    
-    // MARK: - Published Properties
-//    @Published var songName: String = "Heat Waves"
-//    @Published var artistName: String = "Glass Animals"
-//    @Published var albumThumbnail: NSImage? = nil
-//    @Published var hasPermission: Bool = true
-//    @Published var currentPlaybackTime: TimeInterval = 45
-//    @Published var totalDuration: TimeInterval = 180
-//    @Published var playbackProgress: Double = 0.25
-//    @Published var isPlaying: Bool = true
-//    @Published var searchResults: [TestSong] = []
-//    @Published var selectedSong: TestSong? = nil
-    
-}
+//class MusicManager: ObservableObject {
+//    static let shared = MusicManager()
+//    
+//    // MARK: - Published Properties
+////    @Published var songName: String = "Heat Waves"
+////    @Published var artistName: String = "Glass Animals"
+////    @Published var albumThumbnail: NSImage? = nil
+////    @Published var hasPermission: Bool = true
+////    @Published var currentPlaybackTime: TimeInterval = 45
+////    @Published var totalDuration: TimeInterval = 180
+////    @Published var playbackProgress: Double = 0.25
+////    @Published var isPlaying: Bool = true
+////    @Published var searchResults: [TestSong] = []
+////    @Published var selectedSong: TestSong? = nil
+//    
+//}
 

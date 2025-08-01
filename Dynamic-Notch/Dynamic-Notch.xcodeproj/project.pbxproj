@@ -14,6 +14,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		35B7D65B2E3BC78500AA0142 /* MediaRemote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaRemote.framework; path = ../../../../../../../System/Library/PrivateFrameworks/MediaRemote.framework; sourceTree = "<group>"; };
 		35C4B5982D87FD3300561BBA /* Dynamic-Notch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dynamic-Notch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -53,10 +54,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		35B7D65A2E3BC78400AA0142 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				35B7D65B2E3BC78500AA0142 /* MediaRemote.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		35C4B58F2D87FD3300561BBA = {
 			isa = PBXGroup;
 			children = (
 				35C4B59A2D87FD3300561BBA /* Dynamic-Notch */,
+				35B7D65A2E3BC78400AA0142 /* Frameworks */,
 				35C4B5992D87FD3300561BBA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -346,7 +356,7 @@
 				SWIFT_ENABLE_EXPLICIT_MODULES = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
 			};
 			name = Debug;
 		};
@@ -408,7 +418,7 @@
 				SWIFT_ENABLE_EXPLICIT_MODULES = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
 			};
 			name = Release;
 		};
