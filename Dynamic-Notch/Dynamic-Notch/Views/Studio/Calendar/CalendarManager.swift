@@ -122,9 +122,9 @@ class CalendarManager: NSObject, ObservableObject {
         focusDayEvent = event/*.sorted{ $0.startDate < $1.startDate}*/
         
         print("오늘 \(date.formatted(.dateTime.month().day()))의 이벤트 \(focusDayEvent.count)개:")
-            for events in focusDayEvent {
-                print("  - \(events.title ?? "제목없음"): \(events.startDate.formatted(.dateTime.hour().minute()))")
-            }
+        for events in focusDayEvent {
+            print("  - \(events.title ?? "제목없음"): \(events.startDate.formatted(.dateTime.hour().minute()))")
+        }
     }
     
     //MARK: 날짜 관리
@@ -137,18 +137,18 @@ class CalendarManager: NSObject, ObservableObject {
     //MARK: 선책 관리
     func toggleCalendarSelection(_ calendar: EKCalendar) {
         if selectedCalendarIDs.contains(calendar.calendarIdentifier) {
-                // 현재 선택됨 → 선택 해제
-                selectedCalendarIDs.remove(calendar.calendarIdentifier)
-                print("캘린더 해제: \(calendar.title)")
-            } else {
-                // 현재 해제됨 → 선택
-                selectedCalendarIDs.insert(calendar.calendarIdentifier)
-                print("캘린더 선택: \(calendar.title)")
-            }
-            
-            // 선택 변경 후 현재 날짜의 이벤트 다시 로드
-            loadEventForDate(focusDate)
-            
-            print("현재 선택된 캘린더: \(selectedCalendarIDs.count)개")
+            // 현재 선택됨 → 선택 해제
+            selectedCalendarIDs.remove(calendar.calendarIdentifier)
+            print("캘린더 해제: \(calendar.title)")
+        } else {
+            // 현재 해제됨 → 선택
+            selectedCalendarIDs.insert(calendar.calendarIdentifier)
+            print("캘린더 선택: \(calendar.title)")
+        }
+        
+        // 선택 변경 후 현재 날짜의 이벤트 다시 로드
+        loadEventForDate(focusDate)
+        
+        print("현재 선택된 캘린더: \(selectedCalendarIDs.count)개")
     }
 }

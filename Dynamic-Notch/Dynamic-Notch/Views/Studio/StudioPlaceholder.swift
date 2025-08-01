@@ -55,6 +55,8 @@ struct StudioPlaceholder: View {
                 }
                 .frame(width: 110, height: 110)
                 
+                Spacer()
+                    .frame(width: 10)
                 // MARK: 캘린더
                 HStack(alignment: .center, spacing: 12) {
                     
