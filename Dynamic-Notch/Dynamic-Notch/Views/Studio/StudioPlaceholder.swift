@@ -56,14 +56,14 @@ struct StudioPlaceholder: View {
                 .frame(width: 110, height: 110)
                 
                 Spacer()
-                    .frame(width: 10)
+                    .frame(width: 4)
+                
                 // MARK: 캘린더
-                HStack(alignment: .center, spacing: 12) {
-                    
+                VStack(alignment: .leading, spacing: 0) { // alignment를 .leading으로, spacing을 0으로
                     CalendarView()
-                        .font(.system(size: 12))
+                        .environmentObject(calendarManager)
                 }
-                .frame(width: 200, height: 120)
+                .frame(width: 200, height: 110, alignment: .center) // alignment를 .top으로 설정
             }
             
             
