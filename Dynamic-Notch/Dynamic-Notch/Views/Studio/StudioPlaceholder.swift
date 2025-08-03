@@ -33,7 +33,7 @@ struct StudioPlaceholder: View {
             Spacer()
                 .frame(width: 20)
             
-            HStack(spacing: 12) {
+            HStack(spacing: 5) {
                 // MARK: 음악제어
                 VStack {
                     Button(action: {
@@ -61,16 +61,26 @@ struct StudioPlaceholder: View {
                 // MARK: 캘린더
                 VStack(alignment: .leading, spacing: 0) { // alignment를 .leading으로, spacing을 0으로
                     CalendarView()
-                        .environmentObject(calendarManager)
+                        
                 }
-                .frame(width: 200, height: 110, alignment: .center) // alignment를 .top으로 설정
+                .frame(width: 170, height: 130, alignment: .center) // alignment를 .top으로 설정
+                .padding(.trailing, 18)
             }
             
             
             Spacer()
-                
+                .frame(width: 18)
             
             // MARK: 단축어 모음
+            Rectangle()
+                .fill(.white.opacity(0.1))
+                .opacity(0.5)
+                .cornerRadius(28)
+                .frame(width: 128, height: 120)
+            
+                
+            Spacer()
+                .frame(width: 12)
             
             
         }
