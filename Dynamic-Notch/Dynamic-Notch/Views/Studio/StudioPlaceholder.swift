@@ -30,60 +30,48 @@ struct StudioPlaceholder: View {
     var body: some View {
         HStack(spacing: 0) {
             //도합 width: 462 height: 150
-            Spacer()
-                .frame(width: 20)
             
-            HStack(spacing: 5) {
-                // MARK: 음악제어
-                VStack {
-                    Button(action: {
-                        musicCardclick.toggle()
-                    }, label: {
-                        MusicCardView(musicCardclick: $musicCardclick)
-                    })
-                    .buttonStyle(PlainButtonStyle())
-                    
-                    Rectangle()
-                        .fill(.white.opacity(0.1))
-                        .frame(width: 100, height: 3)
-                        .overlay(alignment: .leading) {
-                            Rectangle()
-                                .fill(.white)
-                                .frame(width: 100 * 0.6) // 60%
-                        }
-                        .cornerRadius(1.5)
-                }
-                .frame(width: 110, height: 110)
+            // MARK: 음악제어
+            VStack {
+                Button(action: {
+                    musicCardclick.toggle()
+                }, label: {
+                    MusicCardView(musicCardclick: $musicCardclick)
+                })
+                .buttonStyle(PlainButtonStyle())
                 
-                Spacer()
-                    .frame(width: 4)
-                
-                // MARK: 캘린더
-                VStack(alignment: .leading, spacing: 0) { // alignment를 .leading으로, spacing을 0으로
-                    CalendarView()
-                        
-                }
-                .frame(width: 170, height: 130, alignment: .center) // alignment를 .top으로 설정
-                .padding(.trailing, 18)
+                Rectangle()
+                    .fill(.white.opacity(0.1))
+                    .frame(width: 100, height: 3)
+                    .overlay(alignment: .leading) {
+                        Rectangle()
+                            .fill(.white)
+                            .frame(width: 100 * 0.6) // 60%
+                    }
+                    .cornerRadius(1.5)
             }
+            .frame(width: 110, height: 110)
             
+            Spacer()
+                .frame(width: 18)
+            
+            // MARK: 캘린더
+            VStack(alignment: .leading, spacing: 0) { // alignment를 .leading으로, spacing을 0으로
+                CalendarView()
+                
+            }
+            .frame(width: 170, height: 130, alignment: .center)
             
             Spacer()
                 .frame(width: 18)
             
             // MARK: 단축어 모음
-            Rectangle()
-                .fill(.white.opacity(0.1))
-                .opacity(0.5)
-                .cornerRadius(28)
-                .frame(width: 128, height: 120)
             
-                
-            Spacer()
-                .frame(width: 12)
-            
-            
+            ShortcutWheelPicker()
+                .frame(width: 145, height: 130)
+                .clipped()
         }
+        .frame(width: 500, height: 130)
         .padding(.vertical, 8)
     }
     
