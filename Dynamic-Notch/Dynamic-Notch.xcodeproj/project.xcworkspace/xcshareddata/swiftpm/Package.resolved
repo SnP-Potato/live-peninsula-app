@@ -1,5 +1,5 @@
 {
-  "originHash" : "2882ba8f993d8cdf3fb137fcfbe81718fd04f6f78a98b23ae6349e6cce69ecb1",
+  "originHash" : "3ea245c086c56179053e7829d96ef4ea5b203185c4d42e463f2c7cea2c1c71f8",
   "pins" : [
     {
       "identity" : "defaults",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "cc938ecf0bed848dc80a9726ac5455104e3f9dae",
         "version" : "9.0.2"
-      }
-    },
-    {
-      "identity" : "glasseffect",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Czajnikowski/GlassEffect.git",
-      "state" : {
-        "revision" : "f384d28bde93d47ae9c31fd5cf0660928dbd59c1",
-        "version" : "0.1.0"
       }
     },
     {

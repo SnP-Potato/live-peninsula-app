@@ -8,6 +8,7 @@
 import SwiftUI
 import Defaults
 
+
 //비주얼라이저 구조체
 struct visualizer: Codable, Hashable, Equatable, Defaults.Serializable {
     let uuid: UUID

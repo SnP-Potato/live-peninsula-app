@@ -7,11 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3518DA382E360758000772DE /* GlassEffect in Frameworks */ = {isa = PBXBuildFile; productRef = 3518DA372E360758000772DE /* GlassEffect */; };
-		35C4B5CD2D88019400561BBA /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CC2D88019400561BBA /* Defaults */; };
-		35C4B5CF2D88019400561BBA /* DefaultsMacros in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CE2D88019400561BBA /* DefaultsMacros */; };
-		35C4B5D22D8801A100561BBA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5D12D8801A100561BBA /* KeyboardShortcuts */; };
+		358724692E4403920025496C /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CC2D88019400561BBA /* Defaults */; };
+		3587246A2E4403920025496C /* DefaultsMacros in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CE2D88019400561BBA /* DefaultsMacros */; };
+		35A22A6B2E41D688005B0F68 /* MediaRemote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B7D65B2E3BC78500AA0142 /* MediaRemote.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		35A22C492E440250005B0F68 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 35A22C482E440250005B0F68 /* KeyboardShortcuts */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		353D1D072E46F39D00B80F55 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		35B7D65B2E3BC78500AA0142 /* MediaRemote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaRemote.framework; path = ../../../../../../../System/Library/PrivateFrameworks/MediaRemote.framework; sourceTree = "<group>"; };
@@ -28,11 +41,25 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		353D1D082E46F39D00B80F55 /* Exceptions for "Dynamic-Notch" folder in "Embed Frameworks" phase from "Dynamic-Notch" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			attributesByRelativePath = {
+				MediaRemote/MediaRemoteAdapter.framework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+			};
+			buildPhase = 353D1D072E46F39D00B80F55 /* Embed Frameworks */;
+			membershipExceptions = (
+				MediaRemote/MediaRemoteAdapter.framework,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		35C4B59A2D87FD3300561BBA /* Dynamic-Notch */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				357A0BC62E281222005162FF /* Exceptions for "Dynamic-Notch" folder in "Dynamic-Notch" target */,
+				353D1D082E46F39D00B80F55 /* Exceptions for "Dynamic-Notch" folder in "Embed Frameworks" phase from "Dynamic-Notch" target */,
 			);
 			path = "Dynamic-Notch";
 			sourceTree = "<group>";
@@ -44,10 +71,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35C4B5CD2D88019400561BBA /* Defaults in Frameworks */,
-				35C4B5CF2D88019400561BBA /* DefaultsMacros in Frameworks */,
-				3518DA382E360758000772DE /* GlassEffect in Frameworks */,
-				35C4B5D22D8801A100561BBA /* KeyboardShortcuts in Frameworks */,
+				3587246A2E4403920025496C /* DefaultsMacros in Frameworks */,
+				358724692E4403920025496C /* Defaults in Frameworks */,
+				35A22A6B2E41D688005B0F68 /* MediaRemote.framework in Frameworks */,
+				35A22C492E440250005B0F68 /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +116,7 @@
 				35C4B5942D87FD3300561BBA /* Sources */,
 				35C4B5952D87FD3300561BBA /* Frameworks */,
 				35C4B5962D87FD3300561BBA /* Resources */,
+				353D1D072E46F39D00B80F55 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -101,8 +129,7 @@
 			packageProductDependencies = (
 				35C4B5CC2D88019400561BBA /* Defaults */,
 				35C4B5CE2D88019400561BBA /* DefaultsMacros */,
-				35C4B5D12D8801A100561BBA /* KeyboardShortcuts */,
-				3518DA372E360758000772DE /* GlassEffect */,
+				35A22C482E440250005B0F68 /* KeyboardShortcuts */,
 			);
 			productName = "Dynamic-Notch";
 			productReference = 35C4B5982D87FD3300561BBA /* Dynamic-Notch.app */;
@@ -134,8 +161,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */,
-				35C4B5D02D8801A100561BBA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
-				3518DA362E360758000772DE /* XCRemoteSwiftPackageReference "GlassEffect" */,
+				35A22C452E4400E8005B0F68 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				353D1D022E46F28700B80F55 /* XCRemoteSwiftPackageReference "liquid-glass" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 35C4B5992D87FD3300561BBA /* Products */;
@@ -329,6 +356,11 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readwrite;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Dynamic-Notch/MediaRemote",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dynamic-Notch/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = WakeUPNotch;
@@ -391,6 +423,11 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readwrite;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Dynamic-Notch/MediaRemote",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dynamic-Notch/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = WakeUPNotch;
@@ -446,12 +483,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3518DA362E360758000772DE /* XCRemoteSwiftPackageReference "GlassEffect" */ = {
+		353D1D022E46F28700B80F55 /* XCRemoteSwiftPackageReference "liquid-glass" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Czajnikowski/GlassEffect.git";
+			repositoryURL = "https://github.com/JulianWindeck/liquid-glass.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		35A22C452E4400E8005B0F68 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
+				minimumVersion = 2.3.0;
 			};
 		};
 		35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */ = {
@@ -462,21 +507,13 @@
 				minimumVersion = 9.0.2;
 			};
 		};
-		35C4B5D02D8801A100561BBA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.3.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3518DA372E360758000772DE /* GlassEffect */ = {
+		35A22C482E440250005B0F68 /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3518DA362E360758000772DE /* XCRemoteSwiftPackageReference "GlassEffect" */;
-			productName = GlassEffect;
+			package = 35A22C452E4400E8005B0F68 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
 		};
 		35C4B5CC2D88019400561BBA /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -487,11 +524,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = DefaultsMacros;
-		};
-		35C4B5D12D8801A100561BBA /* KeyboardShortcuts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 35C4B5D02D8801A100561BBA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
-			productName = KeyboardShortcuts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

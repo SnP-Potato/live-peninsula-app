@@ -6,167 +6,208 @@
 //
 
 //import SwiftUI
+//
 //struct MusicCardView: View {
 //    @Binding var musicCardclick: Bool
-//    @State private var isPlaying: Bool = true
+//    @EnvironmentObject var musicManager: MusicManager
 //    
 //    var body: some View {
 //        ZStack {
-//            // 배경 이미지
-//            Image("dirtywork")
-//                .resizable()
-//                .frame(width: 110, height: 110)
-//                .scaledToFill()
-//                .clipShape(RoundedRectangle(cornerRadius: 12))
-////                .glassEffect()
-//            
-//            if musicCardclick {
-//                ZStack {
+//            // 배경 앨범 이미지 - 실제 앨범 아트 사용
+//            Group {
+//                if musicManager.hasActiveMedia && musicManager.albumArt.size.width > 0 {
+//                    // 실제 앨범 아트가 있을 때
+//                    Image(nsImage: musicManager.albumArt)
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(width: 110, height: 110)
+//                        .clipped()
+//                } else {
+//                    // 기본 이미지 또는 앨범 아트가 없을 때
 //                    Image("dirtywork")
 //                        .resizable()
-//                        .frame(width: 110, height: 110)
 //                        .scaledToFill()
-//                        .clipShape(RoundedRectangle(cornerRadius: 12))
-//                        
-//                        
-//                     
-////
-////                        
-////                    
-////                     //추가 glass 효과 (선택사항 - 더 강화하고 싶다면)
-////                    RoundedRectangle(cornerRadius: 12)
-////                        .fill(.black.opacity(0.1))
-////                        .overlay {
-////                            RoundedRectangle(cornerRadius: 12)
-////                                .stroke(.white.opacity(0.08), lineWidth: 0.5)
-////                        }
-//                        
-//                    Rectangle()
 //                        .frame(width: 110, height: 110)
-//                        .cornerRadius(12)
-//                        .glassEffect(.regular, in: .rect)
-//                    
-//                    VStack(alignment: .center, spacing: 2) {
-//                        Text("Dirty Work")
-//                            .font(.system(size: 14, weight: .semibold))
-//                            .foregroundColor(.white)
-//                            .lineLimit(1)
-//                            .shadow(color: .black.opacity(0.2), radius: 1, x: 0, y: 1)
+//                        .clipped()
+//                }
+//            }
+//            .clipShape(RoundedRectangle(cornerRadius: 12))
+//            .animation(.easeInOut(duration: 0.3), value: musicManager.albumArt)
+//            
+//            if musicCardclick {
+//                // Liquid Glass로 앨범 아트를 완전히 덮기
+//                LiquidGlassBackground(
+//                    variant: .v11,
+//                    cornerRadius: 12
+//                ) {
+//                    ZStack {
+//                        // 배경을 더 어둡게 처리
+//                        RoundedRectangle(cornerRadius: 12)
+//                            .fill(.black.opacity(0.4))
 //                        
-//                        Text("aespa")
-//                            .font(.system(size: 11, weight: .regular))
-//                            .foregroundColor(.white.opacity(0.9))
-//                            .lineLimit(1)
-//                            .shadow(color: .black.opacity(0.2), radius: 1, x: 0, y: 1)
-//                        
-//                        Spacer()
-//                            .frame(height: 12)
-//                        
-//                        HStack(spacing: 18) {
-//                            Button(action: {
-//                                // 이전 곡
-//                            }) {
-//                                Image(systemName: "backward.fill")
-//                                    .font(.system(size: 14, weight: .medium))
-//                                    .foregroundColor(.white)
-//                                
-//                                    .shadow(color: .black.opacity(0.2), radius: 1, x: 0, y: 1)
-//                            }
-//                            .buttonStyle(PlainButtonStyle())
-//                            .scaleEffect(musicCardclick ? 1.0 : 0.8)
-//                            
-//                            Button(action: {
-//                                withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-//                                    isPlaying.toggle()
-//                                }
-//                            }) {
-//                                Image(systemName: isPlaying ? "pause.fill" : "play.fill")
-//                                    .font(.system(size: 16, weight: .medium))
-//                                    .foregroundColor(.white)
-//                                    .shadow(color: .black.opacity(0.2), radius: 1, x: 0, y: 1)
-//                            }
-//                            .buttonStyle(PlainButtonStyle())
-//                            .buttonStyle(.glass)
-//                            .scaleEffect(musicCardclick ? 1.1 : 0.8)
-//                            
-//                            Button(action: {
-//                                // 다음 곡
-//                            }) {
-//                                Image(systemName: "forward.fill")
-//                                    .font(.system(size: 14, weight: .medium))
-//                                    .foregroundColor(.white)
-//                                    .shadow(color: .black.opacity(0.2), radius: 1, x: 0, y: 1)
-//                            }
-//                            .buttonStyle(PlainButtonStyle())
-//                            .scaleEffect(musicCardclick ? 1.0 : 0.8)
-//                        }
+//                        musicControlInterface
 //                    }
-//                    .padding(.horizontal, 8)
 //                }
 //                .frame(width: 110, height: 110)
 //                .transition(.asymmetric(
-//                    insertion: .scale(scale: 0.8).combined(with: .opacity),
+//                    insertion: .scale(scale: 0.9).combined(with: .opacity),
 //                    removal: .scale(scale: 1.1).combined(with: .opacity)
 //                ))
 //            }
 //            
-//            // 앨범 아트 위 작은 앱 아이콘 (옵션)
+//            // 앨범 아트 위 작은 앱 아이콘
 //            if !musicCardclick {
-//                Image("musicApp")
-//                    .resizable()
-//                    .frame(width: 22, height: 22)
-//                    .scaledToFill()
-//                    .clipShape(RoundedRectangle(cornerRadius: 6))
-//                    .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
-//                    .offset(x: 34, y: 34)
-//                    .transition(.scale.combined(with: .opacity))
+//                appIcon
 //            }
 //        }
+//        .frame(width: 110, height: 110)
 //        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: musicCardclick)
-//        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPlaying)
+//        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: musicManager.isPlaying)
 //    }
-//}
-//
-//// MARK: - iOS 18 Liquid Glass 스타일 확장
-//extension View {
-//    func liquidGlassEffect(cornerRadius: CGFloat = 12) -> some View {
-//        self
-//            .background {
-//                RoundedRectangle(cornerRadius: cornerRadius)
-//                    .fill(.ultraThinMaterial)
-//                    .overlay {
-//                        RoundedRectangle(cornerRadius: cornerRadius)
-//                            .fill(.black.opacity(0.1))
-//                            .blendMode(.overlay)
-//                    }
-//                    .overlay {
-//                        RoundedRectangle(cornerRadius: cornerRadius)
-//                            .stroke(.white.opacity(0.1), lineWidth: 0.5)
-//                    }
+//    
+//    // MARK: - 음악 제어 인터페이스 (실제 데이터 사용)
+//    @ViewBuilder
+//    private var musicControlInterface: some View {
+//        VStack(alignment: .center, spacing: 2) {
+//            Text(musicManager.hasActiveMedia ? musicManager.songTitle : "No Song Playing")
+//                .font(.system(size: 15, weight: .bold))
+//                .foregroundColor(.white)
+//                .lineLimit(1)
+//                .shadow(color: .black.opacity(0.8), radius: 1, x: 0, y: 1)
+//            
+//            Text(musicManager.hasActiveMedia ? musicManager.artistName : "Unknown Artist")
+//                .font(.system(size: 10, weight: .semibold))
+//                .foregroundColor(.white.opacity(0.9))
+//                .lineLimit(1)
+//                .shadow(color: .black.opacity(0.6), radius: 1, x: 0, y: 1)
+//            
+//            Spacer()
+//                .frame(height: 6)
+//            
+//            HStack(spacing: 12) {
+//                realGlassControlButton(icon: "backward.fill", size: 12) {
+//                    musicManager.previousTrack()
+//                }
+//                realGlassControlButton(
+//                    icon: musicManager.isPlaying ? "pause.fill" : "play.fill",
+//                    size: 14,
+//                    isMain: true
+//                ) {
+//                    musicManager.togglePlayPause()
+//                }
+//                realGlassControlButton(icon: "forward.fill", size: 12) {
+//                    musicManager.nextTrack()
+//                }
 //            }
+//        }
+//        .padding(.horizontal, 8)
+//        .padding(.vertical, 6)
+//    }
+//    
+//    // MARK: - Real Glass 스타일 버튼
+//    private func realGlassControlButton(
+//        icon: String,
+//        size: CGFloat,
+//        isMain: Bool = false,
+//        action: @escaping () -> Void = {}
+//    ) -> some View {
+//        Button(action: action) {
+//            LiquidGlassBackground(
+//                variant: .v18,
+//                cornerRadius: isMain ? 15 : 12
+//            ) {
+//                Image(systemName: icon)
+//                    .font(.system(size: size, weight: .bold))
+//                    .foregroundColor(.white)
+//                    .shadow(color: .black.opacity(0.9), radius: 1, x: 0, y: 1)
+//                    .frame(width: isMain ? 28 : 24, height: isMain ? 28 : 24)
+//            }
+//        }
+//        .buttonStyle(PlainButtonStyle())
+//        .scaleEffect(isMain ? 1.05 : 1.0)
+//        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: musicManager.isPlaying)
+//    }
+//    
+//    // MARK: - 앱 아이콘 (현재 재생 중인 앱에 따라 변경)
+//    @ViewBuilder
+//    private var appIcon: some View {
+//        Group {
+//            switch musicManager.bundleIdentifier {
+//            case "com.apple.Music":
+//                Image(systemName: "music.note.house")
+//                    .foregroundColor(.white)
+//            case "com.spotify.client":
+//                Image(systemName: "music.note.list")
+//                    .foregroundColor(.green)
+//            default:
+//                Image(systemName: "music.note")
+//                    .foregroundColor(.white)
+//            }
+//        }
+//        .font(.system(size: 12, weight: .bold))
+//        .frame(width: 22, height: 22)
+//        .background(Circle().fill(.black.opacity(0.7)))
+//        .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
+//        .offset(x: 40, y: 40)
+//        .transition(.scale.combined(with: .opacity))
 //    }
 //}
 //
-//#Preview {
+//#Preview("Music Card with MediaRemote") {
 //    ZStack {
-//        MusicCardView(musicCardclick: .constant(false))
+//        VStack(spacing: 30) {
+//            HStack(spacing: 20) {
+//                // 클릭 안된 상태
+//                MusicCardView(musicCardclick: .constant(false))
+//                    .environmentObject(MusicManager.shared)
+//                
+//                // 클릭된 상태
+//                MusicCardView(musicCardclick: .constant(true))
+//                    .environmentObject(MusicManager.shared)
+//            }
+//        }
 //    }
-//    .frame(width: 400, height: 300)
+//    .frame(width: 600, height: 400)
+//    .background(.black)
 //}
+
+
+//
+//  MusicCardView.swift
+//  Dynamic-Notch
+//
+//  Created by PeterPark on 2025/01/09
+//  Fixed with real app icons and album artwork
+//
+
 import SwiftUI
 
 struct MusicCardView: View {
     @Binding var musicCardclick: Bool
-    @State private var isPlaying: Bool = true
+    @EnvironmentObject var musicManager: MusicManager
     
     var body: some View {
         ZStack {
-            // 배경 앨범 이미지
-            Image("dirtywork")
-                .resizable()
-                .frame(width: 110, height: 110)
-                .scaledToFill()
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+            // 배경 앨범 이미지 - 실제 앨범 아트 사용
+            Group {
+                if musicManager.hasActiveMedia && musicManager.albumArt.size.width > 0 {
+                    // 실제 앨범 아트가 있을 때
+                    Image(nsImage: musicManager.albumArt)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 110, height: 110)
+                        .clipped()
+                } else {
+                    // 기본 이미지 또는 앨범 아트가 없을 때
+                    Image("dirtywork")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 110, height: 110)
+                        .clipped()
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .animation(.easeInOut(duration: 0.3), value: musicManager.albumArt)
             
             if musicCardclick {
                 // Liquid Glass로 앨범 아트를 완전히 덮기
@@ -194,45 +235,51 @@ struct MusicCardView: View {
                 appIcon
             }
         }
-        .frame(width: 110, height: 110) // 전체 컨테이너 크기 고정
+        .frame(width: 110, height: 110)
         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: musicCardclick)
-        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPlaying)
+        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: musicManager.isPlaying)
     }
     
-    // MARK: - 음악 제어 인터페이스 (크기 축소)
+    // MARK: - 음악 제어 인터페이스 (실제 데이터 사용)
     @ViewBuilder
     private var musicControlInterface: some View {
         VStack(alignment: .center, spacing: 2) {
-            Text("Dirty Work")
-                .font(.system(size: 15, weight: .bold)) // 폰트 크기 축소
+            Text(musicManager.hasActiveMedia ? musicManager.songTitle : "No Song Playing")
+                .font(.system(size: 15, weight: .bold))
                 .foregroundColor(.white)
                 .lineLimit(1)
                 .shadow(color: .black.opacity(0.8), radius: 1, x: 0, y: 1)
             
-            Text("aespa")
-                .font(.system(size: 10, weight: .semibold)) // 폰트 크기 축소
+            Text(musicManager.hasActiveMedia ? musicManager.artistName : "Unknown Artist")
+                .font(.system(size: 10, weight: .semibold))
                 .foregroundColor(.white.opacity(0.9))
                 .lineLimit(1)
                 .shadow(color: .black.opacity(0.6), radius: 1, x: 0, y: 1)
             
             Spacer()
-                .frame(height: 6) // 간격 축소
+                .frame(height: 6)
             
-            HStack(spacing: 12) { // 버튼 간격 축소
-                realGlassControlButton(icon: "backward.fill", size: 12) // 아이콘 크기 축소
-                realGlassControlButton(icon: isPlaying ? "pause.fill" : "play.fill", size: 14, isMain: true) { // 메인 버튼도 축소
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                        isPlaying.toggle()
-                    }
+            HStack(spacing: 12) {
+                realGlassControlButton(icon: "backward.fill", size: 12) {
+                    musicManager.previousTrack()
                 }
-                realGlassControlButton(icon: "forward.fill", size: 12) // 아이콘 크기 축소
+                realGlassControlButton(
+                    icon: musicManager.isPlaying ? "pause.fill" : "play.fill",
+                    size: 14,
+                    isMain: true
+                ) {
+                    musicManager.togglePlayPause()
+                }
+                realGlassControlButton(icon: "forward.fill", size: 12) {
+                    musicManager.nextTrack()
+                }
             }
         }
-        .padding(.horizontal, 8) // 패딩 축소
-        .padding(.vertical, 6)   // 패딩 축소
+        .padding(.horizontal, 8)
+        .padding(.vertical, 6)
     }
     
-    // MARK: - Real Glass 스타일 버튼 (크기 축소)
+    // MARK: - Real Glass 스타일 버튼
     private func realGlassControlButton(
         icon: String,
         size: CGFloat,
@@ -242,47 +289,108 @@ struct MusicCardView: View {
         Button(action: action) {
             LiquidGlassBackground(
                 variant: .v18,
-                cornerRadius: isMain ? 15 : 12 // 모서리 반경 축소
+                cornerRadius: isMain ? 15 : 12
             ) {
                 Image(systemName: icon)
                     .font(.system(size: size, weight: .bold))
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.9), radius: 1, x: 0, y: 1)
-                    .frame(width: isMain ? 28 : 24, height: isMain ? 28 : 24) // 버튼 크기 축소
+                    .frame(width: isMain ? 28 : 24, height: isMain ? 28 : 24)
             }
         }
         .buttonStyle(PlainButtonStyle())
-        .scaleEffect(isMain ? 1.05 : 1.0) // 스케일 축소
-        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPlaying)
+        .scaleEffect(isMain ? 1.05 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: musicManager.isPlaying)
     }
     
-    // MARK: - 앱 아이콘
+    // MARK: - 앱 아이콘 (실제 앱 아이콘 표시)
     @ViewBuilder
     private var appIcon: some View {
-        Image("musicApp")
-            .resizable()
-            .frame(width: 22, height: 22)
-            .scaledToFill()
-            .clipShape(RoundedRectangle(cornerRadius: 6))
-            .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
-            .offset(x: 40, y: 40)
-            .transition(.scale.combined(with: .opacity))
+        Group {
+            if !musicManager.bundleIdentifier.isEmpty {
+                // 실제 앱 아이콘 사용
+                AppIconView(bundleIdentifier: musicManager.bundleIdentifier)
+            } else {
+                // 기본 음악 아이콘
+                Image(systemName: "music.note")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(width: 22, height: 22)
+                    .background(Circle().fill(.black.opacity(0.7)))
+            }
+        }
+        .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
+        .offset(x: 40, y: 40)
+        .transition(.scale.combined(with: .opacity))
     }
 }
 
-#Preview("Music Card - Fixed Size") {
+// MARK: - 실제 앱 아이콘을 가져오는 헬퍼 뷰
+struct AppIconView: View {
+    let bundleIdentifier: String
+    @State private var appIcon: NSImage?
+    
+    var body: some View {
+        Group {
+            if let icon = appIcon {
+                Image(nsImage: icon)
+                    .resizable()
+                    .frame(width: 22, height: 22)
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+            } else {
+                // 로딩 중이거나 아이콘을 찾을 수 없을 때
+                Image(systemName: "music.note")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(width: 22, height: 22)
+                    .background(Circle().fill(.black.opacity(0.7)))
+            }
+        }
+        .onAppear {
+            loadAppIcon()
+        }
+        .onChange(of: bundleIdentifier) { _, _ in
+            loadAppIcon()
+        }
+    }
+    
+    private func loadAppIcon() {
+        guard !bundleIdentifier.isEmpty else { return }
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            let workspace = NSWorkspace.shared
+            
+            // 번들 식별자로 앱 URL 찾기
+            if let appURL = workspace.urlForApplication(withBundleIdentifier: bundleIdentifier) {
+                let icon = workspace.icon(forFile: appURL.path)
+                
+                DispatchQueue.main.async {
+                    self.appIcon = icon
+                }
+            } else {
+                // 앱을 찾을 수 없는 경우 기본 아이콘 설정
+                DispatchQueue.main.async {
+                    self.appIcon = NSImage(systemSymbolName: "music.note", accessibilityDescription: "Music") ?? NSImage()
+                }
+            }
+        }
+    }
+}
+
+#Preview("Music Card with MediaRemote") {
     ZStack {
         VStack(spacing: 30) {
-            
             HStack(spacing: 20) {
                 // 클릭 안된 상태
                 MusicCardView(musicCardclick: .constant(false))
+                    .environmentObject(MusicManager.shared)
                 
                 // 클릭된 상태
                 MusicCardView(musicCardclick: .constant(true))
+                    .environmentObject(MusicManager.shared)
             }
         }
     }
     .frame(width: 600, height: 400)
+    .background(.black)
 }
-

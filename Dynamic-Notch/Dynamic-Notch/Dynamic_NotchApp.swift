@@ -30,6 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let recordManager = RecordManager.shared
     let timerManager = TimerManager.shared
     let calenarManager = CalendarManager.shared
+    let musicManager = MusicManager.shared
    
     func applicationDidFinishLaunching(_ notification: Notification) {
         //  디버깅: 연결된 모든 모니터 정보 출력
@@ -72,6 +73,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     .environmentObject(recordManager)
                     .environmentObject(timerManager)
                     .environmentObject(calenarManager)
+                    .environmentObject(musicManager)
                     
             )
             
@@ -116,6 +118,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             .environmentObject(recordManager)
                             .environmentObject(timerManager)
                             .environmentObject(calenarManager)
+                            .environmentObject(musicManager)
 
                     )
                     
