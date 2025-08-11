@@ -5,7 +5,7 @@
 //  Created by PeterPark on 3/17/25.
 //
 
-import Foundation
+import CoreFoundation
 import Defaults
 import AppKit
 
@@ -66,3 +66,5 @@ func offNotchSize(screenName: String? = nil) -> CGSize {
 
 //노치 활성화&비활성화 상태일 때 모서리 초기화
 let cornerRadiusSet: (on: CGFloat, off: CGFloat) = (on: 24, off: 10)
+
+

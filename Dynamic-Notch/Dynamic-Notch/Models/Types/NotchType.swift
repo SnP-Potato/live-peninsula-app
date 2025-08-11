@@ -1,9 +1,9 @@
-//
+
 //  NotchType.swift
 //  Dynamic-Notch
 //
 //  Created by PeterPark on 3/17/25.
-//
+
 
 import Foundation
 import Defaults
@@ -53,4 +53,5 @@ enum notchHeightSize: String, Defaults.Serializable {
     case realNotch = "realNotch Height"
     case custom = "Custom Notch Height"
 }
+
 

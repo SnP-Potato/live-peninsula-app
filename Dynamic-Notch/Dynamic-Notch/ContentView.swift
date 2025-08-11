@@ -8,11 +8,11 @@
 import SwiftUI
 import Combine
 import AVFoundation
-//import Defaults
 import UniformTypeIdentifiers
+import Defaults
 
 struct ContentView: View {
-//    @EnvironmentObject var musicManager: MusicManager //
+    @EnvironmentObject var musicManager: MusicManager //
     @EnvironmentObject var vm: NotchViewModel
     
     // 호버 상태 관리를 위한 변수들

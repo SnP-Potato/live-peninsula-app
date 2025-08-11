@@ -197,7 +197,7 @@ struct CalendarView: View {
     @State private var selectedDate = Date()
     
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: 8) {
             // 왼쪽: 스와이프 가능한 날짜 선택기
             SwipeableDateSelector(currentDate: $selectedDate)
                 .frame(width: 60, height: 130)

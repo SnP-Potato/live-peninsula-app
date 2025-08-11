@@ -331,26 +331,30 @@ struct AppIconView: View {
     @State private var appIcon: NSImage?
     
     var body: some View {
-        Group {
-            if let icon = appIcon {
-                Image(nsImage: icon)
-                    .resizable()
-                    .frame(width: 22, height: 22)
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
-            } else {
-                // 로딩 중이거나 아이콘을 찾을 수 없을 때
-                Image(systemName: "music.note")
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(.white)
-                    .frame(width: 22, height: 22)
-                    .background(Circle().fill(.black.opacity(0.7)))
+        if #available(macOS 14.0, *) {
+            Group {
+                if let icon = appIcon {
+                    Image(nsImage: icon)
+                        .resizable()
+                        .frame(width: 22, height: 22)
+                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                } else {
+                    // 로딩 중이거나 아이콘을 찾을 수 없을 때
+                    Image(systemName: "music.note")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(width: 22, height: 22)
+                        .background(Circle().fill(.black.opacity(0.7)))
+                }
             }
-        }
-        .onAppear {
-            loadAppIcon()
-        }
-        .onChange(of: bundleIdentifier) { _, _ in
-            loadAppIcon()
+            .onAppear {
+                loadAppIcon()
+            }
+            .onChange(of: bundleIdentifier) { _, _ in
+                loadAppIcon()
+            }
+        } else {
+            // Fallback on earlier versions
         }
     }
     

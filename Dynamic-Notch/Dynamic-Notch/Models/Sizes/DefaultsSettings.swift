@@ -1,13 +1,11 @@
 //
 //  DefaultsSettings.swift
 //  Dynamic-Notch
-//
 //  Created by PeterPark on 3/17/25.
 //
 
 import SwiftUI
 import Defaults
-
 
 //비주얼라이저 구조체
 struct visualizer: Codable, Hashable, Equatable, Defaults.Serializable {
