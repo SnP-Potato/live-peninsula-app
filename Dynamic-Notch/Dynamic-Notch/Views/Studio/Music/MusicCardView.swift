@@ -5,181 +5,6 @@
 //  Created by PeterPark on 7/25/25.
 //
 
-//import SwiftUI
-//
-//struct MusicCardView: View {
-//    @Binding var musicCardclick: Bool
-//    @EnvironmentObject var musicManager: MusicManager
-//    
-//    var body: some View {
-//        ZStack {
-//            // 배경 앨범 이미지 - 실제 앨범 아트 사용
-//            Group {
-//                if musicManager.hasActiveMedia && musicManager.albumArt.size.width > 0 {
-//                    // 실제 앨범 아트가 있을 때
-//                    Image(nsImage: musicManager.albumArt)
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(width: 110, height: 110)
-//                        .clipped()
-//                } else {
-//                    // 기본 이미지 또는 앨범 아트가 없을 때
-//                    Image("dirtywork")
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(width: 110, height: 110)
-//                        .clipped()
-//                }
-//            }
-//            .clipShape(RoundedRectangle(cornerRadius: 12))
-//            .animation(.easeInOut(duration: 0.3), value: musicManager.albumArt)
-//            
-//            if musicCardclick {
-//                // Liquid Glass로 앨범 아트를 완전히 덮기
-//                LiquidGlassBackground(
-//                    variant: .v11,
-//                    cornerRadius: 12
-//                ) {
-//                    ZStack {
-//                        // 배경을 더 어둡게 처리
-//                        RoundedRectangle(cornerRadius: 12)
-//                            .fill(.black.opacity(0.4))
-//                        
-//                        musicControlInterface
-//                    }
-//                }
-//                .frame(width: 110, height: 110)
-//                .transition(.asymmetric(
-//                    insertion: .scale(scale: 0.9).combined(with: .opacity),
-//                    removal: .scale(scale: 1.1).combined(with: .opacity)
-//                ))
-//            }
-//            
-//            // 앨범 아트 위 작은 앱 아이콘
-//            if !musicCardclick {
-//                appIcon
-//            }
-//        }
-//        .frame(width: 110, height: 110)
-//        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: musicCardclick)
-//        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: musicManager.isPlaying)
-//    }
-//    
-//    // MARK: - 음악 제어 인터페이스 (실제 데이터 사용)
-//    @ViewBuilder
-//    private var musicControlInterface: some View {
-//        VStack(alignment: .center, spacing: 2) {
-//            Text(musicManager.hasActiveMedia ? musicManager.songTitle : "No Song Playing")
-//                .font(.system(size: 15, weight: .bold))
-//                .foregroundColor(.white)
-//                .lineLimit(1)
-//                .shadow(color: .black.opacity(0.8), radius: 1, x: 0, y: 1)
-//            
-//            Text(musicManager.hasActiveMedia ? musicManager.artistName : "Unknown Artist")
-//                .font(.system(size: 10, weight: .semibold))
-//                .foregroundColor(.white.opacity(0.9))
-//                .lineLimit(1)
-//                .shadow(color: .black.opacity(0.6), radius: 1, x: 0, y: 1)
-//            
-//            Spacer()
-//                .frame(height: 6)
-//            
-//            HStack(spacing: 12) {
-//                realGlassControlButton(icon: "backward.fill", size: 12) {
-//                    musicManager.previousTrack()
-//                }
-//                realGlassControlButton(
-//                    icon: musicManager.isPlaying ? "pause.fill" : "play.fill",
-//                    size: 14,
-//                    isMain: true
-//                ) {
-//                    musicManager.togglePlayPause()
-//                }
-//                realGlassControlButton(icon: "forward.fill", size: 12) {
-//                    musicManager.nextTrack()
-//                }
-//            }
-//        }
-//        .padding(.horizontal, 8)
-//        .padding(.vertical, 6)
-//    }
-//    
-//    // MARK: - Real Glass 스타일 버튼
-//    private func realGlassControlButton(
-//        icon: String,
-//        size: CGFloat,
-//        isMain: Bool = false,
-//        action: @escaping () -> Void = {}
-//    ) -> some View {
-//        Button(action: action) {
-//            LiquidGlassBackground(
-//                variant: .v18,
-//                cornerRadius: isMain ? 15 : 12
-//            ) {
-//                Image(systemName: icon)
-//                    .font(.system(size: size, weight: .bold))
-//                    .foregroundColor(.white)
-//                    .shadow(color: .black.opacity(0.9), radius: 1, x: 0, y: 1)
-//                    .frame(width: isMain ? 28 : 24, height: isMain ? 28 : 24)
-//            }
-//        }
-//        .buttonStyle(PlainButtonStyle())
-//        .scaleEffect(isMain ? 1.05 : 1.0)
-//        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: musicManager.isPlaying)
-//    }
-//    
-//    // MARK: - 앱 아이콘 (현재 재생 중인 앱에 따라 변경)
-//    @ViewBuilder
-//    private var appIcon: some View {
-//        Group {
-//            switch musicManager.bundleIdentifier {
-//            case "com.apple.Music":
-//                Image(systemName: "music.note.house")
-//                    .foregroundColor(.white)
-//            case "com.spotify.client":
-//                Image(systemName: "music.note.list")
-//                    .foregroundColor(.green)
-//            default:
-//                Image(systemName: "music.note")
-//                    .foregroundColor(.white)
-//            }
-//        }
-//        .font(.system(size: 12, weight: .bold))
-//        .frame(width: 22, height: 22)
-//        .background(Circle().fill(.black.opacity(0.7)))
-//        .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
-//        .offset(x: 40, y: 40)
-//        .transition(.scale.combined(with: .opacity))
-//    }
-//}
-//
-//#Preview("Music Card with MediaRemote") {
-//    ZStack {
-//        VStack(spacing: 30) {
-//            HStack(spacing: 20) {
-//                // 클릭 안된 상태
-//                MusicCardView(musicCardclick: .constant(false))
-//                    .environmentObject(MusicManager.shared)
-//                
-//                // 클릭된 상태
-//                MusicCardView(musicCardclick: .constant(true))
-//                    .environmentObject(MusicManager.shared)
-//            }
-//        }
-//    }
-//    .frame(width: 600, height: 400)
-//    .background(.black)
-//}
-
-
-//
-//  MusicCardView.swift
-//  Dynamic-Notch
-//
-//  Created by PeterPark on 2025/01/09
-//  Fixed with real app icons and album artwork
-//
-
 import SwiftUI
 
 struct MusicCardView: View {
@@ -194,12 +19,12 @@ struct MusicCardView: View {
                     // 실제 앨범 아트가 있을 때
                     Image(nsImage: musicManager.albumArt)
                         .resizable()
-                        .scaledToFill()
+                        .scaledToFit()
                         .frame(width: 110, height: 110)
                         .clipped()
                 } else {
                     // 기본 이미지 또는 앨범 아트가 없을 때
-                    Image("dirtywork")
+                    Image(systemName: "music.note")
                         .resizable()
                         .scaledToFill()
                         .frame(width: 110, height: 110)
