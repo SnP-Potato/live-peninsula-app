@@ -7,10 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		358724692E4403920025496C /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CC2D88019400561BBA /* Defaults */; };
-		3587246A2E4403920025496C /* DefaultsMacros in Frameworks */ = {isa = PBXBuildFile; productRef = 35C4B5CE2D88019400561BBA /* DefaultsMacros */; };
-		35A22A6B2E41D688005B0F68 /* MediaRemote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B7D65B2E3BC78500AA0142 /* MediaRemote.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		35A22C492E440250005B0F68 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 35A22C482E440250005B0F68 /* KeyboardShortcuts */; };
+		354F9DD12E4A15FA00D474B7 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 354F9DD02E4A15FA00D474B7 /* Defaults */; };
+		354F9DD42E4A171A00D474B7 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 354F9DD32E4A171A00D474B7 /* KeyboardShortcuts */; };
+		35D47E962E4744AF00321493 /* MediaRemote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B7D65B2E3BC78500AA0142 /* MediaRemote.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,20 +35,102 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				"mediaremote/.clang-format",
+				"mediaremote/.cmake-format",
+				mediaremote/.gitignore,
+				mediaremote/.gitmodules,
+				mediaremote/.perltidyrc,
+				mediaremote/.vscode/extensions.json,
+				mediaremote/.vscode/settings.json,
+				mediaremote/build/cmake_install.cmake,
+				mediaremote/build/CMakeCache.txt,
+				mediaremote/build/CMakeFiles/4.1.0/CMakeDetermineCompilerABI_OBJC.bin,
+				mediaremote/build/CMakeFiles/4.1.0/CMakeOBJCCompiler.cmake,
+				mediaremote/build/CMakeFiles/4.1.0/CMakeSystem.cmake,
+				mediaremote/build/CMakeFiles/4.1.0/CompilerIdOBJC/a.out,
+				"mediaremote/build/CMakeFiles/4.1.0/CompilerIdOBJC/apple-sdk.m",
+				mediaremote/build/CMakeFiles/4.1.0/CompilerIdOBJC/CMakeOBJCCompilerId.m,
+				mediaremote/build/CMakeFiles/cmake.check_cache,
+				mediaremote/build/CMakeFiles/CMakeConfigureLog.yaml,
+				mediaremote/build/CMakeFiles/CMakeDirectoryInformation.cmake,
+				mediaremote/build/CMakeFiles/InstallScripts.json,
+				mediaremote/build/CMakeFiles/Makefile.cmake,
+				mediaremote/build/CMakeFiles/Makefile2,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/build.make,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/cmake_clean.cmake,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/compiler_depend.make,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/depend.make,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/DependInfo.cmake,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/flags.make,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/link.txt,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/progress.make,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/env.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/env.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/get.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/get.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/globals.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/globals.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/keys.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/keys.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/now_playing.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/now_playing.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/repeat.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/repeat.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/seek.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/seek.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/send.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/send.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/shuffle.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/shuffle.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/speed.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/speed.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/stream.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/stream.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/test.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/adapter/test.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/private/MediaRemote.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/private/MediaRemote.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/utility/Debounce.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/utility/Debounce.m.o.d,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/utility/helpers.m.o,
+				mediaremote/build/CMakeFiles/MediaRemoteAdapter.dir/src/utility/helpers.m.o.d,
+				mediaremote/build/CMakeFiles/progress.marks,
+				mediaremote/build/CMakeFiles/TargetDirectories.txt,
+				mediaremote/build/Makefile,
+				mediaremote/CMakeLists.txt,
+				mediaremote/LICENSE,
+				mediaremote/Makefile,
+				mediaremote/README.md,
+				"mediaremote/scripts/update-readme-badges.py",
+				mediaremote/src/adapter/env.m,
+				mediaremote/src/adapter/get.m,
+				mediaremote/src/adapter/globals.m,
+				mediaremote/src/adapter/keys.m,
+				mediaremote/src/adapter/now_playing.m,
+				mediaremote/src/adapter/repeat.m,
+				mediaremote/src/adapter/seek.m,
+				mediaremote/src/adapter/send.m,
+				mediaremote/src/adapter/shuffle.m,
+				mediaremote/src/adapter/speed.m,
+				mediaremote/src/adapter/stream.m,
+				mediaremote/src/adapter/test.m,
+				mediaremote/src/private/MediaRemote.m,
+				mediaremote/src/utility/Debounce.m,
+				mediaremote/src/utility/helpers.m,
 			);
 			target = 35C4B5972D87FD3300561BBA /* Dynamic-Notch */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		353D1D082E46F39D00B80F55 /* Exceptions for "Dynamic-Notch" folder in "Embed Frameworks" phase from "Dynamic-Notch" target */ = {
+		3574ACDC2E48EDEF00E4920A /* Exceptions for "Dynamic-Notch" folder in "Embed Frameworks" phase from "Dynamic-Notch" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			attributesByRelativePath = {
-				MediaRemote/MediaRemoteAdapter.framework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				mediaremote/build/MediaRemoteAdapter.framework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
 			};
 			buildPhase = 353D1D072E46F39D00B80F55 /* Embed Frameworks */;
 			membershipExceptions = (
-				MediaRemote/MediaRemoteAdapter.framework,
+				mediaremote/build/MediaRemoteAdapter.framework,
 			);
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
@@ -59,7 +140,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				357A0BC62E281222005162FF /* Exceptions for "Dynamic-Notch" folder in "Dynamic-Notch" target */,
-				353D1D082E46F39D00B80F55 /* Exceptions for "Dynamic-Notch" folder in "Embed Frameworks" phase from "Dynamic-Notch" target */,
+				3574ACDC2E48EDEF00E4920A /* Exceptions for "Dynamic-Notch" folder in "Embed Frameworks" phase from "Dynamic-Notch" target */,
 			);
 			path = "Dynamic-Notch";
 			sourceTree = "<group>";
@@ -71,10 +152,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3587246A2E4403920025496C /* DefaultsMacros in Frameworks */,
-				358724692E4403920025496C /* Defaults in Frameworks */,
-				35A22A6B2E41D688005B0F68 /* MediaRemote.framework in Frameworks */,
-				35A22C492E440250005B0F68 /* KeyboardShortcuts in Frameworks */,
+				354F9DD12E4A15FA00D474B7 /* Defaults in Frameworks */,
+				354F9DD42E4A171A00D474B7 /* KeyboardShortcuts in Frameworks */,
+				35D47E962E4744AF00321493 /* MediaRemote.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,9 +207,8 @@
 			);
 			name = "Dynamic-Notch";
 			packageProductDependencies = (
-				35C4B5CC2D88019400561BBA /* Defaults */,
-				35C4B5CE2D88019400561BBA /* DefaultsMacros */,
-				35A22C482E440250005B0F68 /* KeyboardShortcuts */,
+				354F9DD02E4A15FA00D474B7 /* Defaults */,
+				354F9DD32E4A171A00D474B7 /* KeyboardShortcuts */,
 			);
 			productName = "Dynamic-Notch";
 			productReference = 35C4B5982D87FD3300561BBA /* Dynamic-Notch.app */;
@@ -160,9 +239,8 @@
 			mainGroup = 35C4B58F2D87FD3300561BBA;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */,
-				35A22C452E4400E8005B0F68 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
-				353D1D022E46F28700B80F55 /* XCRemoteSwiftPackageReference "liquid-glass" */,
+				354F9DCF2E4A15FA00D474B7 /* XCRemoteSwiftPackageReference "Defaults" */,
+				354F9DD22E4A171A00D474B7 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 35C4B5992D87FD3300561BBA /* Products */;
@@ -231,12 +309,14 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				ENABLE_USER_SELECTED_FILES = readwrite;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SELECTED_FILES = "";
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -251,16 +331,19 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = "";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				NEW_SETTING = "";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SKIP_AUTOLINKING_ALL_FRAMEWORKS = NO;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -300,12 +383,14 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
 				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				ENABLE_USER_SELECTED_FILES = readwrite;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SELECTED_FILES = "";
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -314,14 +399,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = "";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				NEW_SETTING = "";
 				SDKROOT = macosx;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_SKIP_AUTOLINKING_ALL_FRAMEWORKS = NO;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -330,20 +418,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				AUTOMATION_APPLE_EVENTS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Dynamic-Notch/Dynamic_Notch.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Dynamic-Notch/Preview Content\"";
-				DEVELOPMENT_TEAM = VG34R6W9G2;
-				ENABLE_APP_SANDBOX = YES;
-				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readwrite;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = "";
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
 				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
@@ -354,12 +444,12 @@
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
 				ENABLE_RESOURCE_ACCESS_USB = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				ENABLE_USER_SELECTED_FILES = readwrite;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SELECTED_FILES = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Dynamic-Notch/MediaRemote",
-					"$(PROJECT_DIR)",
+					"$(SRCROOT)/",
+					"$(PROJECT_DIR)/Dynamic-Notch/mediaremote/build",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dynamic-Notch/Info.plist";
@@ -367,13 +457,14 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSBackgroundOnly = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "To show current playing music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "미디어 접근을 허용해주세요";
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "This app uses the calendar to display your calendar events";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				NSNSAppleScriptEnabled = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "snp-potato.Dynamic-Notch";
@@ -386,7 +477,9 @@
 				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_ENABLE_EXPLICIT_MODULES = "";
+				SWIFT_MODULES_AUTOLINK = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_SKIP_AUTOLINKING_ALL_FRAMEWORKS = NO;
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
 			};
@@ -397,20 +490,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				AUTOMATION_APPLE_EVENTS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Dynamic-Notch/Dynamic_Notch.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Dynamic-Notch/Preview Content\"";
-				DEVELOPMENT_TEAM = VG34R6W9G2;
-				ENABLE_APP_SANDBOX = YES;
-				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readwrite;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = "";
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
 				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
@@ -421,12 +516,12 @@
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
 				ENABLE_RESOURCE_ACCESS_USB = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				ENABLE_USER_SELECTED_FILES = readwrite;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SELECTED_FILES = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Dynamic-Notch/MediaRemote",
-					"$(PROJECT_DIR)",
+					"$(SRCROOT)/",
+					"$(PROJECT_DIR)/Dynamic-Notch/mediaremote/build",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dynamic-Notch/Info.plist";
@@ -434,13 +529,14 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSBackgroundOnly = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "To show current playing music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "미디어 접근을 허용해주세요";
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "This app uses the calendar to display your calendar events";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				NSNSAppleScriptEnabled = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "snp-potato.Dynamic-Notch";
@@ -453,7 +549,9 @@
 				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_ENABLE_EXPLICIT_MODULES = "";
+				SWIFT_MODULES_AUTOLINK = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_SKIP_AUTOLINKING_ALL_FRAMEWORKS = NO;
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
 			};
@@ -483,15 +581,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		353D1D022E46F28700B80F55 /* XCRemoteSwiftPackageReference "liquid-glass" */ = {
+		354F9DCF2E4A15FA00D474B7 /* XCRemoteSwiftPackageReference "Defaults" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/JulianWindeck/liquid-glass.git";
+			repositoryURL = "https://github.com/sindresorhus/Defaults.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.3;
 			};
 		};
-		35A22C452E4400E8005B0F68 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+		354F9DD22E4A171A00D474B7 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts.git";
 			requirement = {
@@ -499,31 +597,18 @@
 				minimumVersion = 2.3.0;
 			};
 		};
-		35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/Defaults";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.2;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		35A22C482E440250005B0F68 /* KeyboardShortcuts */ = {
+		354F9DD02E4A15FA00D474B7 /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 35A22C452E4400E8005B0F68 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
-			productName = KeyboardShortcuts;
-		};
-		35C4B5CC2D88019400561BBA /* Defaults */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */;
+			package = 354F9DCF2E4A15FA00D474B7 /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
 		};
-		35C4B5CE2D88019400561BBA /* DefaultsMacros */ = {
+		354F9DD32E4A171A00D474B7 /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 35C4B5CB2D88019400561BBA /* XCRemoteSwiftPackageReference "Defaults" */;
-			productName = DefaultsMacros;
+			package = 354F9DD22E4A171A00D474B7 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

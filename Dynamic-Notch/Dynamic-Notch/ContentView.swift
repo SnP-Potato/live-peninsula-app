@@ -146,6 +146,7 @@ import UniformTypeIdentifiers
 import Defaults
 
 struct ContentView: View {
+    //MARK: 변수들
     @EnvironmentObject var musicManager: MusicManager
     @EnvironmentObject var vm: NotchViewModel
     @Namespace private var albumArtNamespace
@@ -165,21 +166,23 @@ struct ContentView: View {
     // Live Activity 표시 조건
     private var shouldShowMusicLiveActivity: Bool {
         return musicManager.hasActiveMedia &&
-               vm.notchState == .off &&
-               (musicManager.isPlaying || recentlyActive)
+               vm.notchState == .off && musicManager.isPlaying
     }
     
-    // 최근 활성 상태 확인 (30초 이내)
-    private var recentlyActive: Bool {
-        Date().timeIntervalSince(musicManager.lastUpdated) < 30
-    }
-    
-    // 동적 노치 크기
+    //MARK: 동적 노치 크기
     private var dynamicNotchWidth: CGFloat {
         if shouldShowMusicLiveActivity {
-            return vm.notchSize.width + 60 // Live Activity를 위한 추가 공간
+            return vm.notchSize.width + 54 // Live Activity를 위한 추가 공간
         } else {
             return vm.notchSize.width
+        }
+    }
+    
+    private var dynamicNotchheight: CGFloat {
+        if shouldShowMusicLiveActivity {
+            return vm.notchSize.height + 30 // Live Activity를 위한 추가 공간
+        } else {
+            return vm.notchSize.height
         }
     }
     
@@ -212,7 +215,7 @@ struct ContentView: View {
             // 메인 노치 뷰 (통합된 버전)
             Rectangle()
                 .fill(.black)
-                .frame(width: dynamicNotchWidth, height: vm.notchSize.height)
+                .frame(width: dynamicNotchWidth, height: dynamicNotchheight)
                 .mask { NotchShape(cornerRadius: vm.notchState == .on ? 100 : 10) }
                 .overlay {
                     Group {
@@ -270,8 +273,7 @@ struct ContentView: View {
                 // 음악 Live Activity
                 musicLiveActivityView
             } else {
-                // 기본 상태 (시계 등)
-                defaultClosedView
+               
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -280,83 +282,83 @@ struct ContentView: View {
     // MARK: - 음악 Live Activity (인라인 구현)
     @ViewBuilder
     private var musicLiveActivityView: some View {
-        HStack(spacing: 8) {
-            // 앨범 아트
-            Image(nsImage: musicManager.albumArt)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 24, height: 24)
-                .clipShape(RoundedRectangle(cornerRadius: 4))
-                .matchedGeometryEffect(id: "albumArt", in: albumArtNamespace)
-                .opacity(musicManager.isPlaying ? 1.0 : 0.7)
-                .scaleEffect(musicManager.isPlaying ? 1.0 : 0.95)
-                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: musicManager.isPlaying)
-            
-            // 중간 공간
-            Rectangle()
-                .fill(.black)
-                .frame(width: 160)
-            
-            // 음악 정보
-            VStack(alignment: .trailing, spacing: 2) {
-                if musicManager.isPlaying {
-                    // 재생 중: 간단한 스펙트럼
-                    HStack(spacing: 1) {
-                        ForEach(0..<4, id: \.self) { _ in
-                            RoundedRectangle(cornerRadius: 0.5)
-                                .fill(.white)
-                                .frame(width: 1.5, height: CGFloat.random(in: 4...12))
-                                .animation(.easeInOut(duration: 0.3).repeatForever(), value: musicManager.isPlaying)
+        VStack {
+            HStack(spacing: 8) { //239
+                // 앨범 아트
+                Image(nsImage: musicManager.albumArt)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 24, height: 24)
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
+                    .matchedGeometryEffect(id: "albumArt", in: albumArtNamespace)
+                    .opacity(musicManager.isPlaying ? 1.0 : 0.7)
+                    .scaleEffect(musicManager.isPlaying ? 1.0 : 0.95)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.7), value: musicManager.isPlaying)
+                
+                // 중간 공간
+                Rectangle()
+                    .fill(.black)
+                    .frame(width: 150)
+                
+                // 음악 정보
+                VStack(alignment: .trailing, spacing: 2) {
+                    if musicManager.isPlaying {
+                        // 재생 중: 간단한 스펙트럼
+                        HStack(spacing: 1) {
+                            ForEach(0..<4, id: \.self) { _ in
+                                RoundedRectangle(cornerRadius: 0.5)
+                                    .fill(.white)
+                                    .frame(width: 2.0, height: CGFloat.random(in: 4...12))
+                                    .animation(.easeInOut(duration: 0.8).repeatForever(), value: musicManager.isPlaying)
+                            }
+                        }
+                        .frame(width: 25, height: 12)
+                    } else {
+                        // 정지: 진행률 표시
+                        HStack(spacing: 4) {
+                            Text("\(Int(musicManager.playbackProgress * 100))%")
+                                .font(.system(size: 9, weight: .medium, design: .monospaced))
+                                .foregroundStyle(.white.opacity(0.8))
+                            
+                            Circle()
+                                .fill(.white.opacity(0.5))
+                                .frame(width: 2, height: 2)
                         }
                     }
-                    .frame(height: 12)
-                } else {
-                    // 정지: 진행률 표시
-                    HStack(spacing: 4) {
-                        Text("\(Int(musicManager.playbackProgress * 100))%")
-                            .font(.system(size: 9, weight: .medium, design: .monospaced))
-                            .foregroundStyle(.white.opacity(0.8))
-                        
-                        Circle()
-                            .fill(.white.opacity(0.5))
-                            .frame(width: 2, height: 2)
-                    }
+                }
+                .frame(width: 40, alignment: .trailing)
+            }
+            .frame(height: 28)
+            .onTapGesture {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                    musicManager.togglePlayPause()
                 }
             }
-            .frame(width: 40, alignment: .trailing)
-        }
-        .frame(height: 28)
-        .onTapGesture {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                musicManager.togglePlayPause()
+            .transition(.asymmetric(
+                insertion: .scale(scale: 0.9).combined(with: .opacity),
+                removal: .scale(scale: 1.1).combined(with: .opacity)
+            ))
+            
+            HStack {
+                
+                Spacer()
+                
+                Text(musicManager.hasActiveMedia ? musicManager.songTitle : "No Song Playing")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(.white)
+                    .lineLimit(1)
+                    .shadow(color: .black.opacity(0.8), radius: 1, x: 0, y: 1)
+                
+                Text(musicManager.hasActiveMedia ? musicManager.artistName : "Unknown Artist")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(.white.opacity(0.9))
+                    .lineLimit(1)
+                    .shadow(color: .black.opacity(0.6), radius: 1, x: 0, y: 1)
+                
+                Spacer()
             }
         }
-        .transition(.asymmetric(
-            insertion: .scale(scale: 0.9).combined(with: .opacity),
-            removal: .scale(scale: 1.1).combined(with: .opacity)
-        ))
-    }
-    
-    // MARK: - 기본 닫힌 상태 뷰
-    @ViewBuilder
-    private var defaultClosedView: some View {
-        HStack {
-            Spacer()
-            
-            // 현재 시간
-            Text(currentTimeString)
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
-                .foregroundStyle(.white.opacity(0.8))
-            
-            Spacer()
-        }
-    }
-    
-    // MARK: - 헬퍼 프로퍼티
-    private var currentTimeString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: Date())
+        .frame(height: 40)
     }
 }
 

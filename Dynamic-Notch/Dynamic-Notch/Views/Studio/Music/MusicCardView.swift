@@ -26,7 +26,7 @@ struct MusicCardView: View {
                     // 기본 이미지 또는 앨범 아트가 없을 때
                     Image(systemName: "music.note")
                         .resizable()
-                        .scaledToFill()
+                        .scaledToFit()
                         .frame(width: 110, height: 110)
                         .clipped()
                 }
