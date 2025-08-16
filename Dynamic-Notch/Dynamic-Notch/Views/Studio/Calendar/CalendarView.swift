@@ -32,7 +32,7 @@ struct SwipeableDateSelector: View {
             // 월 표시
             
             Text(calendarManager.formattedMonth.uppercased())
-                .font(.system(size: 20, weight: .black))
+                .font(.system(size: 19, weight: .black))
                 .foregroundColor(.white)
                 .frame(height: 40)
                 .transition(.asymmetric(
@@ -40,6 +40,9 @@ struct SwipeableDateSelector: View {
                     removal: .move(edge: .leading).combined(with: .opacity)
                 ))
                 .id("month-\(calendarManager.formattedMonth)")
+            
+            Spacer()
+                .frame(height: 5)
             
             // 스와이프 가능한 날짜/요일 영역
             ZStack {
@@ -78,8 +81,11 @@ struct SwipeableDateSelector: View {
                 )
             }
             .frame(width: 90, height: 60)
+            
+            Spacer()
+                .frame(height: 10)
         }
-        .frame(width: 60, height: 110)
+        .frame(width: 60, height: 130)
         .sensoryFeedback(.impact(flexibility: .soft), trigger: hapticFeedback)
         .animation(.spring(response: config.animationDuration, dampingFraction: 0.8), value: dragOffset)
         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isAnimating)
@@ -225,7 +231,7 @@ struct CalendarView: View {
             }
             .frame(width: 100)
         }
-        .frame(width: 170, height: 130)
+        .frame(width: 170, height: 100)
         .onChange(of: selectedDate) { _, newDate in
             // CalendarManager의 updateFocusDate 사용
             calendarManager.updateFocusDate(newDate)
@@ -445,4 +451,12 @@ struct NoAccessView: View {
     NoAccessView()
         .environmentObject(CalendarManager.shared)
         .frame(width: 570, height: 185)
+}
+
+#Preview {
+    HomeView(currentTab: .constant(.studio))
+        .environmentObject(CalendarManager.shared)
+        .environmentObject(MusicManager.shared)
+        .frame(width: onNotchSize.width, height: onNotchSize.height)
+        .background(.black)
 }

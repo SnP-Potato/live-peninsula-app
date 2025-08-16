@@ -105,6 +105,7 @@ class CalendarManager: NSObject, ObservableObject {
         }
         
         let startDay = Calendar.current.startOfDay(for: date)
+        print(focusDate)
         let endDay = Calendar.current.date(byAdding: .day, value: 1, to: startDay) ?? date
         
         //선택된 캘ㄹㄴ더 목록만 보여주기

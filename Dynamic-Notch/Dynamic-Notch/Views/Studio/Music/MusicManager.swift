@@ -39,6 +39,9 @@
 
 // MARK: MediaRemote가 이제 사용못해서 그냥 MusicKit으로 구현 **애플뮤직만 제어 가능**
 
+
+// 깃허브에서 해결방안 찾음 08.09
+
 //class MusicManager: ObservableObject {
 //    static let shared = MusicManager()
 //    
@@ -55,480 +58,6 @@
 ////    @Published var selectedSong: TestSong? = nil
 //    
 //}
-
-
-//import Foundation
-//import SwiftUI
-//import Combine
-//
-//class MusicManager: ObservableObject {
-//    static let shared = MusicManager()
-//    
-//    // MARK: - Published Properties
-//    @Published var songTitle: String = ""
-//    @Published var artistName: String = ""
-//    @Published var albumName: String = ""
-//    @Published var albumArt: NSImage = NSImage(systemSymbolName: "music.note", accessibilityDescription: "Album Art") ?? NSImage()
-//    @Published var isPlaying: Bool = false
-//    @Published var currentTime: Double = 0
-//    @Published var duration: Double = 0
-//    @Published var bundleIdentifier: String = ""
-//    @Published var lastUpdated: Date = Date()
-//    
-//    // MARK: - Private Properties
-//    private var mediaController: SimpleMediaRemoteController?
-//    private var cancellables = Set<AnyCancellable>()
-//    private var updateTimer: Timer?
-//    
-//    private init() {
-//        setupMediaRemote()
-//        startPeriodicUpdates()
-//    }
-//    
-//    private func startPeriodicUpdates() {
-//        updateTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
-//            self?.mediaController?.updateNowPlayingInfo()
-//            self?.mediaController?.updatePlayingState()
-//        }
-//    }
-//    
-//    deinit {
-//        updateTimer?.invalidate()
-//        cancellables.forEach { $0.cancel() }
-//    }
-//    
-//    private func setupMediaRemote() {
-//        guard let controller = SimpleMediaRemoteController() else {
-//            print(" MediaRemote를 초기화할 수 없습니다")
-//            return
-//        }
-//        
-//        self.mediaController = controller
-//        
-//        // 상태 관찰 설정
-//        controller.$songTitle
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] title in
-//                self?.songTitle = title
-//                if !title.isEmpty {
-//                    self?.lastUpdated = Date()
-//                }
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$artistName
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] artist in
-//                self?.artistName = artist
-//                if !artist.isEmpty {
-//                    self?.lastUpdated = Date()
-//                }
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$albumName
-//            .receive(on: DispatchQueue.main)
-//            .assign(to: \.albumName, on: self)
-//            .store(in: &cancellables)
-//            
-//        controller.$isPlaying
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] isPlaying in
-//                self?.isPlaying = isPlaying
-//                self?.lastUpdated = Date()
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$currentTime
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] currentTime in
-//                self?.currentTime = currentTime
-//                self?.lastUpdated = Date()
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$duration
-//            .receive(on: DispatchQueue.main)
-//            .assign(to: \.duration, on: self)
-//            .store(in: &cancellables)
-//            
-//        controller.$bundleIdentifier
-//            .receive(on: DispatchQueue.main)
-//            .assign(to: \.bundleIdentifier, on: self)
-//            .store(in: &cancellables)
-//            
-//        // 앨범 아트 업데이트
-//        controller.$albumArtwork
-//            .receive(on: DispatchQueue.main)
-//            .compactMap { $0 }
-//            .map { NSImage(data: $0) ?? NSImage(systemSymbolName: "music.note", accessibilityDescription: "Album Art") ?? NSImage() }
-//            .assign(to: \.albumArt, on: self)
-//            .store(in: &cancellables)
-//            
-//        print(" MusicManager 초기화 성공")
-//    }
-//    
-//    // MARK: - Public Methods
-//    func play() {
-//        mediaController?.play()
-//        lastUpdated = Date()
-//    }
-//    
-//    func pause() {
-//        mediaController?.pause()
-//        lastUpdated = Date()
-//    }
-//    
-//    func togglePlayPause() {
-//        mediaController?.togglePlayPause()
-//        lastUpdated = Date()
-//    }
-//    
-//    func nextTrack() {
-//        mediaController?.nextTrack()
-//        lastUpdated = Date()
-//    }
-//    
-//    func previousTrack() {
-//        mediaController?.previousTrack()
-//        lastUpdated = Date()
-//    }
-//    
-//    // MARK: - Computed Properties
-//    var hasActiveMedia: Bool {
-//        return !songTitle.isEmpty && !artistName.isEmpty
-//    }
-//    
-//    var playbackProgress: Double {
-//        guard duration > 0 else { return 0 }
-//        return currentTime / duration
-//    }
-//    
-//    // 현재 재생 중인 앱 이름 반환
-//    var currentAppName: String {
-//        switch bundleIdentifier {
-//        case "com.apple.Music":
-//            return "Apple Music"
-//        case "com.spotify.client":
-//            return "Spotify"
-//        default:
-//            return "Music"
-//        }
-//    }
-//}
-
-
-//
-//  MusicManager.swift
-//  Dynamic-Notch
-//
-//  Updated to use EnhancedMediaRemoteController
-//
-
-//import Foundation
-//import SwiftUI
-//import Combine
-//
-//class MusicManager: ObservableObject {
-//    static let shared = MusicManager()
-//    
-//    // MARK: - Published Properties
-//    @Published var songTitle: String = ""
-//    @Published var artistName: String = ""
-//    @Published var albumName: String = ""
-//    @Published var albumArt: NSImage = NSImage(systemSymbolName: "music.note", accessibilityDescription: "Album Art") ?? NSImage()
-//    @Published var isPlaying: Bool = false
-//    @Published var currentTime: Double = 0
-//    @Published var duration: Double = 0
-//    @Published var bundleIdentifier: String = ""
-//    @Published var lastUpdated: Date = Date()
-//    @Published var playbackRate: Double = 1.0
-//    @Published var isShuffled: Bool = false
-//    @Published var repeatMode: RepeatMode = .off
-//    
-//    // MARK: - Private Properties
-//    private var mediaController: SimpleMediaRemoteController?
-//    private var cancellables = Set<AnyCancellable>()
-//    private var updateTimer: Timer?
-//    
-//    private init() {
-//        setupMediaRemote()
-//        startPeriodicUpdates()
-//    }
-//    
-//    private func startPeriodicUpdates() {
-//        updateTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
-//            // 재생 상태를 더 자주 확인
-//            self?.mediaController?.updatePlayingState()
-//            
-//            // 재생 중일 때만 시간 업데이트
-//            if self?.isPlaying == true {
-//                self?.updateCurrentTime()
-//            }
-//        }
-//    }
-//    
-//    private func updateCurrentTime() {
-//        // 실시간으로 현재 시간 증가 (더 부드러운 UI를 위해)
-//        if isPlaying && duration > 0 {
-//            let newTime = currentTime + playbackRate
-//            if newTime <= duration {
-//                currentTime = newTime
-//            }
-//        }
-//    }
-//    
-//    deinit {
-//        updateTimer?.invalidate()
-//        cancellables.forEach { $0.cancel() }
-//    }
-//    
-//    private func setupMediaRemote() {
-//        guard let controller = SimpleMediaRemoteController() else {
-//            print("❌ Enhanced MediaRemote를 초기화할 수 없습니다")
-//            return
-//        }
-//        
-//        self.mediaController = controller
-//        
-//        // 상태 관찰 설정
-//        controller.$songTitle
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] title in
-//                if title != self?.songTitle {
-//                    self?.songTitle = title
-//                    self?.updateLastUpdated()
-//                    print("🎵 곡 제목 업데이트: \(title)")
-//                }
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$artistName
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] artist in
-//                if artist != self?.artistName {
-//                    self?.artistName = artist
-//                    self?.updateLastUpdated()
-//                    print("👤 아티스트 업데이트: \(artist)")
-//                }
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$albumName
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] album in
-//                if album != self?.albumName {
-//                    self?.albumName = album
-//                    self?.updateLastUpdated()
-//                }
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$isPlaying
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] isPlaying in
-//                if isPlaying != self?.isPlaying {
-//                    self?.isPlaying = isPlaying
-//                    self?.updateLastUpdated()
-//                    print("⏯️ 재생 상태 업데이트: \(isPlaying ? "재생" : "정지")")
-//                }
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$currentTime
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] currentTime in
-//                // MediaRemote에서 시간이 업데이트되면 우리 시간도 동기화
-//                self?.currentTime = currentTime
-//                self?.updateLastUpdated()
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$duration
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] duration in
-//                if duration != self?.duration {
-//                    self?.duration = duration
-//                    self?.updateLastUpdated()
-//                }
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$bundleIdentifier
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] bundleId in
-//                if bundleId != self?.bundleIdentifier {
-//                    self?.bundleIdentifier = bundleId
-//                    self?.updateLastUpdated()
-//                    print("📱 앱 업데이트: \(bundleId)")
-//                }
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$playbackRate
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] rate in
-//                if rate != self?.playbackRate {
-//                    self?.playbackRate = rate
-//                }
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$isShuffled
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] shuffled in
-//                if shuffled != self?.isShuffled {
-//                    self?.isShuffled = shuffled
-//                }
-//            }
-//            .store(in: &cancellables)
-//            
-//        controller.$repeatMode
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] mode in
-//                let newRepeatMode = RepeatMode(rawValue: mode) ?? .off
-//                if newRepeatMode != self?.repeatMode {
-//                    self?.repeatMode = newRepeatMode
-//                }
-//            }
-//            .store(in: &cancellables)
-//            
-//        // 앨범 아트 업데이트
-//        controller.$albumArtwork
-//            .receive(on: DispatchQueue.main)
-//            .compactMap { $0 }
-//            .map { data -> NSImage in
-//                if let image = NSImage(data: data) {
-//                    return image
-//                } else {
-//                    return NSImage(systemSymbolName: "music.note", accessibilityDescription: "Album Art") ?? NSImage()
-//                }
-//            }
-//            .sink { [weak self] image in
-//                self?.albumArt = image
-//                self?.updateLastUpdated()
-//            }
-//            .store(in: &cancellables)
-//            
-//        print("✅ Enhanced MusicManager 초기화 성공")
-//    }
-//    
-//    private func updateLastUpdated() {
-//        lastUpdated = Date()
-//    }
-//    
-//    // MARK: - Public Methods
-//    func play() {
-//        mediaController?.play()
-//        updateLastUpdated()
-//    }
-//    
-//    func pause() {
-//        mediaController?.pause()
-//        updateLastUpdated()
-//    }
-//    
-//    func togglePlayPause() {
-//        mediaController?.togglePlayPause()
-//        updateLastUpdated()
-//    }
-//    
-//    func nextTrack() {
-//        mediaController?.nextTrack()
-//        updateLastUpdated()
-//    }
-//    
-//    func previousTrack() {
-//        mediaController?.previousTrack()
-//        updateLastUpdated()
-//    }
-//    
-//    func seek(to time: TimeInterval) {
-//        mediaController?.seek(to: time)
-//        currentTime = time  // 즉시 UI 업데이트
-//        updateLastUpdated()
-//    }
-//    
-//    func toggleShuffle() {
-//        mediaController?.toggleShuffle()
-//        updateLastUpdated()
-//    }
-//    
-//    func toggleRepeat() {
-//        mediaController?.toggleRepeat()
-//        updateLastUpdated()
-//    }
-//    
-//    func fastForward15() {
-//        mediaController?.fastForward15()
-//        updateLastUpdated()
-//    }
-//    
-//    func rewind15() {
-//        mediaController?.rewind15()
-//        updateLastUpdated()
-//    }
-//    
-//    func setPlaybackRate(_ rate: Float) {
-//        mediaController?.setPlaybackRate(rate)
-//        updateLastUpdated()
-//    }
-//    
-//    // MARK: - Computed Properties
-//    var hasActiveMedia: Bool {
-//        return !songTitle.isEmpty && !artistName.isEmpty
-//    }
-//    
-//    var playbackProgress: Double {
-//        guard duration > 0 else { return 0 }
-//        return min(currentTime / duration, 1.0)
-//    }
-//    
-//    // 현재 재생 중인 앱 이름 반환
-//    var currentAppName: String {
-//        switch bundleIdentifier {
-//        case "com.apple.Music":
-//            return "Apple Music"
-//        case "com.spotify.client":
-//            return "Spotify"
-//        case "com.apple.WebKit.WebContent":
-//            return "Safari"
-//        case "com.google.Chrome":
-//            return "Chrome"
-//        case "com.apple.QuickTimePlayerX":
-//            return "QuickTime Player"
-//        case "com.apple.TV":
-//            return "Apple TV"
-//        default:
-//            return bundleIdentifier.isEmpty ? "Music" : bundleIdentifier.components(separatedBy: ".").last ?? "Music"
-//        }
-//    }
-//    
-//    // 포맷된 시간 문자열
-//    var formattedCurrentTime: String {
-//        return formatTime(currentTime)
-//    }
-//    
-//    var formattedDuration: String {
-//        return formatTime(duration)
-//    }
-//    
-//    private func formatTime(_ seconds: Double) -> String {
-//        let totalSeconds = Int(seconds)
-//        let minutes = totalSeconds / 60
-//        let remainingSeconds = totalSeconds % 60
-//        return String(format: "%d:%02d", minutes, remainingSeconds)
-//    }
-//}
-
-
-
-//
-//  MusicManager.swift
-//  Dynamic-Notch
-//
-//  Fixed version with proper progress tracking
-//
 
 import Foundation
 import SwiftUI
@@ -547,9 +76,6 @@ class MusicManager: ObservableObject {
     @Published var duration: Double = 0
     @Published var bundleIdentifier: String = ""
     @Published var lastUpdated: Date = Date()
-    @Published var playbackRate: Double = 1.0
-    @Published var isShuffled: Bool = false
-    @Published var repeatMode: RepeatMode = .off
     
     // MARK: - Private Properties
     private var mediaController: SimpleMediaRemoteController?
@@ -568,7 +94,7 @@ class MusicManager: ObservableObject {
     }
     
     private func startPeriodicUpdates() {
-        updateTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+        updateTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             
             // MediaRemote에서 정보 업데이트 (5초마다)
@@ -588,7 +114,7 @@ class MusicManager: ObservableObject {
         guard isPlaying && duration > 0 else { return }
         
         // 재생 시작 시간부터 경과된 시간 계산
-        let elapsed = Date().timeIntervalSince(playStartTime) * playbackRate
+        let elapsed = Date().timeIntervalSince(playStartTime) 
         let newTime = pausedTime + elapsed
         
         // 범위 체크 및 업데이트
@@ -646,15 +172,6 @@ class MusicManager: ObservableObject {
             }
             .store(in: &cancellables)
             
-        controller.$albumName
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] album in
-                if album != self?.albumName {
-                    self?.albumName = album
-                    self?.updateLastUpdated()
-                }
-            }
-            .store(in: &cancellables)
             
         controller.$isPlaying
             .receive(on: DispatchQueue.main)
@@ -681,28 +198,6 @@ class MusicManager: ObservableObject {
             }
             .store(in: &cancellables)
             
-        controller.$currentTime
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] newTime in
-                guard let self = self else { return }
-                
-                // 내부 타이머 업데이트가 아닐 때만 MediaRemote 시간 적용
-                if !self.isTimerBasedUpdate {
-                    let timeDiff = abs(newTime - self.currentTime)
-                    
-                    // 시간 차이가 1초 이상이거나 새로운 곡일 때만 동기화
-                    if timeDiff > 1.0 || newTime == 0 {
-                        self.currentTime = newTime
-                        self.pausedTime = newTime
-                        self.resetTimeTracking()
-                        print("⏰ 시간 동기화: \(newTime)초 (차이: \(timeDiff)초)")
-                    }
-                }
-                
-                self.updateLastUpdated()
-            }
-            .store(in: &cancellables)
-            
         controller.$duration
             .receive(on: DispatchQueue.main)
             .sink { [weak self] duration in
@@ -721,37 +216,6 @@ class MusicManager: ObservableObject {
                     self?.bundleIdentifier = bundleId
                     self?.updateLastUpdated()
                     print("📱 앱 업데이트: \(bundleId)")
-                }
-            }
-            .store(in: &cancellables)
-            
-        controller.$playbackRate
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] rate in
-                if rate != self?.playbackRate {
-                    // 재생 속도가 변경되면 시간 추적 재설정
-                    self?.playbackRate = rate
-                    self?.resetTimeTracking()
-                    print("🎵 재생 속도: \(rate)")
-                }
-            }
-            .store(in: &cancellables)
-            
-        controller.$isShuffled
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] shuffled in
-                if shuffled != self?.isShuffled {
-                    self?.isShuffled = shuffled
-                }
-            }
-            .store(in: &cancellables)
-            
-        controller.$repeatMode
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] mode in
-                let newRepeatMode = RepeatMode(rawValue: mode) ?? .off
-                if newRepeatMode != self?.repeatMode {
-                    self?.repeatMode = newRepeatMode
                 }
             }
             .store(in: &cancellables)
@@ -868,31 +332,6 @@ class MusicManager: ObservableObject {
         
         updateLastUpdated()
         print("🎯 시크: \(time)초로 이동")
-    }
-    
-    func toggleShuffle() {
-        mediaController?.toggleShuffle()
-        updateLastUpdated()
-    }
-    
-    func toggleRepeat() {
-        mediaController?.toggleRepeat()
-        updateLastUpdated()
-    }
-    
-    func fastForward15() {
-        let newTime = currentTime + 15
-        seek(to: min(newTime, duration))
-    }
-    
-    func rewind15() {
-        let newTime = currentTime - 15
-        seek(to: max(newTime, 0))
-    }
-    
-    func setPlaybackRate(_ rate: Float) {
-        mediaController?.setPlaybackRate(rate)
-        updateLastUpdated()
     }
     
     // 강제로 정보 업데이트 (디버깅용)

@@ -81,6 +81,8 @@ struct HomeView: View {
 
 #Preview {
     HomeView(currentTab: .constant(.studio))
+        .environmentObject(CalendarManager.shared)
+        .environmentObject(MusicManager.shared)
         .frame(width: onNotchSize.width, height: onNotchSize.height)
         .background(.black)
 }

@@ -19,41 +19,49 @@ struct MusicCardView: View {
                     // 실제 앨범 아트가 있을 때
                     Image(nsImage: musicManager.albumArt)
                         .resizable()
-                        .scaledToFit()
+                        .scaledToFill()
                         .frame(width: 110, height: 110)
                         .clipped()
                 } else {
                     // 기본 이미지 또는 앨범 아트가 없을 때
-                    Image(systemName: "music.note")
+                    Image("44")
                         .resizable()
-                        .scaledToFit()
+                        .scaledToFill()
                         .frame(width: 110, height: 110)
-                        .clipped()
+//                        .clipped()
+                        
                 }
             }
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .animation(.easeInOut(duration: 0.3), value: musicManager.albumArt)
             
             if musicCardclick {
-                // Liquid Glass로 앨범 아트를 완전히 덮기
-                LiquidGlassBackground(
-                    variant: .v11,
-                    cornerRadius: 12
-                ) {
-                    ZStack {
-                        // 배경을 더 어둡게 처리
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.black.opacity(0.4))
-                        
-                        musicControlInterface
+                if #available(macOS 26.0, *) {
+                    // Liquid Glass로 앨범 아트를 완전히 덮기
+                    LiquidGlassBackground(
+                        variant: .v11,
+                        cornerRadius: 12
+                    ) {
+                        ZStack {
+                            // 배경을 더 어둡게 처리
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(.black.opacity(0.4))
+                            
+                            musicControlInterface
+                        }
                     }
+                    .frame(width: 110, height: 110)
+                    .transition(.asymmetric(
+                        insertion: .scale(scale: 0.9).combined(with: .opacity),
+                        removal: .scale(scale: 1.1).combined(with: .opacity)
+                    ))
+                    
+                }else {
+                    musicControlInterface
                 }
-                .frame(width: 110, height: 110)
-                .transition(.asymmetric(
-                    insertion: .scale(scale: 0.9).combined(with: .opacity),
-                    removal: .scale(scale: 1.1).combined(with: .opacity)
-                ))
+                
             }
+            
             
             // 앨범 아트 위 작은 앱 아이콘
             if !musicCardclick {
@@ -69,6 +77,8 @@ struct MusicCardView: View {
     @ViewBuilder
     private var musicControlInterface: some View {
         VStack(alignment: .center, spacing: 2) {
+            Spacer()
+            
             Text(musicManager.hasActiveMedia ? musicManager.songTitle : "No Song Playing")
                 .font(.system(size: 15, weight: .bold))
                 .foregroundColor(.white)
@@ -99,6 +109,10 @@ struct MusicCardView: View {
                     musicManager.nextTrack()
                 }
             }
+            
+            Spacer()
+            
+            MusicProgressBar(musicManager: _musicManager)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 6)
@@ -137,11 +151,11 @@ struct MusicCardView: View {
                 AppIconView(bundleIdentifier: musicManager.bundleIdentifier)
             } else {
                 // 기본 음악 아이콘
-                Image(systemName: "music.note")
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(.white)
-                    .frame(width: 22, height: 22)
-                    .background(Circle().fill(.black.opacity(0.7)))
+//                Image(systemName: "app.fill")
+//                    .font(.system(size: 12, weight: .bold))
+//                    .foregroundColor(.white)
+//                    .frame(width: 22, height: 22)
+//                    .background(Circle().fill(.black.opacity(0.7)))
             }
         }
         .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)

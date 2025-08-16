@@ -26,9 +26,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow! // 기존 창 (메인 화면용)
     let vm: NotchViewModel = .init()
 
-    let focusManager = FocusManager.shared
-    let recordManager = RecordManager.shared
-    let timerManager = TimerManager.shared
     let calenarManager = CalendarManager.shared
     let musicManager = MusicManager.shared
 
@@ -69,9 +66,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             window.contentView = NSHostingView(rootView:
                 ContentView()
                     .environmentObject(vm)
-                    .environmentObject(focusManager)
-                    .environmentObject(recordManager)
-                    .environmentObject(timerManager)
                     .environmentObject(calenarManager)
                     .environmentObject(musicManager)
 
@@ -114,9 +108,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     window.contentView = NSHostingView(
                         rootView: ContentView()
                             .environmentObject(viewModel)
-                            .environmentObject(focusManager)
-                            .environmentObject(recordManager)
-                            .environmentObject(timerManager)
                             .environmentObject(calenarManager)
                             .environmentObject(musicManager)
 
