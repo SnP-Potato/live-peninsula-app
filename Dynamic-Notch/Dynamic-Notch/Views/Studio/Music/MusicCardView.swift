@@ -111,6 +111,7 @@ struct MusicCardView: View {
             }
             
             Spacer()
+
             
             MusicProgressBar(musicManager: _musicManager)
         }

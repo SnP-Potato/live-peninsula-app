@@ -94,7 +94,7 @@ class MusicManager: ObservableObject {
     }
     
     private func startPeriodicUpdates() {
-        updateTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+        updateTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             
             // MediaRemote에서 정보 업데이트 (5초마다)

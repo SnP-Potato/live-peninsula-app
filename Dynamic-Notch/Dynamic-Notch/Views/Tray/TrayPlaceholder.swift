@@ -19,7 +19,6 @@ struct TrayPlaceholder: View {
             Spacer()
                 .frame(width: 15)
             
-            
             HStack(spacing: 10) {
                 //airdrop
                 RoundedRectangle(cornerRadius: 12)

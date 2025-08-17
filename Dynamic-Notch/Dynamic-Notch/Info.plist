@@ -9,7 +9,7 @@
 	</dict>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>요청을 권합니다</string>
-	<key>SUEnable</key>
+	<key>CFBundleIdentifier</key>
 	<string></string>
 	<key>UTImportedTypeDeclarations</key>
 	<array>

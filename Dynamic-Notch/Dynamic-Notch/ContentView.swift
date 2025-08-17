@@ -95,7 +95,8 @@ struct ContentView: View {
         }
         // 드래그 시 탭 전환
         .onChange(of: isDropTargeted) { _, isDragging in
-            if isDragging {
+            
+if isDragging {
                 print(" 드래그 시작 - Tray 탭으로 전환")
                 currentTab = .tray
             }

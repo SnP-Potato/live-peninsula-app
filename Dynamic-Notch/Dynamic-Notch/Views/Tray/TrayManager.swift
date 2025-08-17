@@ -11,6 +11,7 @@ import SwiftUI
 import Foundation
 import AppKit
 import UniformTypeIdentifiers
+import QuickLook
 
 class TrayManager: ObservableObject {
     
@@ -79,13 +80,12 @@ class TrayManager: ObservableObject {
             try FileManager.default.copyItem(at: source, to: copiedURL)
             print("\(uniqueFileName)가 trayStorage에 복사됨")
             
-            // 썸네일 생성 호출 추가 (macOS 15 Beta 호환)
             generateThumbnail(for: copiedURL) { [weak self] thumbnailData in
                 let trayFile = TrayFile(
                     id: UUID(),
                     fileName: uniqueFileName,
                     fileExtension: (uniqueFileName as NSString).pathExtension,
-                    thumbnailData: thumbnailData // 🎯 썸네일 데이터 설정!
+                    thumbnailData: thumbnailData //
                 )
                 
                 DispatchQueue.main.async {
@@ -165,66 +165,99 @@ class TrayManager: ObservableObject {
     // macOS 15 Beta 호환 썸네일 생성 함수
     func generateThumbnail(for fileURL: URL, completion: @escaping (Data?) -> Void) {
         // QuickLook API가 베타에서 문제가 있을 수 있으므로 NSWorkspace를 사용한 대안
+//        DispatchQueue.global(qos: .userInitiated).async {
+//            let thumbnailData = self.createThumbnailUsingNSWorkspace(for: fileURL)
+//            DispatchQueue.main.async {
+//                completion(thumbnailData)
+//            }
+//        }
         DispatchQueue.global(qos: .userInitiated).async {
-            let thumbnailData = self.createThumbnailUsingNSWorkspace(for: fileURL)
-            DispatchQueue.main.async {
-                completion(thumbnailData)
+                // 🔥 이제 generateAdvancedThumbnail을 실제로 사용!
+                self.generateAdvancedThumbnail(for: fileURL, completion: completion)
             }
-        }
     }
     
     // NSWorkspace를 사용한 안전한 썸네일 생성
     private func createThumbnailUsingNSWorkspace(for fileURL: URL) -> Data? {
-        let targetSize = CGSize(width: 100, height: 100)
+        let targetSize = CGSize(width: 128, height: 128) // 크기 통일
         
-        // 1. 파일 아이콘 얻기
+        print("🔧 NSWorkspace 썸네일 생성: \(fileURL.lastPathComponent)")
+        
+        // 파일 아이콘 얻기
         let icon = NSWorkspace.shared.icon(forFile: fileURL.path)
         
-        // 2. 이미지 크기 조정
+        // 이미지 크기 조정
         let resizedIcon = NSImage(size: targetSize)
         resizedIcon.lockFocus()
         icon.draw(in: NSRect(origin: .zero, size: targetSize))
         resizedIcon.unlockFocus()
         
-        // 3. NSImage를 Data로 변환
-        guard let cgImage = resizedIcon.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+        // PNG 데이터로 변환
+        return convertImageToPNG(resizedIcon)
+    }
+    
+    private func convertImageToPNG(_ image: NSImage) -> Data? {
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            print("❌ CGImage 변환 실패")
             return nil
         }
         
         let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
+        bitmapRep.size = image.size
+        
         return bitmapRep.representation(using: .png, properties: [:])
     }
     
     // QuickLook을 사용한 고급 썸네일 생성 (macOS 15에서 작동할 경우)
-    @available(macOS 10.15, *)
     private func generateAdvancedThumbnail(for fileURL: URL, completion: @escaping (Data?) -> Void) {
-        // QuickLookThumbnailing이 가능한 경우에만 사용
-        guard Bundle(identifier: "com.apple.QuickLookThumbnailing") != nil else {
-            // QuickLook이 없으면 기본 방법 사용
-            completion(createThumbnailUsingNSWorkspace(for: fileURL))
-            return
-        }
+        print("🔍 고급 썸네일 생성 시작: \(fileURL.lastPathComponent)")
+        print("   - 파일 존재: \(FileManager.default.fileExists(atPath: fileURL.path))")
+        print("   - 파일 타입: \(fileURL.pathExtension)")
         
-        // 동적으로 QuickLook 클래스 로드 시도
+        // macOS 10.15 이상에서 QuickLook 사용
         if #available(macOS 10.15, *) {
-            // 런타임에 클래스 존재 여부 확인
-            if let qlGeneratorClass = NSClassFromString("QLThumbnailGenerator") {
-                // QuickLook 사용 가능
-                useQuickLookThumbnailing(for: fileURL, completion: completion)
-            } else {
-                // QuickLook 사용 불가, 대안 사용
-                completion(createThumbnailUsingNSWorkspace(for: fileURL))
+            useQuickLookThumbnailing(for: fileURL) { thumbnailData in
+                if let data = thumbnailData {
+                    completion(data)
+                } else {
+                    print("⚠️ QuickLook 실패, NSWorkspace로 재시도")
+                    completion(self.createThumbnailUsingNSWorkspace(for: fileURL))
+                }
             }
         } else {
+            // 구버전 macOS에서는 바로 NSWorkspace 사용
+            print("📱 구버전 macOS, NSWorkspace 사용")
             completion(createThumbnailUsingNSWorkspace(for: fileURL))
         }
     }
     
-    // QuickLook API 사용 (조건부)
-    @available(macOS 10.15, *)
+    // QuickLook API 사용 새로 추가된거
     private func useQuickLookThumbnailing(for fileURL: URL, completion: @escaping (Data?) -> Void) {
-        // 이 함수는 QuickLook이 정상 작동할 때만 호출됨
-        // 실제 구현은 import가 성공할 때만 활성화
+        let thumbnailSize = CGSize(width: 70, height: 80)
+        
+        print("🔍 QuickLook API 시도: \(fileURL.lastPathComponent)")
+        
+        // QuickLook의 QLThumbnailImageCreate 사용
+        if let thumbnail = QLThumbnailImageCreate(
+            kCFAllocatorDefault,
+            fileURL as CFURL,
+            thumbnailSize,
+            nil
+        )?.takeRetainedValue() {
+            
+            // CGImage를 NSImage로 변환
+            let nsImage = NSImage(cgImage: thumbnail, size: thumbnailSize)
+            
+            // PNG 데이터로 변환
+            if let pngData = convertImageToPNG(nsImage) {
+                print("✅ QuickLook 썸네일 성공: \(fileURL.lastPathComponent)")
+                completion(pngData)
+                return
+            }
+        }
+        
+        print("❌ QuickLook 실패, NSWorkspace 사용: \(fileURL.lastPathComponent)")
+        // QuickLook 실패시 NSWorkspace 사용
         completion(createThumbnailUsingNSWorkspace(for: fileURL))
     }
     
@@ -243,4 +276,3 @@ class TrayManager: ObservableObject {
     }
 }
 
-// TrayFile은 별도 파일에 정의되어 있음
