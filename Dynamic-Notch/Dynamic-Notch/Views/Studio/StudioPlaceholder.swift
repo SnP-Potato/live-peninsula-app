@@ -10,7 +10,7 @@ import SwiftUI
 struct StudioPlaceholder: View {
     @State private var musicCardclick: Bool = false
     @EnvironmentObject var calendarManager: CalendarManager
-    @EnvironmentObject var musicManager: MusicManager
+    @ObservedObject var musicManager = MusicManager.shared
     
     var body: some View {
         HStack(spacing: 0) {
@@ -26,7 +26,7 @@ struct StudioPlaceholder: View {
                 // 새로운 스마트 진행바
 //                MusicProgressBar(musicManager: _musicManager)
             }
-            .frame(width: 110, height: 120)
+            .frame(width: 100, height: 120)
             .padding(.bottom, 12)
             
             Spacer()
@@ -36,7 +36,7 @@ struct StudioPlaceholder: View {
             VStack(alignment: .leading, spacing: 0) {
                 CalendarView()
             }
-            .frame(width: 170, height: 100, alignment: .center)
+            .frame(width: 170, height: 130, alignment: .center)
             
             Spacer()
                 .frame(width: 18)

@@ -9,7 +9,8 @@ import SwiftUI
 
 struct MusicCardView: View {
     @Binding var musicCardclick: Bool
-    @ObservedObject var musicManager = MusicManager.shared
+    @EnvironmentObject var musicManager: MusicManager
+    
     
     var body: some View {
         ZStack {
@@ -111,9 +112,11 @@ struct MusicCardView: View {
             }
             
             Spacer()
-
+            
             
             MusicProgressBar()
+                .environmentObject(musicManager)
+                
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 6)
@@ -151,16 +154,10 @@ struct MusicCardView: View {
                 // 실제 앱 아이콘 사용
                 AppIconView(bundleIdentifier: musicManager.bundleIdentifier)
             } else {
-                // 기본 음악 아이콘
-//                Image(systemName: "app.fill")
-//                    .font(.system(size: 12, weight: .bold))
-//                    .foregroundColor(.white)
-//                    .frame(width: 22, height: 22)
-//                    .background(Circle().fill(.black.opacity(0.7)))
             }
         }
         .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
-        .offset(x: 40, y: 40)
+        .offset(x: 44, y: 45)
         .transition(.scale.combined(with: .opacity))
     }
 }
@@ -176,7 +173,7 @@ struct AppIconView: View {
                 if let icon = appIcon {
                     Image(nsImage: icon)
                         .resizable()
-                        .frame(width: 22, height: 22)
+                        .frame(width: 25, height: 25)
                         .clipShape(RoundedRectangle(cornerRadius: 5))
                 } else {
                     // 로딩 중이거나 아이콘을 찾을 수 없을 때

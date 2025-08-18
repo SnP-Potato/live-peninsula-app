@@ -83,7 +83,7 @@ struct SwipeableDateSelector: View {
             .frame(width: 90, height: 60)
             
             Spacer()
-                .frame(height: 10)
+                .frame(height: 20)
         }
         .frame(width: 60, height: 130)
         .sensoryFeedback(.impact(flexibility: .soft), trigger: hapticFeedback)
@@ -231,7 +231,7 @@ struct CalendarView: View {
             }
             .frame(width: 90)
         }
-        .frame(width: 170, height: 100)
+        .frame(width: 170, height: 130)
         .onChange(of: selectedDate) { _, newDate in
             // CalendarManager의 updateFocusDate 사용
             calendarManager.updateFocusDate(newDate)

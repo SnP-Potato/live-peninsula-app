@@ -59,6 +59,13 @@
 //    
 //}
 
+//
+//  MusicManager.swift
+//  Dynamic-Notch
+//
+//  Created by PeterPark on 7/14/25.
+//
+
 import Foundation
 import SwiftUI
 import Combine
@@ -82,13 +89,15 @@ class MusicManager: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var updateTimer: Timer?
     private var lastArtworkData: Data? = nil
+    private var playBackManager: PlaybackManager?
     
-    // 시간 추적을 위한 새로운 속성들
+    // ✅ boringNotch 스타일 시간 추적을 위한 속성들
     private var playStartTime: Date = Date()
     private var pausedTime: Double = 0
     private var isTimerBasedUpdate = false
     
     private init() {
+        self.playBackManager = PlaybackManager()
         setupMediaRemote()
         startPeriodicUpdates()
     }
@@ -103,37 +112,47 @@ class MusicManager: ObservableObject {
                 self.mediaController?.updatePlayingState()
             }
             
-            // 재생 중일 때만 내부 시간 업데이트
+            // ✅ boringNotch 방식: 재생 중일 때만 내부 시간 업데이트
             if self.isPlaying {
                 self.updateInternalTime()
             }
         }
     }
     
+    // ✅ boringNotch 방식: 내부 시간 업데이트 로직
     private func updateInternalTime() {
         guard isPlaying && duration > 0 else { return }
         
         // 재생 시작 시간부터 경과된 시간 계산
-        let elapsed = Date().timeIntervalSince(playStartTime) 
+        let elapsed = Date().timeIntervalSince(playStartTime)
         let newTime = pausedTime + elapsed
         
         // 범위 체크 및 업데이트
         if newTime <= duration && newTime >= 0 {
             isTimerBasedUpdate = true
             currentTime = newTime
+            updateLastUpdated()  // ✅ lastUpdated 업데이트
             isTimerBasedUpdate = false
         } else if newTime > duration {
-            // 곡이 끝났을 때
+            // 곡이 끝났을 때는 시간만 제한하고 재생 상태는 건드리지 않음
             isTimerBasedUpdate = true
             currentTime = duration
-            isPlaying = false
+            updateLastUpdated()  // ✅ lastUpdated 업데이트
             isTimerBasedUpdate = false
+            
+            // 실제 미디어 상태 확인 요청
+            print("🎵 곡 끝 도달 - 실제 재생 상태 확인 중...")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                self?.mediaController?.updateNowPlayingInfo()
+            }
         }
     }
     
+    // ✅ boringNotch 방식: 시간 추적 재설정
     private func resetTimeTracking() {
         playStartTime = Date()
         pausedTime = currentTime
+        updateLastUpdated()
     }
     
     deinit {
@@ -172,7 +191,7 @@ class MusicManager: ObservableObject {
             }
             .store(in: &cancellables)
             
-            
+        // ✅ boringNotch 방식: 재생 상태 변경 시 시간 기준점 업데이트
         controller.$isPlaying
             .receive(on: DispatchQueue.main)
             .sink { [weak self] remoteIsPlaying in
@@ -186,20 +205,19 @@ class MusicManager: ObservableObject {
                         self.isPlaying = remoteIsPlaying
                     }
                     
-                    // 재생/정지 상태 변경 시 시간 추적 재설정
+                    // ✅ boringNotch 방식: 재생/정지 상태 변경 시 시간 기준점 업데이트
                     if remoteIsPlaying {
                         self.resetTimeTracking()
                         print("▶️ 재생 시작: \(self.currentTime)초부터")
                     } else {
                         self.pausedTime = self.currentTime
+                        self.updateLastUpdated()
                         print("⏸️ 정지: \(self.currentTime)초에서 정지")
                     }
-                    
-                    self.updateLastUpdated()
                 }
             }
             .store(in: &cancellables)
-            
+        
         controller.$duration
             .receive(on: DispatchQueue.main)
             .sink { [weak self] duration in
@@ -222,11 +240,31 @@ class MusicManager: ObservableObject {
             }
             .store(in: &cancellables)
             
-        // 앨범 아트 업데이트 - 개선된 버전
+        // 앨범 아트 업데이트
         controller.$albumArtwork
             .receive(on: DispatchQueue.main)
             .sink { [weak self] artworkData in
                 self?.updateAlbumArt(artworkData)
+            }
+            .store(in: &cancellables)
+            
+        // ✅ 실시간 재생 시간 동기화 (큰 변화만)
+        controller.$currentTime
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] remoteCurrentTime in
+                guard let self = self else { return }
+                
+                // MediaRemote에서 받은 시간과 내부 시간이 크게 다를 때만 동기화
+                if abs(remoteCurrentTime - self.currentTime) > 2.0 {
+                    print("🔄 실시간 재생 시간 동기화: \(self.formatTime(self.currentTime)) -> \(self.formatTime(remoteCurrentTime))")
+                    
+                    // 내부 시간 추적 시스템을 MediaRemote 시간으로 동기화
+                    self.isTimerBasedUpdate = true
+                    self.currentTime = remoteCurrentTime
+                    self.pausedTime = remoteCurrentTime
+                    self.resetTimeTracking()
+                    self.isTimerBasedUpdate = false
+                }
             }
             .store(in: &cancellables)
             
@@ -272,6 +310,7 @@ class MusicManager: ObservableObject {
         updateLastUpdated()
     }
     
+    // ✅ boringNotch 방식: lastUpdated 업데이트 (매우 중요!)
     private func updateLastUpdated() {
         lastUpdated = Date()
     }
@@ -322,18 +361,42 @@ class MusicManager: ObservableObject {
         }
     }
     
+    // ✅ boringNotch 방식: seek 구현
     func seek(to time: TimeInterval) {
-        mediaController?.seek(to: time)
+        print("🎯 MusicManager.seek 호출됨: \(time)초")
         
-        // 시크 시 시간 추적 재설정
+        guard duration > 0 else {
+            print("❌ duration이 0이어서 seek 불가")
+            return
+        }
+        
+        guard time >= 0 && time <= duration else {
+            print("❌ seek 시간이 범위를 벗어남: \(time), duration: \(duration)")
+            return
+        }
+        
+        // PlaybackManager를 통한 seek 실행
+        if let playBackManager = playBackManager {
+            print("🎯 PlaybackManager를 통한 seek 실행...")
+            playBackManager.seekTrack(to: time)
+        } else {
+            print("❌ PlaybackManager가 없음")
+            return
+        }
+        
+        // ✅ boringNotch 방식: seek 후 즉시 UI 업데이트 및 시간 추적 재설정
         isTimerBasedUpdate = true
         currentTime = time
         pausedTime = time
         resetTimeTracking()
         isTimerBasedUpdate = false
         
-        updateLastUpdated()
-        print("🎯 시크: \(time)초로 이동")
+        print("🎯 MusicManager seek 완료: \(formatTime(time))")
+        
+        // seek 후 약간의 지연을 두고 실제 상태 확인
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            self?.mediaController?.updateNowPlayingInfo()
+        }
     }
     
     // 강제로 정보 업데이트 (디버깅용)
