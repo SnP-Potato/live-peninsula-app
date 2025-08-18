@@ -175,25 +175,27 @@ class MusicManager: ObservableObject {
             
         controller.$isPlaying
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isPlaying in
+            .sink { [weak self] remoteIsPlaying in
                 guard let self = self else { return }
                 
-                if isPlaying != self.isPlaying {
-                    self.isPlaying = isPlaying
+                // 실제 미디어 상태와 UI 상태가 다를 때만 동기화
+                if remoteIsPlaying != self.isPlaying {
+                    print("🔄 실제 재생 상태와 UI 상태 동기화: UI(\(self.isPlaying)) -> 실제(\(remoteIsPlaying))")
+                    
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        self.isPlaying = remoteIsPlaying
+                    }
                     
                     // 재생/정지 상태 변경 시 시간 추적 재설정
-                    if isPlaying {
-                        // 재생 시작
+                    if remoteIsPlaying {
                         self.resetTimeTracking()
                         print("▶️ 재생 시작: \(self.currentTime)초부터")
                     } else {
-                        // 정지 시 현재 시간을 pausedTime에 저장
                         self.pausedTime = self.currentTime
                         print("⏸️ 정지: \(self.currentTime)초에서 정지")
                     }
                     
                     self.updateLastUpdated()
-                    print("⏯️ 재생 상태 업데이트: \(isPlaying ? "재생" : "정지")")
                 }
             }
             .store(in: &cancellables)
@@ -338,6 +340,7 @@ class MusicManager: ObservableObject {
     func forceUpdateInfo() {
         print("🔄 강제 정보 업데이트 요청")
         mediaController?.updateNowPlayingInfo()
+        mediaController?.updatePlayingState()
     }
     
     // MARK: - Computed Properties

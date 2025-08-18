@@ -229,7 +229,7 @@ struct CalendarView: View {
                     }
                 }
             }
-            .frame(width: 100)
+            .frame(width: 90)
         }
         .frame(width: 170, height: 100)
         .onChange(of: selectedDate) { _, newDate in

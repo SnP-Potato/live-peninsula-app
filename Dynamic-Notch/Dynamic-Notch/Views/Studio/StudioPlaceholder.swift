@@ -27,6 +27,7 @@ struct StudioPlaceholder: View {
 //                MusicProgressBar(musicManager: _musicManager)
             }
             .frame(width: 110, height: 120)
+            .padding(.bottom, 12)
             
             Spacer()
                 .frame(width: 18)
@@ -40,6 +41,7 @@ struct StudioPlaceholder: View {
             Spacer()
                 .frame(width: 18)
             
+            // MARK: 액션버튼
             Rectangle()
                 .fill(.white.opacity(0.1))
                 .cornerRadius(12)
@@ -48,6 +50,9 @@ struct StudioPlaceholder: View {
                 .overlay{
                     ShortcutWheelPicker()
                 }
+            
+            Spacer()
+                .frame(width: 18)
         }
         .frame(width: 500, height: 130)
         .padding(.vertical, 8)

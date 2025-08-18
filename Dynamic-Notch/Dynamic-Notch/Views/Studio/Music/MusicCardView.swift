@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MusicCardView: View {
     @Binding var musicCardclick: Bool
-    @EnvironmentObject var musicManager: MusicManager
+    @ObservedObject var musicManager = MusicManager.shared
     
     var body: some View {
         ZStack {
@@ -113,7 +113,7 @@ struct MusicCardView: View {
             Spacer()
 
             
-            MusicProgressBar(musicManager: _musicManager)
+            MusicProgressBar()
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 6)
