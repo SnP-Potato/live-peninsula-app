@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+struct CurrentTabKey: EnvironmentKey {
+    static let defaultValue: NotchMainFeaturesView = .studio
+}
+
+extension EnvironmentValues {
+    var currentTab: NotchMainFeaturesView {
+        get { self[CurrentTabKey.self] }
+        set { self[CurrentTabKey.self] = newValue }
+    }
+}
+
+
 struct HomeView: View {
     // 6/28 @State에서 @Binding로 변경 [ContentView에서 제이하기 위해]
     @Binding var currentTab: NotchMainFeaturesView
@@ -78,6 +90,10 @@ struct HomeView: View {
         .frame(width: 540, height: 175)
     }
 }
+
+
+
+
 
 #Preview {
     HomeView(currentTab: .constant(.studio))

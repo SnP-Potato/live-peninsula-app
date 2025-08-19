@@ -5,15 +5,21 @@
 //  Created by PeterPark on 7/25/25.
 //
 
+
 import SwiftUI
 
 struct MusicCardView: View {
     @Binding var musicCardclick: Bool
     @EnvironmentObject var musicManager: MusicManager
-    
+    @State private var avgColor: NSColor = .gray  // ✅ 기본 색상을 회색으로 변경
     
     var body: some View {
         ZStack {
+            // ✅ boringNotch 스타일: 배경 블러 효과
+            if musicManager.hasActiveMedia && musicManager.albumArt.size.width > 0 {
+                backgroundBlurEffect
+            }
+            
             // 배경 앨범 이미지 - 실제 앨범 아트 사용
             Group {
                 if musicManager.hasActiveMedia && musicManager.albumArt.size.width > 0 {
@@ -21,20 +27,22 @@ struct MusicCardView: View {
                     Image(nsImage: musicManager.albumArt)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 110, height: 110)
+                        .frame(width: 120, height: 110)
                         .clipped()
                 } else {
                     // 기본 이미지 또는 앨범 아트가 없을 때
                     Image("44")
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 110, height: 110)
-//                        .clipped()
-                        
+                        .frame(width: 120, height: 110)
                 }
             }
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .animation(.easeInOut(duration: 0.3), value: musicManager.albumArt)
+            .onChange(of: musicManager.albumArt) { _, newAlbumArt in
+                // ✅ 앨범 아트 변경 시 즉시 색상 추출
+                extractAverageColorImmediately(from: newAlbumArt)
+            }
             
             if musicCardclick {
                 if #available(macOS 26.0, *) {
@@ -57,12 +65,22 @@ struct MusicCardView: View {
                         removal: .scale(scale: 1.1).combined(with: .opacity)
                     ))
                     
-                }else {
-                    musicControlInterface
+                } else {
+                    // ✅ macOS 26.0 미만에서도 블러 효과 적용
+                    ZStack {
+                        // 배경을 더 어둡게 처리
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(.black.opacity(0.4))
+                        
+                        musicControlInterface
+                    }
+                    .frame(width: 110, height: 110)
+                    .transition(.asymmetric(
+                        insertion: .scale(scale: 0.9).combined(with: .opacity),
+                        removal: .scale(scale: 1.1).combined(with: .opacity)
+                    ))
                 }
-                
             }
-            
             
             // 앨범 아트 위 작은 앱 아이콘
             if !musicCardclick {
@@ -72,6 +90,29 @@ struct MusicCardView: View {
         .frame(width: 110, height: 110)
         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: musicCardclick)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: musicManager.isPlaying)
+        .onAppear {
+            // ✅ 초기 로드 시 즉시 색상 추출
+            extractAverageColorImmediately(from: musicManager.albumArt)
+        }
+    }
+    
+    // ✅ 수정된 배경 블러 효과 (범위 축소)
+    @ViewBuilder
+    private var backgroundBlurEffect: some View {
+        Color.clear
+            .aspectRatio(1, contentMode: .fit)
+            .background(
+                Image(nsImage: musicManager.albumArt)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            )
+            .clipped()
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .scaleEffect(x: 1.00, y: 0.90)  // ✅ 확대 효과 축소 (1.3, 1.4 → 1.1, 1.2)
+            .rotationEffect(.degrees(0))  // ✅ 회전 각도 축소 (92도 → 45도)
+            .blur(radius: 12)  // ✅ 블러 강도 축소 (35 → 20)
+            .opacity(min(0.3, 1 - max(getBrightness(from: musicManager.albumArt), 0.5)))  // ✅ 투명도 조정
+            .animation(.smooth, value: musicManager.albumArt)
     }
     
     // MARK: - 음악 제어 인터페이스 (실제 데이터 사용)
@@ -113,10 +154,8 @@ struct MusicCardView: View {
             
             Spacer()
             
-            
             MusicProgressBar()
                 .environmentObject(musicManager)
-                
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 6)
@@ -130,15 +169,30 @@ struct MusicCardView: View {
         action: @escaping () -> Void = {}
     ) -> some View {
         Button(action: action) {
-            LiquidGlassBackground(
-                variant: .v18,
-                cornerRadius: isMain ? 15 : 12
-            ) {
-                Image(systemName: icon)
-                    .font(.system(size: size, weight: .bold))
-                    .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.9), radius: 1, x: 0, y: 1)
-                    .frame(width: isMain ? 28 : 24, height: isMain ? 28 : 24)
+            if #available(macOS 26.0, *) {
+                LiquidGlassBackground(
+                    variant: .v18,
+                    cornerRadius: isMain ? 15 : 12
+                ) {
+                    Image(systemName: icon)
+                        .font(.system(size: size, weight: .bold))
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.9), radius: 1, x: 0, y: 1)
+                        .frame(width: isMain ? 28 : 24, height: isMain ? 28 : 24)
+                }
+            } else {
+                // ✅ LiquidGlass 없을 때 대체 디자인
+                ZStack {
+                    RoundedRectangle(cornerRadius: isMain ? 15 : 12)
+                        .fill(.white.opacity(0.2))
+                        .backdrop(blur: 10)
+                    
+                    Image(systemName: icon)
+                        .font(.system(size: size, weight: .bold))
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.9), radius: 1, x: 0, y: 1)
+                }
+                .frame(width: isMain ? 28 : 24, height: isMain ? 28 : 24)
             }
         }
         .buttonStyle(PlainButtonStyle())
@@ -159,6 +213,154 @@ struct MusicCardView: View {
         .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
         .offset(x: 44, y: 45)
         .transition(.scale.combined(with: .opacity))
+    }
+    
+    // MARK: - ✅ 즉시 색상 추출 (애니메이션 없이)
+    private func extractAverageColorImmediately(from image: NSImage) {
+        guard image.size.width > 0 else {
+            // 이미지가 없을 때는 회색으로 설정
+            avgColor = .gray
+            return
+        }
+        
+        // ✅ 즉시 색상 추출 및 적용
+        self.calculateAverageColor(from: image) { color in
+            DispatchQueue.main.async {
+                // 애니메이션 없이 즉시 적용
+                self.avgColor = color ?? self.getDefaultColorFromImage(image)
+            }
+        }
+    }
+    
+    // ✅ 이미지에서 기본 색상 추출 (더 간단한 방법)
+    private func getDefaultColorFromImage(_ image: NSImage) -> NSColor {
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            return .gray
+        }
+        
+        // 이미지 중앙의 픽셀 색상 추출
+        let width = cgImage.width
+        let height = cgImage.height
+        let centerX = width / 2
+        let centerY = height / 2
+        
+        guard let context = CGContext(data: nil,
+                                      width: 1,
+                                      height: 1,
+                                      bitsPerComponent: 8,
+                                      bytesPerRow: 4,
+                                      space: CGColorSpaceCreateDeviceRGB(),
+                                      bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
+            return .gray
+        }
+        
+        context.draw(cgImage, in: CGRect(x: -centerX, y: -centerY, width: width, height: height))
+        
+        guard let data = context.data else {
+            return .gray
+        }
+        
+        let pointer = data.bindMemory(to: UInt32.self, capacity: 1)
+        let color = pointer[0]
+        
+        let red = CGFloat(color & 0xFF) / 255.0
+        let green = CGFloat((color >> 8) & 0xFF) / 255.0
+        let blue = CGFloat((color >> 16) & 0xFF) / 255.0
+        
+        return NSColor(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+    
+    private func calculateAverageColor(from image: NSImage, completion: @escaping (NSColor?) -> Void) {
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            completion(nil)
+            return
+        }
+        
+        // ✅ 성능을 위해 이미지 크기 축소
+        let sampleWidth = min(cgImage.width, 100)
+        let sampleHeight = min(cgImage.height, 100)
+        let totalPixels = sampleWidth * sampleHeight
+        
+        guard let context = CGContext(data: nil,
+                                      width: sampleWidth,
+                                      height: sampleHeight,
+                                      bitsPerComponent: 8,
+                                      bytesPerRow: sampleWidth * 4,
+                                      space: CGColorSpaceCreateDeviceRGB(),
+                                      bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
+            completion(nil)
+            return
+        }
+        
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: sampleWidth, height: sampleHeight))
+        
+        guard let data = context.data else {
+            completion(nil)
+            return
+        }
+        
+        let pointer = data.bindMemory(to: UInt32.self, capacity: totalPixels)
+        
+        var totalRed: UInt64 = 0
+        var totalGreen: UInt64 = 0
+        var totalBlue: UInt64 = 0
+        
+        for i in 0..<totalPixels {
+            let color = pointer[i]
+            totalRed += UInt64(color & 0xFF)
+            totalGreen += UInt64((color >> 8) & 0xFF)
+            totalBlue += UInt64((color >> 16) & 0xFF)
+        }
+        
+        let averageRed = CGFloat(totalRed) / CGFloat(totalPixels) / 255.0
+        let averageGreen = CGFloat(totalGreen) / CGFloat(totalPixels) / 255.0
+        let averageBlue = CGFloat(totalBlue) / CGFloat(totalPixels) / 255.0
+        
+        // ✅ 더 자연스러운 색상 처리
+        let finalColor = NSColor(red: averageRed, green: averageGreen, blue: averageBlue, alpha: 1.0)
+        completion(finalColor)
+    }
+    
+    private func getBrightness(from image: NSImage) -> CGFloat {
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            return 0
+        }
+        
+        // ✅ 성능을 위해 더 작은 크기로 샘플링
+        let width = min(cgImage.width, 20)
+        let height = min(cgImage.height, 20)
+        
+        guard let context = CGContext(data: nil,
+                                      width: width,
+                                      height: height,
+                                      bitsPerComponent: 8,
+                                      bytesPerRow: width * 4,
+                                      space: CGColorSpaceCreateDeviceRGB(),
+                                      bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
+            return 0
+        }
+        
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
+        
+        guard let data = context.data else {
+            return 0
+        }
+        
+        let pointer = data.bindMemory(to: UInt32.self, capacity: width * height)
+        var totalBrightness: CGFloat = 0
+        
+        for i in 0..<(width * height) {
+            let color = pointer[i]
+            let red = CGFloat(color & 0xFF) / 255.0
+            let green = CGFloat((color >> 8) & 0xFF) / 255.0
+            let blue = CGFloat((color >> 16) & 0xFF) / 255.0
+            
+            // 인지 밝기 공식
+            let brightness = (0.2126 * red + 0.7152 * green + 0.0722 * blue)
+            totalBrightness += brightness
+        }
+        
+        return totalBrightness / CGFloat(width * height)
     }
 }
 
@@ -218,6 +420,13 @@ struct AppIconView: View {
     }
 }
 
+// ✅ backdrop 수정자 추가 (LiquidGlass 대체용)
+extension View {
+    func backdrop(blur radius: CGFloat) -> some View {
+        self.background(.ultraThinMaterial)
+    }
+}
+
 #Preview("Music Card with MediaRemote") {
     ZStack {
         VStack(spacing: 30) {
@@ -235,3 +444,6 @@ struct AppIconView: View {
     .frame(width: 600, height: 400)
     .background(.black)
 }
+
+
+
