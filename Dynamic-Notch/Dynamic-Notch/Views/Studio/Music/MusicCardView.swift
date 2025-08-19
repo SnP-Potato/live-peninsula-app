@@ -6,6 +6,14 @@
 //
 
 
+//
+//  MusicCardView.swift
+//  Dynamic-Notch
+//
+//  Created by PeterPark on 7/25/25.
+//
+
+
 import SwiftUI
 
 struct MusicCardView: View {
@@ -15,7 +23,7 @@ struct MusicCardView: View {
     
     var body: some View {
         ZStack {
-            // ✅ boringNotch 스타일: 배경 블러 효과
+            
             if musicManager.hasActiveMedia && musicManager.albumArt.size.width > 0 {
                 backgroundBlurEffect
             }
@@ -40,7 +48,7 @@ struct MusicCardView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .animation(.easeInOut(duration: 0.3), value: musicManager.albumArt)
             .onChange(of: musicManager.albumArt) { _, newAlbumArt in
-                // ✅ 앨범 아트 변경 시 즉시 색상 추출
+                //
                 extractAverageColorImmediately(from: newAlbumArt)
             }
             
@@ -59,22 +67,24 @@ struct MusicCardView: View {
                             musicControlInterface
                         }
                     }
-                    .frame(width: 110, height: 110)
+                    .frame(width: 120, height: 110)
                     .transition(.asymmetric(
                         insertion: .scale(scale: 0.9).combined(with: .opacity),
                         removal: .scale(scale: 1.1).combined(with: .opacity)
                     ))
                     
                 } else {
-                    // ✅ macOS 26.0 미만에서도 블러 효과 적용
+                    //
                     ZStack {
                         // 배경을 더 어둡게 처리
                         RoundedRectangle(cornerRadius: 12)
                             .fill(.black.opacity(0.4))
+                            .frame(width: 120, height: 110)
                         
                         musicControlInterface
+                    
                     }
-                    .frame(width: 110, height: 110)
+                    .frame(width: 120, height: 110)
                     .transition(.asymmetric(
                         insertion: .scale(scale: 0.9).combined(with: .opacity),
                         removal: .scale(scale: 1.1).combined(with: .opacity)
@@ -87,16 +97,16 @@ struct MusicCardView: View {
                 appIcon
             }
         }
-        .frame(width: 110, height: 110)
+        .frame(width: 120, height: 110)
         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: musicCardclick)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: musicManager.isPlaying)
         .onAppear {
-            // ✅ 초기 로드 시 즉시 색상 추출
+            
             extractAverageColorImmediately(from: musicManager.albumArt)
         }
     }
     
-    // ✅ 수정된 배경 블러 효과 (범위 축소)
+    
     @ViewBuilder
     private var backgroundBlurEffect: some View {
         Color.clear
@@ -108,10 +118,10 @@ struct MusicCardView: View {
             )
             .clipped()
             .clipShape(RoundedRectangle(cornerRadius: 12))
-            .scaleEffect(x: 1.00, y: 0.90)  // ✅ 확대 효과 축소 (1.3, 1.4 → 1.1, 1.2)
-            .rotationEffect(.degrees(0))  // ✅ 회전 각도 축소 (92도 → 45도)
-            .blur(radius: 12)  // ✅ 블러 강도 축소 (35 → 20)
-            .opacity(min(0.3, 1 - max(getBrightness(from: musicManager.albumArt), 0.5)))  // ✅ 투명도 조정
+            .scaleEffect(x: 1.00, y: 0.90)
+            .rotationEffect(.degrees(0))
+            .blur(radius: 12)
+            .opacity(min(0.3, 1 - max(getBrightness(from: musicManager.albumArt), 0.5)))  //
             .animation(.smooth, value: musicManager.albumArt)
     }
     
@@ -152,40 +162,44 @@ struct MusicCardView: View {
                 }
             }
             
+            
+            
             Spacer()
             
             MusicProgressBar()
                 .environmentObject(musicManager)
         }
+        
         .padding(.horizontal, 8)
         .padding(.vertical, 6)
     }
     
-    // MARK: - Real Glass 스타일 버튼
     private func realGlassControlButton(
         icon: String,
         size: CGFloat,
         isMain: Bool = false,
         action: @escaping () -> Void = {}
     ) -> some View {
-        Button(action: action) {
+        Group {
             if #available(macOS 26.0, *) {
-                LiquidGlassBackground(
-                    variant: .v18,
-                    cornerRadius: isMain ? 15 : 12
-                ) {
-                    Image(systemName: icon)
-                        .font(.system(size: size, weight: .bold))
-                        .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.9), radius: 1, x: 0, y: 1)
-                        .frame(width: isMain ? 28 : 24, height: isMain ? 28 : 24)
+                Button(action: action) {
+                    LiquidGlassBackground(
+                        variant: .v18,
+                        cornerRadius: isMain ? 15 : 12
+                    ) {
+                        Image(systemName: icon)
+                            .font(.system(size: size, weight: .bold))
+                            .foregroundColor(.white)
+                            .shadow(color: .black.opacity(0.9), radius: 1, x: 0, y: 1)
+                            .frame(width: isMain ? 28 : 24, height: isMain ? 28 : 24)
+                    }
                 }
+                .buttonStyle(PlainButtonStyle())
             } else {
-                // ✅ LiquidGlass 없을 때 대체 디자인
+                // ✅ Button 대신 직접 탭 제스처 사용
                 ZStack {
                     RoundedRectangle(cornerRadius: isMain ? 15 : 12)
                         .fill(.white.opacity(0.2))
-                        .backdrop(blur: 10)
                     
                     Image(systemName: icon)
                         .font(.system(size: size, weight: .bold))
@@ -193,9 +207,13 @@ struct MusicCardView: View {
                         .shadow(color: .black.opacity(0.9), radius: 1, x: 0, y: 1)
                 }
                 .frame(width: isMain ? 28 : 24, height: isMain ? 28 : 24)
+                .scaleEffect(isMain ? 1.05 : 1.0)
+                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: musicManager.isPlaying)
+                .onTapGesture {
+                    action()
+                }
             }
         }
-        .buttonStyle(PlainButtonStyle())
         .scaleEffect(isMain ? 1.05 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: musicManager.isPlaying)
     }
@@ -215,7 +233,7 @@ struct MusicCardView: View {
         .transition(.scale.combined(with: .opacity))
     }
     
-    // MARK: - ✅ 즉시 색상 추출 (애니메이션 없이)
+    // MARK: -
     private func extractAverageColorImmediately(from image: NSImage) {
         guard image.size.width > 0 else {
             // 이미지가 없을 때는 회색으로 설정
@@ -223,7 +241,7 @@ struct MusicCardView: View {
             return
         }
         
-        // ✅ 즉시 색상 추출 및 적용
+        //
         self.calculateAverageColor(from: image) { color in
             DispatchQueue.main.async {
                 // 애니메이션 없이 즉시 적용
@@ -232,7 +250,7 @@ struct MusicCardView: View {
         }
     }
     
-    // ✅ 이미지에서 기본 색상 추출 (더 간단한 방법)
+    //
     private func getDefaultColorFromImage(_ image: NSImage) -> NSColor {
         guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
             return .gray
@@ -276,7 +294,7 @@ struct MusicCardView: View {
             return
         }
         
-        // ✅ 성능을 위해 이미지 크기 축소
+        
         let sampleWidth = min(cgImage.width, 100)
         let sampleHeight = min(cgImage.height, 100)
         let totalPixels = sampleWidth * sampleHeight
@@ -316,7 +334,7 @@ struct MusicCardView: View {
         let averageGreen = CGFloat(totalGreen) / CGFloat(totalPixels) / 255.0
         let averageBlue = CGFloat(totalBlue) / CGFloat(totalPixels) / 255.0
         
-        // ✅ 더 자연스러운 색상 처리
+        
         let finalColor = NSColor(red: averageRed, green: averageGreen, blue: averageBlue, alpha: 1.0)
         completion(finalColor)
     }
@@ -326,7 +344,7 @@ struct MusicCardView: View {
             return 0
         }
         
-        // ✅ 성능을 위해 더 작은 크기로 샘플링
+        
         let width = min(cgImage.width, 20)
         let height = min(cgImage.height, 20)
         
@@ -420,7 +438,6 @@ struct AppIconView: View {
     }
 }
 
-// ✅ backdrop 수정자 추가 (LiquidGlass 대체용)
 extension View {
     func backdrop(blur radius: CGFloat) -> some View {
         self.background(.ultraThinMaterial)

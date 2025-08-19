@@ -26,7 +26,7 @@ struct StudioPlaceholder: View {
                 // 새로운 스마트 진행바
 //                MusicProgressBar(musicManager: _musicManager)
             }
-            .frame(width: 100, height: 120)
+            .frame(width: 120, height: 110)
             .padding(.bottom, 12)
             
             Spacer()
