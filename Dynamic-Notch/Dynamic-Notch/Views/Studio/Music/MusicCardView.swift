@@ -5,27 +5,19 @@
 //  Created by PeterPark on 7/25/25.
 //
 
-
-//
-//  MusicCardView.swift
-//  Dynamic-Notch
-//
-//  Created by PeterPark on 7/25/25.
-//
-
-
 import SwiftUI
 
 struct MusicCardView: View {
     @Binding var musicCardclick: Bool
     @EnvironmentObject var musicManager: MusicManager
-    @State private var avgColor: NSColor = .gray  // ✅ 기본 색상을 회색으로 변경
+    @State private var avgColor: NSColor = .gray  
     
     var body: some View {
         ZStack {
             
             if musicManager.hasActiveMedia && musicManager.albumArt.size.width > 0 {
                 backgroundBlurEffect
+                    
             }
             
             // 배경 앨범 이미지 - 실제 앨범 아트 사용
@@ -109,21 +101,56 @@ struct MusicCardView: View {
     
     @ViewBuilder
     private var backgroundBlurEffect: some View {
-        Color.clear
-            .aspectRatio(1, contentMode: .fit)
-            .background(
-                Image(nsImage: musicManager.albumArt)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            )
-            .clipped()
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .scaleEffect(x: 1.00, y: 0.90)
-            .rotationEffect(.degrees(0))
-            .blur(radius: 12)
-            .opacity(min(0.3, 1 - max(getBrightness(from: musicManager.albumArt), 0.5)))  //
-            .animation(.smooth, value: musicManager.albumArt)
+        ZStack {
+            // 첫 번째 레이어 - 기본 블러
+            Color.clear
+                .aspectRatio(1, contentMode: .fit)
+                .background(
+                    Image(nsImage: musicManager.albumArt)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                )
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .scaleEffect(x: 1.0, y: 1.0) // 더 크게 확대
+                .rotationEffect(.degrees(65))
+                .blur(radius: 25) // 블러 강도 증가
+                .opacity(min(0.6, 1 - max(getBrightness(from: musicManager.albumArt), 0.5)))
+            
+            // 두 번째 레이어 - 추가 글로우 효과
+            Color.clear
+                .aspectRatio(1, contentMode: .fit)
+                .background(
+                    Image(nsImage: musicManager.albumArt)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                )
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .scaleEffect(x: 1.0, y: 1.0) // 더욱 크게 확대
+                .rotationEffect(.degrees(-45)) // 다른 각도로 회전
+                .blur(radius: 35) // 더 큰 블러
+                .opacity(min(0.4, 1 - max(getBrightness(from: musicManager.albumArt), 0.6)))
+            
+            // 세 번째 레이어 - 색상 강조
+            Color.clear
+                .aspectRatio(1, contentMode: .fit)
+                .background(
+                    Image(nsImage: musicManager.albumArt)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                )
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .scaleEffect(x: 1.1, y: 1.1)
+                .blur(radius: 10)
+                .opacity(0.3)
+                .blendMode(.softLight) // 블렌드 모드로 색상 강조
+        }
+        .animation(.smooth(duration: 0.8), value: musicManager.albumArt)
+        
     }
+
     
     // MARK: - 음악 제어 인터페이스 (실제 데이터 사용)
     @ViewBuilder
@@ -218,6 +245,7 @@ struct MusicCardView: View {
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: musicManager.isPlaying)
     }
     
+    
     // MARK: - 앱 아이콘 (실제 앱 아이콘 표시)
     @ViewBuilder
     private var appIcon: some View {
@@ -229,7 +257,7 @@ struct MusicCardView: View {
             }
         }
         .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
-        .offset(x: 44, y: 45)
+        .offset(x: 50, y: 45)
         .transition(.scale.combined(with: .opacity))
     }
     

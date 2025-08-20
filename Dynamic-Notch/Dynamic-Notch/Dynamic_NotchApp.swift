@@ -32,6 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         
         NSApp.setActivationPolicy(.regular)
+        
         //  디버깅: 연결된 모든 모니터 정보 출력
         printAllScreensInfo()
 

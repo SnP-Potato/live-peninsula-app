@@ -22,9 +22,6 @@ struct StudioPlaceholder: View {
                     MusicCardView(musicCardclick: $musicCardclick)
                 })
                 .buttonStyle(PlainButtonStyle())
-                
-                // 새로운 스마트 진행바
-//                MusicProgressBar(musicManager: _musicManager)
             }
             .frame(width: 120, height: 110)
             .padding(.bottom, 12)
@@ -45,14 +42,14 @@ struct StudioPlaceholder: View {
             Rectangle()
                 .fill(.white.opacity(0.1))
                 .cornerRadius(12)
-                .frame(width: 130, height: 110)
+                .frame(width: 150, height: 110)
                 .opacity(0.5)
                 .overlay{
                     ShortcutWheelPicker()
                 }
             
-            Spacer()
-                .frame(width: 18)
+//            Spacer()
+//                .frame(width: 18)
         }
         .frame(width: 500, height: 130)
         .padding(.vertical, 8)

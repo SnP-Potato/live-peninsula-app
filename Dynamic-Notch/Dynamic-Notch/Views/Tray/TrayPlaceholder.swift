@@ -24,7 +24,7 @@ struct TrayPlaceholder: View {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(isDropTargeted ? .blue.opacity(0.2) : .white.opacity(0.1))
                     .opacity(0.5)
-                    .frame(width: 100)
+                    .frame(width: 110, height: 110)
                     .overlay {
                         VStack(spacing: 9) {
                             Image(systemName: "airplay.audio")
@@ -62,6 +62,7 @@ struct TrayPlaceholder: View {
                 RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(style: StrokeStyle(lineWidth: 4, dash: [10, 8]))
                     .foregroundStyle(.white.opacity(0.17))
+                    .frame(height: 110)
                     .overlay {
                         if trayManager.files.isEmpty {
                             VStack(spacing: 8) {
@@ -128,7 +129,7 @@ struct TrayPlaceholder: View {
             Spacer()
                 .frame(width: 10)
         }
-        .frame(width: 500, height: 100)
+        .frame(width: 500, height: 130)
         .padding(.horizontal, 8)
     }
 }
