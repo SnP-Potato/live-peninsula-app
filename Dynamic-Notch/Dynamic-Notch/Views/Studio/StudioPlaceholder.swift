@@ -28,10 +28,10 @@ struct StudioPlaceholder: View {
             .padding(.bottom, 12)
             
             Spacer()
-                .frame(width: 18)
+                .frame(width: 25)
             
             // MARK: 캘린더
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .center, spacing: 0) {
                 CalendarView()
             }
             .frame(width: 170, height: 130, alignment: .leading)

@@ -17,20 +17,49 @@ struct DatePickerConfiguration {
     let swipeThreshold: CGFloat = 50.0
 }
 
-// MARK: - 스와이프 가능한 날짜 선택기
+
+// MARK: - 톱니바퀴 날짜 선택기
 struct SwipeableDateSelector: View {
     @Binding var currentDate: Date
     @EnvironmentObject var calendarManager: CalendarManager
-    @State private var dragOffset: CGFloat = 0
-    @State private var isAnimating = false
+    @State private var isExpanded: Bool = false // 펼침 상태
+    @State private var selectedIndex: Int = 0
+    @State private var scrollPosition: Int?
     @State private var hapticFeedback = false
+    @State private var byClick: Bool = false
     
     private let config = DatePickerConfiguration()
+    
+    // 날짜 배열 생성 (과거 7일 + 오늘 + 미래 7일)
+    private var dateArray: [Date] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        var dates: [Date] = []
+        
+        // 과거 날짜들
+        for i in (1...config.pastDays).reversed() {
+            if let pastDate = calendar.date(byAdding: .day, value: -i, to: today) {
+                dates.append(pastDate)
+            }
+        }
+        
+        // 오늘
+        dates.append(today)
+        
+        // 미래 날짜들
+        for i in 1...config.futureDays {
+            if let futureDate = calendar.date(byAdding: .day, value: i, to: today) {
+                dates.append(futureDate)
+            }
+        }
+        
+        return dates
+    }
     
     var body: some View {
         VStack(spacing: 2) {
             // 월 표시
-            
             Text(calendarManager.formattedMonth.uppercased())
                 .font(.system(size: 19, weight: .black))
                 .foregroundColor(.white)
@@ -44,41 +73,23 @@ struct SwipeableDateSelector: View {
             Spacer()
                 .frame(height: 5)
             
-            // 스와이프 가능한 날짜/요일 영역
+            // 날짜 선택 영역
             ZStack {
-                GeometryReader { geometry in
-                    ZStack {
-                        // 이전 날짜 (왼쪽)
-                        if let previousDate = Calendar.current.date(byAdding: .day, value: -1, to: currentDate) {
-                            DateDisplayCard(date: previousDate)
-                                .offset(x: -geometry.size.width + dragOffset)
-                                .opacity(dragOffset > 20 ? min(dragOffset / 100, 1.0) : 0)
-                        }
-                        
-                        // 현재 날짜 (중앙)
-                        DateDisplayCard(date: currentDate)
-                            .offset(x: dragOffset)
-                            .scaleEffect(isAnimating ? 0.95 : 1.0)
-                        
-                        // 다음 날짜 (오른쪽)
-                        if let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) {
-                            DateDisplayCard(date: nextDate)
-                                .offset(x: geometry.size.width + dragOffset)
-                                .opacity(dragOffset < -20 ? min(abs(dragOffset) / 100, 1.0) : 0)
-                        }
-                    }
-                    .clipped()
+                if isExpanded {
+                    // 펼쳐진 상태: 가로 스크롤 휠
+                    dateWheelPicker
+                        .transition(.asymmetric(
+                            insertion: .scale(scale: 0.8).combined(with: .opacity),
+                            removal: .scale(scale: 1.2).combined(with: .opacity)
+                        ))
+                } else {
+                    // 접힌 상태: 오늘 날짜만 표시
+                    singleDateDisplay
+                        .transition(.asymmetric(
+                            insertion: .scale(scale: 1.2).combined(with: .opacity),
+                            removal: .scale(scale: 0.8).combined(with: .opacity)
+                        ))
                 }
-                .gesture(
-                    DragGesture()
-                        .onChanged { value in
-                            let maxDrag: CGFloat = 54
-                            dragOffset = max(-maxDrag, min(maxDrag, value.translation.width))
-                        }
-                        .onEnded { value in
-                            handleSwipeEnd(translation: value.translation.width)
-                        }
-                )
             }
             .frame(width: 90, height: 60)
             
@@ -87,62 +98,157 @@ struct SwipeableDateSelector: View {
         }
         .frame(width: 60, height: 130)
         .sensoryFeedback(.impact(flexibility: .soft), trigger: hapticFeedback)
-        .animation(.spring(response: config.animationDuration, dampingFraction: 0.8), value: dragOffset)
-        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isAnimating)
-    }
-    
-    // MARK: - 스와이프 처리
-    private func handleSwipeEnd(translation: CGFloat) {
-        withAnimation(.spring(response: config.animationDuration, dampingFraction: 0.8)) {
-            if translation > config.swipeThreshold {
-                moveToPreviousDay()
-            } else if translation < -config.swipeThreshold {
-                moveToNextDay()
-            }
-            
-            dragOffset = 0
+        .onAppear {
+            initializeSelectedIndex()
+        }
+        .onChange(of: currentDate) { _, _ in
+            initializeSelectedIndex()
         }
     }
     
-    private func moveToPreviousDay() {
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-        let minDate = calendar.date(byAdding: .day, value: -config.pastDays, to: today)!
+    // MARK: - 단일 날짜 표시 (접힌 상태)
+    private var singleDateDisplay: some View {
+        Button {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                isExpanded.toggle()
+            }
+            hapticFeedback.toggle()
+        } label: {
+            ZStack {
+                
+                // 현재 선택된 날짜
+                DateDisplayCard(date: currentDate)
+                    .scaleEffect(1.0)
+            }
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+    
+    // MARK: - 가로 휠 피커 (펼쳐진 상태)
+    private var dateWheelPicker: some View {
+        VStack(spacing: 8) {
+            
+            // 스크롤 휠
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 4) {
+                    // 좌측 스페이서
+                    ForEach(0..<2, id: \.self) { _ in
+                        Spacer().frame(width: 15).id(UUID())
+                    }
+                    
+                    // 날짜 아이템들
+                    ForEach(dateArray.indices, id: \.self) { index in
+                        dateWheelItem(index: index)
+                            .id(index)
+                    }
+                    
+                    // 우측 스페이서
+                    ForEach(0..<2, id: \.self) { _ in
+                        Spacer().frame(width: 15).id(UUID())
+                    }
+                }
+                .scrollTargetLayout()
+            }
+            .frame(width: 90, height: 55)
+            .scrollPosition(id: $scrollPosition, anchor: .center)
+            .sensoryFeedback(.impact(flexibility: .solid, intensity: 1.0), trigger: hapticFeedback) // Customizing impact feedback
+            .sensoryFeedback(.success, trigger: hapticFeedback) // Standard success feedback
+            .sensoryFeedback(.alignment, trigger: hapticFeedback)
+            .onChange(of: scrollPosition) { oldValue, newValue in
+                if !byClick {
+                    handleScrollChange(newValue: newValue)
+                } else {
+                    byClick = false
+                }
+            }
+            .mask {
+                // 좌우 그라데이션 마스크
+                HStack(spacing: 0) {
+                    LinearGradient(
+                        colors: [.clear, .black],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: 15)
+                    
+                    Rectangle()
+                        .fill(.black)
+                        .frame(width: 60)
+                    
+                    LinearGradient(
+                        colors: [.black, .clear],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: 15)
+                }
+            }
+        }
+    }
+    
+    private func dateWheelItem(index: Int) -> some View {
+        let isSelected = index == selectedIndex
+        let date = dateArray[index]
         
-        if let previousDate = calendar.date(byAdding: .day, value: -1, to: currentDate),
-           previousDate >= minDate {
-            withAnimation(.spring(response: config.animationDuration, dampingFraction: 0.8)) {
-                currentDate = previousDate
-                isAnimating = true
+        return Button {
+            selectedIndex = index
+            currentDate = date
+            byClick = true
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                scrollPosition = index
             }
             hapticFeedback.toggle()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                isAnimating = false
+            // 선택 후 잠시 후 자동으로 접기
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                    isExpanded = false
+                }
             }
+        } label: {
+            DateDisplayCard(date: date)
+                .scaleEffect(isSelected ? 1.0 : 0.7)
+                .opacity(isSelected ? 1.0 : 0.5)
+                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
         }
+        .buttonStyle(PlainButtonStyle())
+        .frame(width: 25)
     }
     
-    private func moveToNextDay() {
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-        let maxDate = calendar.date(byAdding: .day, value: config.futureDays, to: today)!
+    private func handleScrollChange(newValue: Int?) {
+        guard let newIndex = newValue,
+              newIndex >= 0,
+              newIndex < dateArray.count,
+              newIndex != selectedIndex else { return }
         
-        if let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate),
-           nextDate <= maxDate {
-            withAnimation(.spring(response: config.animationDuration, dampingFraction: 0.8)) {
-                currentDate = nextDate
-                isAnimating = true
-            }
-            hapticFeedback.toggle()
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                isAnimating = false
+        selectedIndex = newIndex
+        currentDate = dateArray[newIndex]
+        hapticFeedback.toggle()
+    }
+    
+    private func initializeSelectedIndex() {
+        let calendar = Calendar.current
+        
+        // 현재 선택된 날짜와 가장 가까운 인덱스 찾기
+        for (index, date) in dateArray.enumerated() {
+            if calendar.isDate(currentDate, inSameDayAs: date) {
+                selectedIndex = index
+                if isExpanded {
+                    scrollPosition = index
+                }
+                return
             }
         }
+        
+        // 찾지 못했다면 오늘로 설정
+        let todayIndex = config.pastDays // 오늘의 인덱스
+        selectedIndex = todayIndex
+        if isExpanded {
+            scrollPosition = todayIndex
+        }
+        currentDate = dateArray[todayIndex]
     }
 }
-
 // MARK: - 날짜 표시 카드
 struct DateDisplayCard: View {
     let date: Date
@@ -177,6 +283,7 @@ struct DateDisplayCard: View {
             ))
         }
         .frame(width: 90, height: 54, alignment: .center)
+        .padding(.horizontal)
     }
     
     // MARK: - Helper Functions
@@ -206,14 +313,14 @@ struct CalendarView: View {
         HStack(spacing: 8) {
             // 왼쪽: 스와이프 가능한 날짜 선택기
             SwipeableDateSelector(currentDate: $selectedDate)
-                .frame(width: 60, height: 130)
+                .frame(width: 50, height: 130)
                 .environmentObject(calendarManager) // CalendarManager 전달
             
             // 오른쪽: 해당 요일 이벤트
             ScrollView(.vertical, showsIndicators: false) {
                 if calendarManager.accessStatus != .fullAccess {
                     NoAccessView()
-                        .frame(width: 110)
+                        .frame(width: 130)
                         .padding(.vertical, 12)
                 } else if calendarManager.focusDayEvent.isEmpty {
                     EmptyEventView()
@@ -229,7 +336,7 @@ struct CalendarView: View {
                     }
                 }
             }
-            .frame(width: 90)
+            .frame(width: 120)
         }
         .frame(width: 170, height: 130)
         .onChange(of: selectedDate) { _, newDate in
@@ -300,18 +407,19 @@ struct EventRowView: View {
                 // Circle을 제목과 같은 높이에 맞춤
                 if isEventFinished {
                     Circle()
-                        .strokeBorder(eventColor, lineWidth: 1)
-                        .frame(width: 8, height: 8)
+                        .strokeBorder(.green.opacity(0.5), lineWidth: 1)
+//                        .opacity(0.5)
+                        .frame(width: 9, height: 9)
                         .overlay {
-                            Circle()
-                                .strokeBorder(eventColor, lineWidth: 3)
-                                .frame(width: 50, height: 5)
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 6, weight: .bold)) // ✅ font 크기로 조정
+                                .foregroundColor(.green.opacity(0.8))
                         }
                         .alignmentGuide(.firstTextBaseline) { d in d[VerticalAlignment.center] + 2 } // 약간 조정
                 } else {
                     Circle()
                         .fill(.clear)
-                        .strokeBorder(eventColor, lineWidth: 1)
+                        .strokeBorder(/*eventColor*/.white.opacity(0.5), lineWidth: 1)
                         .frame(width: 8, height: 8)
                         .alignmentGuide(.firstTextBaseline) { d in d[VerticalAlignment.center] + 2 } // 약간 조정
                 }
@@ -331,12 +439,19 @@ struct EventRowView: View {
             // 이벤트 제목, 기간, 위치
             VStack(alignment: .leading, spacing: 3) {
                 // 이벤트 제목 - Circle과 같은 라인
-                Text(event.title ?? "제목 없음")
-                    .font(.system(size: 10, weight: .thin))
-                    .foregroundColor(.white)
-                    .lineLimit(1)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
+                HStack {
+                    Rectangle()
+                        .fill(eventColor)
+                        .cornerRadius(8)
+                        .frame(width: 2, height: 10)
+                    
+                    Text(event.title ?? "제목 없음")
+                        .font(.system(size: 10, weight: .thin))
+                        .foregroundColor(.white)
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .offset(x: -5,y: 1)
+                }
                 // 시간 표시
                 HStack {
                     if isAllDay {
