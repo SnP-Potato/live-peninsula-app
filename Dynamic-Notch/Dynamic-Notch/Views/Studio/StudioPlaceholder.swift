@@ -11,6 +11,7 @@ struct StudioPlaceholder: View {
     @State private var musicCardclick: Bool = false
     @EnvironmentObject var calendarManager: CalendarManager
     @ObservedObject var musicManager = MusicManager.shared
+    @EnvironmentObject var weatherManager: WeatherManager
     
     var body: some View {
         HStack(spacing: 0) {
@@ -33,7 +34,7 @@ struct StudioPlaceholder: View {
             VStack(alignment: .leading, spacing: 0) {
                 CalendarView()
             }
-            .frame(width: 170, height: 130, alignment: .center)
+            .frame(width: 170, height: 130, alignment: .leading)
             
             Spacer()
                 .frame(width: 18)
@@ -43,10 +44,14 @@ struct StudioPlaceholder: View {
                 .fill(.white.opacity(0.1))
                 .cornerRadius(12)
                 .frame(width: 150, height: 110)
+                .padding(.bottom, 12)
                 .opacity(0.5)
                 .overlay{
-                    ShortcutWheelPicker()
+                   
+//                    ShortcutWheelPicker()
+                    WeatherView()
                 }
+                .padding(.bottom, 12)
             
 //            Spacer()
 //                .frame(width: 18)

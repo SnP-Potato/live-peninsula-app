@@ -213,7 +213,7 @@ struct CalendarView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 if calendarManager.accessStatus != .fullAccess {
                     NoAccessView()
-                        .frame(maxWidth: .infinity)
+                        .frame(width: 110)
                         .padding(.vertical, 12)
                 } else if calendarManager.focusDayEvent.isEmpty {
                     EmptyEventView()

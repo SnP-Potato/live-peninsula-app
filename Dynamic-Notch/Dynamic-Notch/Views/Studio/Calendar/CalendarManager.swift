@@ -9,6 +9,17 @@ import Foundation
 import EventKit
 
 
+//
+//  CalendarManager.swift
+//  Dynamic-Notch
+//
+//  Created by PeterPark on 7/29/25.
+//
+
+import Foundation
+import EventKit
+
+
 class CalendarManager: NSObject, ObservableObject {
     static let shared = CalendarManager()
     

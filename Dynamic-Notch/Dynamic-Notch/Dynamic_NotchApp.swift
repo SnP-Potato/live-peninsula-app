@@ -28,6 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     let calenarManager = CalendarManager.shared
     let musicManager = MusicManager.shared
+    let weatherManager = WeatherManager.shared
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         
@@ -42,7 +43,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         _ = CalendarManager.shared
 
-
+        _ = WeatherManager.shared
+        
         Task {
             await CalendarManager.shared.requestCalendarAccess()
         }
@@ -71,6 +73,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     .environmentObject(vm)
                     .environmentObject(calenarManager)
                     .environmentObject(musicManager)
+                    .environmentObject(weatherManager)
 
             )
 
@@ -113,6 +116,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             .environmentObject(viewModel)
                             .environmentObject(calenarManager)
                             .environmentObject(musicManager)
+                            .environmentObject(weatherManager)
 
                     )
 

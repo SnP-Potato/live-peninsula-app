@@ -459,6 +459,8 @@
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "To show current playing music";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "This app uses the calendar to display your calendar events";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationUsageDescription = "이 앱은 날씨 정보를 제공하기 위해 현재 위치가 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "이 앱은 날씨 정보를 제공하기 위해 현재 위치가 필요합니다.";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -531,6 +533,8 @@
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "To show current playing music";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "This app uses the calendar to display your calendar events";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationUsageDescription = "이 앱은 날씨 정보를 제공하기 위해 현재 위치가 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "이 앱은 날씨 정보를 제공하기 위해 현재 위치가 필요합니다.";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

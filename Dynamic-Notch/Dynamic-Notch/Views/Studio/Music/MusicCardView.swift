@@ -147,6 +147,8 @@ struct MusicCardView: View {
                 .opacity(0.3)
                 .blendMode(.softLight) // 블렌드 모드로 색상 강조
         }
+       
+            .allowsHitTesting(false) //
         .animation(.smooth(duration: 0.8), value: musicManager.albumArt)
         
     }
