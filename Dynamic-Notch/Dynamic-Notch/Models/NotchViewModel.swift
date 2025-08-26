@@ -19,6 +19,8 @@ class NotchViewModel: NSObject, ObservableObject {
     @Published var closedNotchSize: CGSize = offNotchSize()
     
     
+    @Published var isScreenLocked: Bool = false
+    
     weak var window: NSWindow?
     
     // 노치 열기

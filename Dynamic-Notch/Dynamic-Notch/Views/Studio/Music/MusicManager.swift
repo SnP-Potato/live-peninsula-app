@@ -91,7 +91,7 @@ class MusicManager: ObservableObject {
     private var lastArtworkData: Data? = nil
     private var playBackManager: PlaybackManager?
     
-    // ✅ boringNotch 스타일 시간 추적을 위한 속성들
+    // MARK: 시간 추적하는 변수들
     private var playStartTime: Date = Date()
     private var pausedTime: Double = 0
     private var isTimerBasedUpdate = false
@@ -112,14 +112,14 @@ class MusicManager: ObservableObject {
                 self.mediaController?.updatePlayingState()
             }
             
-            // ✅ boringNotch 방식: 재생 중일 때만 내부 시간 업데이트
+            
             if self.isPlaying {
                 self.updateInternalTime()
             }
         }
     }
     
-    // ✅ boringNotch 방식: 내부 시간 업데이트 로직
+    
     private func updateInternalTime() {
         guard isPlaying && duration > 0 else { return }
         
@@ -137,7 +137,7 @@ class MusicManager: ObservableObject {
             // 곡이 끝났을 때는 시간만 제한하고 재생 상태는 건드리지 않음
             isTimerBasedUpdate = true
             currentTime = duration
-            updateLastUpdated()  // ✅ lastUpdated 업데이트
+            updateLastUpdated()
             isTimerBasedUpdate = false
             
             // 실제 미디어 상태 확인 요청
@@ -148,7 +148,7 @@ class MusicManager: ObservableObject {
         }
     }
     
-    // ✅ boringNotch 방식: 시간 추적 재설정
+    
     private func resetTimeTracking() {
         playStartTime = Date()
         pausedTime = currentTime
@@ -191,7 +191,7 @@ class MusicManager: ObservableObject {
             }
             .store(in: &cancellables)
             
-        // ✅ boringNotch 방식: 재생 상태 변경 시 시간 기준점 업데이트
+        
         controller.$isPlaying
             .receive(on: DispatchQueue.main)
             .sink { [weak self] remoteIsPlaying in
@@ -205,7 +205,7 @@ class MusicManager: ObservableObject {
                         self.isPlaying = remoteIsPlaying
                     }
                     
-                    // ✅ boringNotch 방식: 재생/정지 상태 변경 시 시간 기준점 업데이트
+                    
                     if remoteIsPlaying {
                         self.resetTimeTracking()
                         print("▶️ 재생 시작: \(self.currentTime)초부터")
@@ -310,7 +310,7 @@ class MusicManager: ObservableObject {
         updateLastUpdated()
     }
     
-    // ✅ boringNotch 방식: lastUpdated 업데이트 (매우 중요!)
+    
     private func updateLastUpdated() {
         lastUpdated = Date()
     }
@@ -361,7 +361,7 @@ class MusicManager: ObservableObject {
         }
     }
     
-    // ✅ boringNotch 방식: seek 구현
+    
     func seek(to time: TimeInterval) {
         print("🎯 MusicManager.seek 호출됨: \(time)초")
         
@@ -384,7 +384,7 @@ class MusicManager: ObservableObject {
             return
         }
         
-        // ✅ boringNotch 방식: seek 후 즉시 UI 업데이트 및 시간 추적 재설정
+        
         isTimerBasedUpdate = true
         currentTime = time
         pausedTime = time

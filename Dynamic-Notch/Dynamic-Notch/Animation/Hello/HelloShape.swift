@@ -145,6 +145,6 @@ extension View where Self: Shape {
 
 #Preview {
     HelloAnimation()
-        .frame(width: 300, height: 100)
+        .frame(width: 400, height: 500)
         .background(.black)
 }

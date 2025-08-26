@@ -31,10 +31,24 @@ struct MusicCardView: View {
                         .clipped()
                 } else {
                     // 기본 이미지 또는 앨범 아트가 없을 때
-                    Image("44")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 120, height: 110)
+//                    Image("44")
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(width: 120, height: 110)
+                    if #available(macOS 15.0, *) {
+                        Image(systemName: "faceid")
+                                .font(.system(size: 80))
+                                .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 5.0)).speed(2.0))
+                                .foregroundColor(.gray)
+                                .frame(width: 120, height: 110)
+                    } else {
+                        Image(systemName: "faceid")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 120, height: 110)
+                            .clipped()
+                    }
+                       
                 }
             }
             .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -148,7 +162,7 @@ struct MusicCardView: View {
                 .blendMode(.softLight) // 블렌드 모드로 색상 강조
         }
        
-            .allowsHitTesting(false) //
+        .allowsHitTesting(false)
         .animation(.smooth(duration: 0.8), value: musicManager.albumArt)
         
     }

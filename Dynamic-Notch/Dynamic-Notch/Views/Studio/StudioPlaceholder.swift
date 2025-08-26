@@ -40,21 +40,25 @@ struct StudioPlaceholder: View {
                 .frame(width: 18)
             
             // MARK: 액션버튼
-            Rectangle()
-                .fill(.white.opacity(0.1))
-                .cornerRadius(12)
-                .frame(width: 150, height: 110)
-                .padding(.bottom, 12)
-                .opacity(0.5)
-                .overlay{
-                   
-//                    ShortcutWheelPicker()
-                    WeatherView()
-                }
-                .padding(.bottom, 12)
+            if #available(macOS 15.0, *) {
+                Image(systemName: "faceid")
+                        .font(.system(size: 80)) // ✅ 크기를 font로 지정
+                        .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 5.0)).speed(2.0))
+                        .foregroundColor(.gray)
+                        .frame(width: 120, height: 110)
+            } else {
+                Image(systemName: "faceid")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 140, height: 110)
+                    .clipped()
+            }
             
-//            Spacer()
-//                .frame(width: 18)
+//            SystemHUDOverlayView()
+//                .frame(width: 140, height: 110)
+            
+            Spacer()
+                .frame(width: 18)
         }
         .frame(width: 500, height: 130)
         .padding(.vertical, 8)
@@ -73,3 +77,7 @@ struct StudioPlaceholder_Previews: PreviewProvider {
             .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
+
+
+
+
