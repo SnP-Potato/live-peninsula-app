@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		354F9DD12E4A15FA00D474B7 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 354F9DD02E4A15FA00D474B7 /* Defaults */; };
 		354F9DD42E4A171A00D474B7 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 354F9DD32E4A171A00D474B7 /* KeyboardShortcuts */; };
+		357B6E292E5EDB8700A37FE3 /* MediaKeyTap in Frameworks */ = {isa = PBXBuildFile; productRef = 357B6E282E5EDB8700A37FE3 /* MediaKeyTap */; };
 		35D47E962E4744AF00321493 /* MediaRemote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B7D65B2E3BC78500AA0142 /* MediaRemote.framework */; };
 /* End PBXBuildFile section */
 
@@ -153,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				354F9DD12E4A15FA00D474B7 /* Defaults in Frameworks */,
+				357B6E292E5EDB8700A37FE3 /* MediaKeyTap in Frameworks */,
 				354F9DD42E4A171A00D474B7 /* KeyboardShortcuts in Frameworks */,
 				35D47E962E4744AF00321493 /* MediaRemote.framework in Frameworks */,
 			);
@@ -209,6 +211,7 @@
 			packageProductDependencies = (
 				354F9DD02E4A15FA00D474B7 /* Defaults */,
 				354F9DD32E4A171A00D474B7 /* KeyboardShortcuts */,
+				357B6E282E5EDB8700A37FE3 /* MediaKeyTap */,
 			);
 			productName = "Dynamic-Notch";
 			productReference = 35C4B5982D87FD3300561BBA /* Dynamic-Notch.app */;
@@ -241,6 +244,7 @@
 			packageReferences = (
 				354F9DCF2E4A15FA00D474B7 /* XCRemoteSwiftPackageReference "Defaults" */,
 				354F9DD22E4A171A00D474B7 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				357B6E272E5EDB8700A37FE3 /* XCRemoteSwiftPackageReference "MediaKeyTap" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 35C4B5992D87FD3300561BBA /* Products */;
@@ -306,10 +310,13 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_STYLE[sdk=*]" = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = VG34R6W9G2;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -339,6 +346,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SKIP_AUTOLINKING_ALL_FRAMEWORKS = NO;
@@ -380,10 +388,13 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "Apple Distribution";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = VG34R6W9G2;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
@@ -393,6 +404,7 @@
 				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -405,8 +417,9 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
-				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SKIP_AUTOLINKING_ALL_FRAMEWORKS = NO;
 				SWIFT_STRICT_CONCURRENCY = targeted;
 				SWIFT_VERSION = 5.0;
@@ -422,13 +435,13 @@
 				AUTOMATION_APPLE_EVENTS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Dynamic-Notch/Dynamic_Notch.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = "1 ";
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Dynamic-Notch/Preview Content\"";
-				DEVELOPMENT_TEAM = 4G3DPZ7QWW;
+				DEVELOPMENT_TEAM = VG34R6W9G2;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -453,14 +466,14 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dynamic-Notch/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = WakeUPNotch;
+				INFOPLIST_KEY_CFBundleDisplayName = WakeUpNotch;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSBackgroundOnly = YES;
-				INFOPLIST_KEY_NSAppleEventsUsageDescription = "To show current playing music";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "앱에서 미디어 키 이벤트를 감지하기 위해 접근성 권한이 필요합니다.";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "This app uses the calendar to display your calendar events";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSLocationUsageDescription = "이 앱은 날씨 정보를 제공하기 위해 현재 위치가 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "이 앱은 날씨 정보를 제공하기 위해 현재 위치가 필요합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "백그라운드에서 날씨 정보를 업데이트하기 위해 위치 접근이 필요합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "백그라운드에서도 날씨 정보를 업데이트하기 위해 위치 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "현재 위치의 날씨 정보를 제공하기 위해 위치 접근이 필요합니다.";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -469,8 +482,9 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				NSNSAppleScriptEnabled = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "snp-potato.Dynamic-Notch";
+				PRODUCT_BUNDLE_IDENTIFIER = com.peterpark.notch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
 				RUNTIME_EXCEPTION_ALLOW_JIT = YES;
 				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = YES;
@@ -494,15 +508,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				AUTOMATION_APPLE_EVENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = "Dynamic-Notch/Dynamic_Notch.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Dynamic-Notch/Dynamic-NotchRelease.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = "1 ";
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Dynamic-Notch/Preview Content\"";
-				DEVELOPMENT_TEAM = 4G3DPZ7QWW;
+				DEVELOPMENT_TEAM = VG34R6W9G2;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -527,14 +540,14 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dynamic-Notch/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = WakeUPNotch;
+				INFOPLIST_KEY_CFBundleDisplayName = WakeUpNotch;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSBackgroundOnly = YES;
-				INFOPLIST_KEY_NSAppleEventsUsageDescription = "To show current playing music";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "앱에서 미디어 키 이벤트를 감지하기 위해 접근성 권한이 필요합니다.";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "This app uses the calendar to display your calendar events";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSLocationUsageDescription = "이 앱은 날씨 정보를 제공하기 위해 현재 위치가 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "이 앱은 날씨 정보를 제공하기 위해 현재 위치가 필요합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "백그라운드에서 날씨 정보를 업데이트하기 위해 위치 접근이 필요합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "백그라운드에서도 날씨 정보를 업데이트하기 위해 위치 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "현재 위치의 날씨 정보를 제공하기 위해 위치 접근이 필요합니다.";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -543,8 +556,9 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				NSNSAppleScriptEnabled = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "snp-potato.Dynamic-Notch";
+				PRODUCT_BUNDLE_IDENTIFIER = com.peterpark.notch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
 				RUNTIME_EXCEPTION_ALLOW_JIT = YES;
 				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = YES;
@@ -601,6 +615,14 @@
 				minimumVersion = 2.3.0;
 			};
 		};
+		357B6E272E5EDB8700A37FE3 /* XCRemoteSwiftPackageReference "MediaKeyTap" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nhurden/MediaKeyTap.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -613,6 +635,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 354F9DD22E4A171A00D474B7 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
+		};
+		357B6E282E5EDB8700A37FE3 /* MediaKeyTap */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 357B6E272E5EDB8700A37FE3 /* XCRemoteSwiftPackageReference "MediaKeyTap" */;
+			productName = MediaKeyTap;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

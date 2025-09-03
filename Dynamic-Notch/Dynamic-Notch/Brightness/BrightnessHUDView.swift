@@ -5,6 +5,14 @@
 //  Created by PeterPark on 8/26/25.
 //
 
+
+//
+//  BrightnessHUDView.swift
+//  Dynamic-Notch
+//
+//  Created by PeterPark on 8/26/25.
+//
+
 import SwiftUI
 
 struct BrightnessHUDView: View {
@@ -44,7 +52,9 @@ struct BrightnessHUDView: View {
     }
     
     private var brightnessIconName: String {
-        if brightnessManager.currentBrightness < 0.33 {
+        if brightnessManager.currentBrightness == 0 {
+            return "sun.min.fill"
+        } else if brightnessManager.currentBrightness < 0.33 {
             return "sun.min.fill"
         } else if brightnessManager.currentBrightness < 0.66 {
             return "sun.max.fill"
@@ -54,33 +64,8 @@ struct BrightnessHUDView: View {
     }
 }
 
-
-struct BrightnessDebugView: View {
-    @ObservedObject var brightnessManager = BrightnessManager.shared
-    
-    var body: some View {
-        VStack(spacing: 20) {
-            Text("현재 밝기: \(brightnessManager.currentBrightness, specifier: "%.2f")")
-            Text("HUD 표시: \(brightnessManager.isBrightnessHUDVisible ? "예" : "아니오")")
-            
-//            Button("테스트 HUD 표시") {
-//                $brightnessManager.testPermissions
-//            }
-            
-            Button("강제 업데이트") {
-                brightnessManager.showBrightnessHUD()
-            }
-        }
-        .padding()
-    }
-}
 #Preview {
-    VStack {
-        SystemHUDOverlayView()
-            .frame(width: 140, height: 110)
-        
-//        // 디버깅용 (임시)
-//        BrightnessDebugView()
-//            .frame(width: 140, height: 50)
-    }
+    BrightnessHUDView()
+        .padding()
+        .frame(width: 300, height: 300)
 }

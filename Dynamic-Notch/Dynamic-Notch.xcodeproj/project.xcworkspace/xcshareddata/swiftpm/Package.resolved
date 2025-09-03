@@ -1,5 +1,5 @@
 {
-  "originHash" : "b0016b623cd21853051a04aa0d2fa09c3d68dd676ff247b6d435adf38a1e58ac",
+  "originHash" : "85ede0134c8ff6a4b1626bdde3c897c7a107c843834d2481e4ed9a30492f98ee",
   "pins" : [
     {
       "identity" : "defaults",
@@ -16,6 +16,15 @@
       "location" : "https://github.com/sindresorhus/KeyboardShortcuts.git",
       "state" : {
         "revision" : "045cf174010beb335fa1d2567d18c057b8787165",
+        "version" : "2.3.0"
+      }
+    },
+    {
+      "identity" : "mediakeytap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nhurden/MediaKeyTap.git",
+      "state" : {
+        "revision" : "7d1b8169d228ef6e5ec7db676a348f2f3e50c734",
         "version" : "2.3.0"
       }
     },

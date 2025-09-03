@@ -42,13 +42,13 @@ extension ShapeStyle where Self == LinearGradient {
     static var hello: some ShapeStyle {
         LinearGradient(
             stops: [
-                .init(color: .blue, location: 0.0),
-                .init(color: .purple, location: 0.2),
-                .init(color: .red, location: 0.4),
-                .init(color: .mint, location: 0.5),
-                .init(color: .indigo, location: 0.7),
-                .init(color: .pink, location: 0.9),
-                .init(color: .blue, location: 1.0)
+                .init(color: .white, location: 0.0),
+                .init(color: .white, location: 0.2),
+                .init(color: .white, location: 0.4),
+                .init(color: .white, location: 0.5),
+                .init(color: .white, location: 0.7),
+                .init(color: .white, location: 0.9),
+                .init(color: .white, location: 1.0)
             ],
             startPoint: .leading,
             endPoint: .trailing
@@ -60,8 +60,8 @@ struct GlowingSnake<Content: Shape, Fill: ShapeStyle>: View, Animatable {
     var progress: Double
     var delay: Double = 1.0
     var fill: Fill
-    var lineWidth = 4.0
-    var blurRadius = 8.0
+    var lineWidth = 1.0
+    var blurRadius = 1.0
     
     @ViewBuilder var shape: Content
     
@@ -104,8 +104,8 @@ struct HelloAnimation: View {
         GlowingSnake(
             progress: progress,
             fill: .hello,
-            lineWidth: 12,
-            blurRadius: 1.0,
+            lineWidth: 6,
+            blurRadius: 0.0,
             shape: { HelloShape() }
         )
         .onAppear {
@@ -145,6 +145,6 @@ extension View where Self: Shape {
 
 #Preview {
     HelloAnimation()
-        .frame(width: 400, height: 500)
+        .frame(width: 210, height: 70)
         .background(.black)
 }

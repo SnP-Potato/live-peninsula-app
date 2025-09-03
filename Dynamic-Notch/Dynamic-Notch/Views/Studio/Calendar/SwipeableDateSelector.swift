@@ -214,18 +214,24 @@ struct SwipeableDateSelector: View {
     }
     
     private func handleScrollChange(newValue: Int?) {
-        guard let newIndex = newValue,
-              newIndex >= 0,
-              newIndex < dateArray.count,
-              newIndex != selectedIndex else { return }
-        
-        DispatchQueue.main.async {
-            self.selectedIndex = newIndex
-            self.currentDate = self.dateArray[newIndex] ?? Date()
-            self.hapticFeedback.toggle()
+            // scrollPosition이 유효한 날짜 인덱스인지 확인
+            guard let newIndex = newValue,
+                  newIndex >= 0,
+                  newIndex < dateArray.count,
+                  newIndex != selectedIndex else {
+                // 유효하지 않은 인덱스일 경우 현재 선택을 유지하고 스크롤을 원래 위치로 되돌림
+                DispatchQueue.main.async {
+                    self.scrollPosition = self.selectedIndex
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.selectedIndex = newIndex
+                self.currentDate = self.dateArray[newIndex]
+                self.hapticFeedback.toggle()
+            }
         }
-                
-    }
     
     private func initializeSelectedIndex() {
         let calendar = Calendar.current

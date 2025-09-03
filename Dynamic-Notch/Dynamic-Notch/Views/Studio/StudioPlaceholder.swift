@@ -11,8 +11,8 @@ struct StudioPlaceholder: View {
     @State private var musicCardclick: Bool = false
     @EnvironmentObject var calendarManager: CalendarManager
     @ObservedObject var musicManager = MusicManager.shared
-    @EnvironmentObject var weatherManager: WeatherManager
-    
+//    @StateObject private var weatherManager = WeatherManager.shared // WeatherManager 추가
+//
     var body: some View {
         HStack(spacing: 0) {
             // MARK: 음악 제어 (스마트 진행바 적용)
@@ -42,20 +42,21 @@ struct StudioPlaceholder: View {
             // MARK: 액션버튼
             if #available(macOS 15.0, *) {
                 Image(systemName: "faceid")
-                        .font(.system(size: 80)) // ✅ 크기를 font로 지정
+                    .padding(.bottom, 12)
+                        .font(.system(size: 80))
                         .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 5.0)).speed(2.0))
                         .foregroundColor(.gray)
                         .frame(width: 120, height: 110)
+                        
+                        
             } else {
                 Image(systemName: "faceid")
                     .resizable()
                     .scaledToFill()
                     .frame(width: 140, height: 110)
                     .clipped()
+                    .padding(.bottom, 12)
             }
-            
-//            SystemHUDOverlayView()
-//                .frame(width: 140, height: 110)
             
             Spacer()
                 .frame(width: 18)
@@ -65,17 +66,17 @@ struct StudioPlaceholder: View {
     }
 }
 
-struct StudioPlaceholder_Previews: PreviewProvider {
-    static var previews: some View {
-        StudioPlaceholder()
-            .environmentObject(CalendarManager.shared)
-            .environmentObject(MusicManager.shared)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .frame(width: 500, height: 130)
-            .background(Color.black)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-    }
+
+#Preview {
+    StudioPlaceholder()
+        .environmentObject(CalendarManager.shared)
+        .environmentObject(MusicManager.shared)
+//        .environmentObject(WeatherManager.shared)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .frame(width: 540, height: 178)
+        .background(Color.black)
+        .clipShape(NotchShape(cornerRadius: 100))
 }
 
 

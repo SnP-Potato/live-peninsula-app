@@ -81,6 +81,7 @@ struct TrayPlaceholder: View {
                                             VStack(spacing: 6) {
                                                 // 파일 아이콘
                                                 ThumbnailImage(file: file)
+                                                    
                                                 
                                                 // 파일명 (확장자 제거)
                                                 Text((file.fileName as NSString).deletingPathExtension)
@@ -102,7 +103,7 @@ struct TrayPlaceholder: View {
                                             }
                                             .frame(width: 70, height: 80)
                                             .background(Color.black.opacity(0.3))
-                                            .cornerRadius(8)
+                                            
                                             .onDrag {
                                                 let fileURL = TrayManager.shared.trayStorage.appendingPathComponent(file.fileName)
                                                 return NSItemProvider(object: fileURL as NSURL)
@@ -156,6 +157,8 @@ struct ThumbnailImage: View {
                 thumbnailImage = NSImage(data: data)
             }
         }
+        .cornerRadius(6)
+        
     }
 }
 

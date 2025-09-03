@@ -29,6 +29,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let calenarManager = CalendarManager.shared
     let musicManager = MusicManager.shared
     let volumeManager = VolumeManager.shared
+    let brightnessManager = BrightnessManager.shared
+//    let brightnessKeyMonitor = BrightnessKeyMonitor.shared
 //    let weatherManager = WeatherManager.shared
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -44,7 +46,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         _ = CalendarManager.shared
 
+//        _ = WeatherManager.shared
+        
         _ = VolumeManager.shared
+        
+//        brightnessKeyMonitor.startMonitoring()
+//        _ = BrightnessManager.shared
+        
 //        _ = WeatherManager.shared
         
         Task {
@@ -76,6 +84,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     .environmentObject(calenarManager)
                     .environmentObject(musicManager)
                     .environmentObject(volumeManager)
+//                    .environmentObject(brightnessManager)
+//                    .environmentObject(weatherManager)
 
             )
 
@@ -119,6 +129,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             .environmentObject(calenarManager)
                             .environmentObject(musicManager)
                             .environmentObject(volumeManager)
+//                            .environmentObject(brightnessManager)
+//                            .environmentObject(weatherManager)
+
 
                     )
 
