@@ -27,6 +27,9 @@ class CalendarManager: NSObject, ObservableObject {
     @Published var isError: Bool = false
     @Published var errorMessage: String = ""
     
+    private var dateCheckTimer: Timer?
+    private var lastKnownDate: Date = Date()
+    
     // 1, 5, 31
     var formattedDay: String {
         let formatter = DateFormatter()
@@ -52,8 +55,63 @@ class CalendarManager: NSObject, ObservableObject {
         super.init()
         
         checkAccessStatus()
+        setupDateChangeDetection()
     }
-    
+    private func setupDateChangeDetection() {
+            lastKnownDate = Calendar.current.startOfDay(for: Date())
+            
+            // 매분마다 날짜 변경 체크 (자정 근처에서 빠르게 감지)
+            dateCheckTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] _ in
+                self?.checkForDateChange()
+            }
+            
+            // 시스템 날짜 변경 알림도 추가로 등록
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(systemDateChanged),
+                name: .NSSystemTimeZoneDidChange,
+                object: nil
+            )
+            
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(systemDateChanged),
+                name: Notification.Name.NSSystemClockDidChange,
+                object: nil
+            )
+        }
+        
+        // ✅ 날짜 변경 체크
+        private func checkForDateChange() {
+            let currentDate = Calendar.current.startOfDay(for: Date())
+            
+            if !Calendar.current.isDate(lastKnownDate, inSameDayAs: currentDate) {
+                print("🗓️ 날짜가 변경되었습니다: \(lastKnownDate) → \(currentDate)")
+                
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    
+                    // 현재 포커스된 날짜가 어제(이전 날짜)였다면 자동으로 오늘로 업데이트
+                    if Calendar.current.isDate(self.focusDate, inSameDayAs: self.lastKnownDate) {
+                        print("🔄 포커스 날짜를 자동으로 오늘로 업데이트")
+                        self.updateFocusDate(currentDate)
+                    }
+                    
+                    // 오늘 이벤트 다시 로드 (날짜가 바뀌었으니 새로운 이벤트가 있을 수 있음)
+                    if Calendar.current.isDate(self.focusDate, inSameDayAs: currentDate) {
+                        self.loadEventForDate(self.focusDate)
+                    }
+                }
+                
+                lastKnownDate = currentDate
+            }
+        }
+        
+        // ✅ 시스템 날짜 변경 알림 처리
+        @objc private func systemDateChanged() {
+            print("📅 시스템 날짜/시간이 변경되었습니다")
+            checkForDateChange()
+        }
     
     //MARK: 권한 관리 함수
     private func checkAccessStatus() {

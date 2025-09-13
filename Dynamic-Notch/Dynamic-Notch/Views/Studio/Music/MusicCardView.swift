@@ -30,19 +30,29 @@ struct MusicCardView: View {
                         .frame(width: 120, height: 110)
                         .clipped()
                 } else {
-                    // 기본 이미지 또는 앨범 아트가 없을 때
-//                    Image("44")
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(width: 120, height: 110)
+                    
                     if #available(macOS 15.0, *) {
-                        Image(systemName: "faceid")
-                                .font(.system(size: 80))
-                                .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 5.0)).speed(2.0))
-                                .foregroundColor(.gray)
-                                .frame(width: 120, height: 110)
+                        RoundedRectangle(cornerRadius: 32)
+                            .foregroundColor(.white.opacity(0.2))
+                            .opacity(0.5)
+                            .frame(width: 120, height: 110)
+                            .overlay {
+                                Image(systemName: "music.note")
+                                    .resizable()
+                                    .foregroundStyle(.white.opacity(0.3))
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 80)
+                            }
+//                        Image("music")
+//                            .resizable()
+//                            .scaledToFill()
+//                                .font(.system(size: 80))
+//                                .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 5.0)).speed(2.0))
+//                                .foregroundColor(.gray)
+//                                .frame(width: 120, height: 110)
+                                
                     } else {
-                        Image(systemName: "faceid")
+                        Image("music")
                             .resizable()
                             .scaledToFill()
                             .frame(width: 120, height: 110)
@@ -51,7 +61,7 @@ struct MusicCardView: View {
                        
                 }
             }
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .clipShape(RoundedRectangle(cornerRadius: 32))
             .animation(.easeInOut(duration: 0.3), value: musicManager.albumArt)
             .onChange(of: musicManager.albumArt) { _, newAlbumArt in
                 //
@@ -63,11 +73,11 @@ struct MusicCardView: View {
                     // Liquid Glass로 앨범 아트를 완전히 덮기
                     LiquidGlassBackground(
                         variant: .v11,
-                        cornerRadius: 12
+                        cornerRadius: 32
                     ) {
                         ZStack {
                             // 배경을 더 어둡게 처리
-                            RoundedRectangle(cornerRadius: 12)
+                            RoundedRectangle(cornerRadius: 32)
                                 .fill(.black.opacity(0.4))
                             
                             musicControlInterface
@@ -83,7 +93,7 @@ struct MusicCardView: View {
                     //
                     ZStack {
                         // 배경을 더 어둡게 처리
-                        RoundedRectangle(cornerRadius: 12)
+                        RoundedRectangle(cornerRadius: 32)
                             .fill(.black.opacity(0.4))
                             .frame(width: 120, height: 110)
                         
@@ -99,8 +109,10 @@ struct MusicCardView: View {
             }
             
             // 앨범 아트 위 작은 앱 아이콘
-            if !musicCardclick {
-                appIcon
+            VStack {
+                if !musicCardclick {
+                    appIcon
+                }
             }
         }
         .frame(width: 120, height: 110)
@@ -125,7 +137,7 @@ struct MusicCardView: View {
                         .aspectRatio(contentMode: .fill)
                 )
                 .clipped()
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .clipShape(RoundedRectangle(cornerRadius: 32))
                 .scaleEffect(x: 1.0, y: 1.0) // 더 크게 확대
                 .rotationEffect(.degrees(65))
                 .blur(radius: 25) // 블러 강도 증가
@@ -140,7 +152,7 @@ struct MusicCardView: View {
                         .aspectRatio(contentMode: .fill)
                 )
                 .clipped()
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .clipShape(RoundedRectangle(cornerRadius: 32))
                 .scaleEffect(x: 1.0, y: 1.0) // 더욱 크게 확대
                 .rotationEffect(.degrees(-45)) // 다른 각도로 회전
                 .blur(radius: 35) // 더 큰 블러
@@ -155,7 +167,7 @@ struct MusicCardView: View {
                         .aspectRatio(contentMode: .fill)
                 )
                 .clipped()
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .clipShape(RoundedRectangle(cornerRadius: 32))
                 .scaleEffect(x: 1.1, y: 1.1)
                 .blur(radius: 10)
                 .opacity(0.3)
@@ -211,6 +223,7 @@ struct MusicCardView: View {
             
             MusicProgressBar()
                 .environmentObject(musicManager)
+                .padding(.bottom, 10)
         }
         
         .padding(.horizontal, 8)
@@ -270,6 +283,8 @@ struct MusicCardView: View {
                 // 실제 앱 아이콘 사용
                 AppIconView(bundleIdentifier: musicManager.bundleIdentifier)
             } else {
+                RoundedRectangle(cornerRadius: 8)
+                    .frame(width: 22, height: 22)
             }
         }
         .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
@@ -437,7 +452,7 @@ struct AppIconView: View {
                 if let icon = appIcon {
                     Image(nsImage: icon)
                         .resizable()
-                        .frame(width: 25, height: 25)
+                        .frame(width: 29, height: 29)
                         .clipShape(RoundedRectangle(cornerRadius: 5))
                 } else {
                     // 로딩 중이거나 아이콘을 찾을 수 없을 때

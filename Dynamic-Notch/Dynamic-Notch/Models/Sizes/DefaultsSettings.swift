@@ -21,11 +21,11 @@ enum calendarSelect: Codable, Defaults.Serializable {
     case selected(Set<String>)
 }
 
-enum HideNotchOption: String, Defaults.Serializable {
-    case always
-    case nowPlayingOnly
-    case never
-}
+//enum HideNotchOption: String, Defaults.Serializable {
+//    case always
+//    case nowPlayingOnly
+//    case never
+//}
 
 
 extension Defaults.Keys {
@@ -60,6 +60,6 @@ extension Defaults.Keys {
     static let tray = Key<Bool>("tray", default: true)
     static let calendar = Key<Bool>("calendar", default: true)
     static let alwaysHideInFullscreen = Key<Bool>("alwaysHideInFullscreen", default: false)
-    static let hideNotchOption = Key<HideNotchOption>("hideNotchOption", default: .nowPlayingOnly)
+//    static let hideNotchOption = Key<HideNotchOption>("hideNotchOption", default: .nowPlayingOnly)
 }
 

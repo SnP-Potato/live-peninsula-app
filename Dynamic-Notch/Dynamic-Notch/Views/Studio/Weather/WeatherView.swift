@@ -1,10 +1,10 @@
-////
-////  WeatherView.swift
-////  Dynamic-Notch
-////
-////  Created by PeterPark on 8/22/25.
-////
-////
+//
+//  WeatherView.swift
+//  Dynamic-Notch
+//
+//  Created by PeterPark on 8/22/25.
+//
+//
 //
 //
 //import SwiftUI
@@ -27,7 +27,7 @@
 //                } else if let weather = weatherManager.currentWeather {
 //                    WeatherContentView(weather: weather)
 //                } else if weatherManager.isError {
-//                    WeatherErrorView()
+//                    WeatherErrorView(errorMessage: weatherManager.errorMessage ?? "알 수 없는 오류")
 //                } else {
 //                    WeatherNoDataView()
 //                }
@@ -35,37 +35,37 @@
 //        }
 //        .frame(width: 120, height: 110)
 //        .onAppear {
-//            checkAndFetchWeather()
+//            Task {
+//                await checkAndFetchWeather()
+//            }
 //        }
 //        .onTapGesture {
-//            handleTap()
+//            Task {
+//                await handleTap()
+//            }
 //        }
 //    }
 //    
 //    // MARK: - Helper Methods
-//    private func checkAndFetchWeather() {
+//    private func checkAndFetchWeather() async {
 //        switch weatherManager.authorizationStatus {
 //        case .notDetermined:
-//            Task {
-//                await weatherManager.requestLocationPermissionAsync()
-//            }
-//        case .authorizedAlways:
+//            await weatherManager.requestLocationPermissionAsync()
+//        case .authorizedAlways, .authorizedWhenInUse:
 //            if weatherManager.currentWeather == nil || weatherManager.shouldRefresh() {
-//                weatherManager.fetchWeather()
+//                await weatherManager.fetchWeather()
 //            }
 //        default:
 //            break
 //        }
 //    }
 //    
-//    private func handleTap() {
+//    private func handleTap() async {
 //        switch weatherManager.authorizationStatus {
 //        case .denied, .restricted:
 //            openSettings()
 //        case .notDetermined:
-//            Task {
-//                await weatherManager.requestLocationPermissionAsync()
-//            }
+//            await weatherManager.requestLocationPermissionAsync()
 //        default:
 //            weatherManager.refreshWeather()
 //        }
@@ -108,8 +108,6 @@
 //
 //// MARK: - 권한 요청 뷰
 //struct WeatherPermissionView: View {
-//    @StateObject private var weatherManager = WeatherManager.shared
-//    
 //    var body: some View {
 //        VStack(spacing: 8) {
 //            Image(systemName: "location")
@@ -157,6 +155,7 @@
 //
 //// MARK: - 에러 뷰
 //struct WeatherErrorView: View {
+//    let errorMessage: String
 //    @StateObject private var weatherManager = WeatherManager.shared
 //    
 //    var body: some View {
@@ -172,6 +171,16 @@
 //            Text("Tap to retry")
 //                .font(.system(size: 8))
 //                .foregroundStyle(.gray)
+//            
+//            // 디버그 정보 (개발 중에만 표시)
+//            #if DEBUG
+//            Text(errorMessage)
+//                .font(.system(size: 6))
+//                .foregroundStyle(.red)
+//                .multilineTextAlignment(.center)
+//                .lineLimit(3)
+//                .padding(.top, 2)
+//            #endif
 //        }
 //        .frame(maxWidth: .infinity, maxHeight: .infinity)
 //        .padding(8)
@@ -199,7 +208,7 @@
 //    }
 //}
 //
-//// MARK: - 날씨 콘텐츠 뷰 (사진 스타일로 수정)
+//// MARK: - 날씨 콘텐츠 뷰
 //struct WeatherContentView: View {
 //    let weather: WeatherData
 //    @StateObject private var weatherManager = WeatherManager.shared
@@ -254,21 +263,6 @@
 //        .padding(.horizontal, 12)
 //        .padding(.vertical, 8)
 //    }
-//    
-//    private func timeAgoString(from date: Date) -> String {
-//        let now = Date()
-//        let timeInterval = now.timeIntervalSince(date)
-//        
-//        if timeInterval < 60 {
-//            return "방금"
-//        } else if timeInterval < 3600 {
-//            let minutes = Int(timeInterval / 60)
-//            return "\(minutes)분 전"
-//        } else {
-//            let hours = Int(timeInterval / 3600)
-//            return "\(hours)시간 전"
-//        }
-//    }
 //}
 //
 //// MARK: - Preview
@@ -299,6 +293,9 @@
 //        
 //        // 로딩 상태
 //        WeatherLoadingView()
+//        
+//        // 에러 상태
+//        WeatherErrorView(errorMessage: "네트워크 연결을 확인해주세요")
 //    }
 //    .frame(width: 120, height: 110)
 //    .padding()

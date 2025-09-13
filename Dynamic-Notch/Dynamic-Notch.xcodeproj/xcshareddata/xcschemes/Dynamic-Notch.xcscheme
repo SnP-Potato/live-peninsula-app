@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "35C4B5972D87FD3300561BBA"
-               BuildableName = "Dynamic-Notch.app"
-               BlueprintName = "Dynamic-Notch"
+               BuildableName = "Live Peninsula.app"
+               BlueprintName = "Live Peninsula"
                ReferencedContainer = "container:Dynamic-Notch.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,14 +33,14 @@
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -54,8 +54,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "35C4B5972D87FD3300561BBA"
-            BuildableName = "Dynamic-Notch.app"
-            BlueprintName = "Dynamic-Notch"
+            BuildableName = "Live Peninsula.app"
+            BlueprintName = "Live Peninsula"
             ReferencedContainer = "container:Dynamic-Notch.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -71,8 +71,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "35C4B5972D87FD3300561BBA"
-            BuildableName = "Dynamic-Notch.app"
-            BlueprintName = "Dynamic-Notch"
+            BuildableName = "Live Peninsula.app"
+            BlueprintName = "Live Peninsula"
             ReferencedContainer = "container:Dynamic-Notch.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

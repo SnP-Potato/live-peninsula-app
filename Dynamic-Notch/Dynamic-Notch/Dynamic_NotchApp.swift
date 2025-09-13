@@ -7,15 +7,64 @@
 
 import SwiftUI
 import Defaults
+import Combine
+import Sparkle
 
 @main
 struct Dynamic_NotchApp: App {
     @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    
+    private let updaterController: SPUStandardUpdaterController
 
-    var body: some Scene {
-        Settings {
-            EmptyView()
+        init() {
+            updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
         }
+    
+    var body: some Scene {
+//        MenuBarExtra("Dynamic Notch", systemImage: "sparkle") {
+//            Button("Settings") {
+//                SettingsWindowController.shared.showWindow()
+//            }
+//            .keyboardShortcut(",", modifiers: .command)
+//
+//            CheckForUpdatesView(updater: updaterController.updater)
+//
+//            Divider()
+//
+//            //                    Button("Restart Dynamic Notch") {
+//            //                        restartApp()
+//            //                    }
+//
+//            Button("Quit", role: .destructive) {
+//                NSApplication.shared.terminate(nil)
+//            }
+//            .keyboardShortcut("q", modifiers: .command)
+//        }
+//
+//        // 빈 Settings 창 (실제로는 사용하지 않지만 필요)
+//        Settings {
+//            EmptyView()
+//        }
+//        .commands {
+//            CommandGroup(after: .appInfo) {
+//                CheckForUpdatesView(updater: updaterController.updater)
+//
+//                Divider()
+//
+//                Button("Settings...") {
+//                    SettingsWindowController.shared.showWindow()
+//                }
+//                .keyboardShortcut(",", modifiers: .command)
+//            }
+//        }
+        WindowGroup {
+            TestView()
+                }
+                .commands {
+                    CommandGroup(after: .appInfo) {
+                        CheckForUpdatesView(updater: updaterController.updater)
+                    }
+                }
     }
 }
 
@@ -25,7 +74,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var viewModels: [NSScreen: NotchViewModel] = [:] // 화면별 뷰모델
     var window: NSWindow! // 기존 창 (메인 화면용)
     let vm: NotchViewModel = .init()
-
+    
+//    private var cancellables = Set<AnyCancellable>()
+//    let fullScreenDetector = FullscreenDetector.shared
+    
     let calenarManager = CalendarManager.shared
     let musicManager = MusicManager.shared
     let volumeManager = VolumeManager.shared
@@ -39,8 +91,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         //  디버깅: 연결된 모든 모니터 정보 출력
         printAllScreensInfo()
-
-
+        
         //trayStorage 폴더 생성 확인
         _ = TrayManager.shared
 
@@ -84,6 +135,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     .environmentObject(calenarManager)
                     .environmentObject(musicManager)
                     .environmentObject(volumeManager)
+                    
 //                    .environmentObject(brightnessManager)
 //                    .environmentObject(weatherManager)
 
@@ -129,6 +181,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             .environmentObject(calenarManager)
                             .environmentObject(musicManager)
                             .environmentObject(volumeManager)
+                            .environmentObject(FullscreenDetector.shared)
 //                            .environmentObject(brightnessManager)
 //                            .environmentObject(weatherManager)
 
@@ -194,9 +247,3 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         print("================================\n")
     }
 }
-
-
-
-
-
-

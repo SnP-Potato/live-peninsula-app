@@ -58,7 +58,7 @@ struct firstLaunchView: View {
                 )
         }
         .onAppear {
-            // 🔊 사운드 재생 시작
+            //사운드 재생 시작
             playLaunchSound()
             
             // 초기 ripple + mesh gradient 표시 (3초)

@@ -16,6 +16,7 @@ struct CalendarView: View {
     var body: some View {
         HStack(spacing: 8) {
             // 왼쪽: 스와이프 가능한 날짜 선택기
+            
             SwipeableDateSelector(currentDate: $selectedDate)
                 .frame(width: 50, height: 130)
                 .environmentObject(calendarManager) // CalendarManager 전달

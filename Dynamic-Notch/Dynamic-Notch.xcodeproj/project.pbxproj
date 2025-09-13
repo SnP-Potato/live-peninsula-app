@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		354F9DD12E4A15FA00D474B7 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 354F9DD02E4A15FA00D474B7 /* Defaults */; };
+		350201052E71EF4B0050997D /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 35ED5D942E717DFC00594E2E /* Defaults */; };
+		350206142E7381220050997D /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 350206132E7381220050997D /* Sparkle */; };
 		354F9DD42E4A171A00D474B7 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 354F9DD32E4A171A00D474B7 /* KeyboardShortcuts */; };
 		357B6E292E5EDB8700A37FE3 /* MediaKeyTap in Frameworks */ = {isa = PBXBuildFile; productRef = 357B6E282E5EDB8700A37FE3 /* MediaKeyTap */; };
-		35D47E962E4744AF00321493 /* MediaRemote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B7D65B2E3BC78500AA0142 /* MediaRemote.framework */; };
+		35BF863B2E73C7C30025E291 /* MediaRemote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BF863A2E73C7C30025E291 /* MediaRemote.framework */; };
+		35DE31572E6ECB17002A1353 /* MacroVisionKit in Frameworks */ = {isa = PBXBuildFile; productRef = 35DE31562E6ECB17002A1353 /* MacroVisionKit */; };
+		35ED5D972E717DFC00594E2E /* DefaultsMacros in Frameworks */ = {isa = PBXBuildFile; productRef = 35ED5D962E717DFC00594E2E /* DefaultsMacros */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,12 +30,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		35B7D65B2E3BC78500AA0142 /* MediaRemote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaRemote.framework; path = ../../../../../../../System/Library/PrivateFrameworks/MediaRemote.framework; sourceTree = "<group>"; };
-		35C4B5982D87FD3300561BBA /* Dynamic-Notch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dynamic-Notch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		35BF863A2E73C7C30025E291 /* MediaRemote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaRemote.framework; path = ../../../../../../../../../../System/Library/PrivateFrameworks/MediaRemote.framework; sourceTree = "<group>"; };
+		35C4B5982D87FD3300561BBA /* Live Peninsula.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Live Peninsula.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		357A0BC62E281222005162FF /* Exceptions for "Dynamic-Notch" folder in "Dynamic-Notch" target */ = {
+		357A0BC62E281222005162FF /* Exceptions for "Dynamic-Notch" folder in "Live Peninsula" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -119,19 +122,19 @@
 				mediaremote/src/utility/Debounce.m,
 				mediaremote/src/utility/helpers.m,
 			);
-			target = 35C4B5972D87FD3300561BBA /* Dynamic-Notch */;
+			target = 35C4B5972D87FD3300561BBA /* Live Peninsula */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		3574ACDC2E48EDEF00E4920A /* Exceptions for "Dynamic-Notch" folder in "Embed Frameworks" phase from "Dynamic-Notch" target */ = {
+		35857AA82E73D29B00EC2F35 /* Exceptions for "Dynamic-Notch" folder in "Embed Frameworks" phase from "Live Peninsula" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			attributesByRelativePath = {
-				mediaremote/build/MediaRemoteAdapter.framework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				mediaremote/MediaRemoteAdapter.framework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
 			};
 			buildPhase = 353D1D072E46F39D00B80F55 /* Embed Frameworks */;
 			membershipExceptions = (
-				mediaremote/build/MediaRemoteAdapter.framework,
+				mediaremote/MediaRemoteAdapter.framework,
 			);
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
@@ -140,8 +143,8 @@
 		35C4B59A2D87FD3300561BBA /* Dynamic-Notch */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				357A0BC62E281222005162FF /* Exceptions for "Dynamic-Notch" folder in "Dynamic-Notch" target */,
-				3574ACDC2E48EDEF00E4920A /* Exceptions for "Dynamic-Notch" folder in "Embed Frameworks" phase from "Dynamic-Notch" target */,
+				357A0BC62E281222005162FF /* Exceptions for "Dynamic-Notch" folder in "Live Peninsula" target */,
+				35857AA82E73D29B00EC2F35 /* Exceptions for "Dynamic-Notch" folder in "Embed Frameworks" phase from "Live Peninsula" target */,
 			);
 			path = "Dynamic-Notch";
 			sourceTree = "<group>";
@@ -153,10 +156,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				354F9DD12E4A15FA00D474B7 /* Defaults in Frameworks */,
+				350201052E71EF4B0050997D /* Defaults in Frameworks */,
+				350206142E7381220050997D /* Sparkle in Frameworks */,
+				35DE31572E6ECB17002A1353 /* MacroVisionKit in Frameworks */,
+				35ED5D972E717DFC00594E2E /* DefaultsMacros in Frameworks */,
 				357B6E292E5EDB8700A37FE3 /* MediaKeyTap in Frameworks */,
+				35BF863B2E73C7C30025E291 /* MediaRemote.framework in Frameworks */,
 				354F9DD42E4A171A00D474B7 /* KeyboardShortcuts in Frameworks */,
-				35D47E962E4744AF00321493 /* MediaRemote.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,7 +172,7 @@
 		35B7D65A2E3BC78400AA0142 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				35B7D65B2E3BC78500AA0142 /* MediaRemote.framework */,
+				35BF863A2E73C7C30025E291 /* MediaRemote.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -183,7 +189,7 @@
 		35C4B5992D87FD3300561BBA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				35C4B5982D87FD3300561BBA /* Dynamic-Notch.app */,
+				35C4B5982D87FD3300561BBA /* Live Peninsula.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -191,9 +197,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		35C4B5972D87FD3300561BBA /* Dynamic-Notch */ = {
+		35C4B5972D87FD3300561BBA /* Live Peninsula */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 35C4B5A72D87FD3400561BBA /* Build configuration list for PBXNativeTarget "Dynamic-Notch" */;
+			buildConfigurationList = 35C4B5A72D87FD3400561BBA /* Build configuration list for PBXNativeTarget "Live Peninsula" */;
 			buildPhases = (
 				35C4B5942D87FD3300561BBA /* Sources */,
 				35C4B5952D87FD3300561BBA /* Frameworks */,
@@ -207,14 +213,17 @@
 			fileSystemSynchronizedGroups = (
 				35C4B59A2D87FD3300561BBA /* Dynamic-Notch */,
 			);
-			name = "Dynamic-Notch";
+			name = "Live Peninsula";
 			packageProductDependencies = (
-				354F9DD02E4A15FA00D474B7 /* Defaults */,
 				354F9DD32E4A171A00D474B7 /* KeyboardShortcuts */,
 				357B6E282E5EDB8700A37FE3 /* MediaKeyTap */,
+				35DE31562E6ECB17002A1353 /* MacroVisionKit */,
+				35ED5D942E717DFC00594E2E /* Defaults */,
+				35ED5D962E717DFC00594E2E /* DefaultsMacros */,
+				350206132E7381220050997D /* Sparkle */,
 			);
 			productName = "Dynamic-Notch";
-			productReference = 35C4B5982D87FD3300561BBA /* Dynamic-Notch.app */;
+			productReference = 35C4B5982D87FD3300561BBA /* Live Peninsula.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -242,16 +251,18 @@
 			mainGroup = 35C4B58F2D87FD3300561BBA;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				354F9DCF2E4A15FA00D474B7 /* XCRemoteSwiftPackageReference "Defaults" */,
 				354F9DD22E4A171A00D474B7 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				357B6E272E5EDB8700A37FE3 /* XCRemoteSwiftPackageReference "MediaKeyTap" */,
+				35DE31552E6ECB17002A1353 /* XCRemoteSwiftPackageReference "MacroVisionKit" */,
+				35ED5D932E717DFC00594E2E /* XCRemoteSwiftPackageReference "Defaults" */,
+				350206122E7381220050997D /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 35C4B5992D87FD3300561BBA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				35C4B5972D87FD3300561BBA /* Dynamic-Notch */,
+				35C4B5972D87FD3300561BBA /* Live Peninsula */,
 			);
 		};
 /* End PBXProject section */
@@ -431,14 +442,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				AUTOMATION_APPLE_EVENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = "Dynamic-Notch/Dynamic_Notch.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Dynamic-Notch/Dynamic-NotchDebug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = "1 ";
+				CURRENT_PROJECT_VERSION = 0.9;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Dynamic-Notch/Preview Content\"";
 				DEVELOPMENT_TEAM = VG34R6W9G2;
@@ -463,26 +473,29 @@
 					"$(inherited)",
 					"$(SRCROOT)/",
 					"$(PROJECT_DIR)/Dynamic-Notch/mediaremote/build",
+					"$(PROJECT_DIR)/Dynamic-Notch/mediaremote-adapter/build",
+					"$(PROJECT_DIR)/Dynamic-Notch/mediaremote",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dynamic-Notch/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = WakeUpNotch;
+				INFOPLIST_KEY_CFBundleDisplayName = "Live Peninsula";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSBackgroundOnly = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "앱에서 미디어 키 이벤트를 감지하기 위해 접근성 권한이 필요합니다.";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "This app uses the calendar to display your calendar events";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "백그라운드에서 날씨 정보를 업데이트하기 위해 위치 접근이 필요합니다.";
-				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "백그라운드에서도 날씨 정보를 업데이트하기 위해 위치 접근 권한이 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "현재 위치의 날씨 정보를 제공하기 위해 위치 접근이 필요합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "정확한 날씨 정보 업데이트를 위해 위치 접근이 필요합니다.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "현재 위치의 날씨 정보를 제공하기 위해 위치 접근이 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 기반 날씨 정보를 제공하기 위해 위치 접근이 필요합니다.";
+				INFOPLIST_KEY_NSNetworkVolumesUsageDescription = "최신 날씨 데이터를 가져오기 위해 인터넷 연결이 필요합니다.";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 0.9;
 				NSNSAppleScriptEnabled = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.peterpark.notch;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.peterpark.Live-Peninsula";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
@@ -506,13 +519,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				AUTOMATION_APPLE_EVENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = "Dynamic-Notch/Dynamic-NotchRelease.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Dynamic-Notch/Dynamic-NotchDebug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = "1 ";
+				CURRENT_PROJECT_VERSION = 0.9;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Dynamic-Notch/Preview Content\"";
 				DEVELOPMENT_TEAM = VG34R6W9G2;
@@ -537,26 +550,29 @@
 					"$(inherited)",
 					"$(SRCROOT)/",
 					"$(PROJECT_DIR)/Dynamic-Notch/mediaremote/build",
+					"$(PROJECT_DIR)/Dynamic-Notch/mediaremote-adapter/build",
+					"$(PROJECT_DIR)/Dynamic-Notch/mediaremote",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dynamic-Notch/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = WakeUpNotch;
+				INFOPLIST_KEY_CFBundleDisplayName = "Live Peninsula";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSBackgroundOnly = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "앱에서 미디어 키 이벤트를 감지하기 위해 접근성 권한이 필요합니다.";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "This app uses the calendar to display your calendar events";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "백그라운드에서 날씨 정보를 업데이트하기 위해 위치 접근이 필요합니다.";
-				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "백그라운드에서도 날씨 정보를 업데이트하기 위해 위치 접근 권한이 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "현재 위치의 날씨 정보를 제공하기 위해 위치 접근이 필요합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "정확한 날씨 정보 업데이트를 위해 위치 접근이 필요합니다.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "현재 위치의 날씨 정보를 제공하기 위해 위치 접근이 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 기반 날씨 정보를 제공하기 위해 위치 접근이 필요합니다.";
+				INFOPLIST_KEY_NSNetworkVolumesUsageDescription = "최신 날씨 데이터를 가져오기 위해 인터넷 연결이 필요합니다.";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 0.9;
 				NSNSAppleScriptEnabled = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.peterpark.notch;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.peterpark.Live-Peninsula";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
@@ -587,7 +603,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		35C4B5A72D87FD3400561BBA /* Build configuration list for PBXNativeTarget "Dynamic-Notch" */ = {
+		35C4B5A72D87FD3400561BBA /* Build configuration list for PBXNativeTarget "Live Peninsula" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				35C4B5A82D87FD3400561BBA /* Debug */,
@@ -599,12 +615,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		354F9DCF2E4A15FA00D474B7 /* XCRemoteSwiftPackageReference "Defaults" */ = {
+		350206122E7381220050997D /* XCRemoteSwiftPackageReference "Sparkle" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/Defaults.git";
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.3;
+				minimumVersion = 2.7.3;
 			};
 		};
 		354F9DD22E4A171A00D474B7 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
@@ -623,13 +639,29 @@
 				minimumVersion = 2.3.0;
 			};
 		};
+		35DE31552E6ECB17002A1353 /* XCRemoteSwiftPackageReference "MacroVisionKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TheBoredTeam/MacroVisionKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
+		35ED5D932E717DFC00594E2E /* XCRemoteSwiftPackageReference "Defaults" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/Defaults.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		354F9DD02E4A15FA00D474B7 /* Defaults */ = {
+		350206132E7381220050997D /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 354F9DCF2E4A15FA00D474B7 /* XCRemoteSwiftPackageReference "Defaults" */;
-			productName = Defaults;
+			package = 350206122E7381220050997D /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 		354F9DD32E4A171A00D474B7 /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -640,6 +672,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 357B6E272E5EDB8700A37FE3 /* XCRemoteSwiftPackageReference "MediaKeyTap" */;
 			productName = MediaKeyTap;
+		};
+		35DE31562E6ECB17002A1353 /* MacroVisionKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 35DE31552E6ECB17002A1353 /* XCRemoteSwiftPackageReference "MacroVisionKit" */;
+			productName = MacroVisionKit;
+		};
+		35ED5D942E717DFC00594E2E /* Defaults */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 35ED5D932E717DFC00594E2E /* XCRemoteSwiftPackageReference "Defaults" */;
+			productName = Defaults;
+		};
+		35ED5D962E717DFC00594E2E /* DefaultsMacros */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 35ED5D932E717DFC00594E2E /* XCRemoteSwiftPackageReference "Defaults" */;
+			productName = DefaultsMacros;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

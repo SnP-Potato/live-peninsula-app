@@ -5,10 +5,25 @@
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-		<true/>
+		<false/>
+		<key>NSAllowsArbitraryLoadsUsageDescription</key>
+		<dict/>
 	</dict>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>요청을 권합니다</string>
+	<key>SUEnableDownloaderService</key>
+	<true/>
+	<key>SUEnableInstallerLauncherService</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://snp-potato.github.io/Dynamic-Notch/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>5CthXoU8CaYuwjZTtZwnSG5guOhSaUy06NhtASjVPGs=</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>background-fetch</string>
+		<string>background-processing</string>
+	</array>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict/>

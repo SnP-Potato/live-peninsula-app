@@ -5,12 +5,12 @@
 //  Created by PeterPark on 5/11/25.
 //
 
+// MARK: real
 import SwiftUI
 import Combine
 import AVFoundation
 import UniformTypeIdentifiers
 import Defaults
-
 
 struct ContentView: View {
     @EnvironmentObject var musicManager: MusicManager
@@ -18,9 +18,19 @@ struct ContentView: View {
     @EnvironmentObject var volumeManager: VolumeManager
 //    @EnvironmentObject var brightnessManager: BrightnessManager
     
+    // Fullscreen Detector 관찰
+    @StateObject private var fullscreenDetector = FullscreenDetector.shared
+    
     // 호버 상태 관리를 위한 변수들
     @State private var isHovering: Bool = false
     @State private var hoverAnimation: Bool = false
+    @State private var hapticFeedback: Bool = false
+    @State private var hoverScale: CGFloat = 1.0
+    @State private var hoverOpacity: Double = 1.0
+    
+    // 호버 타이머 관리
+    @State private var hoverTask: DispatchWorkItem?
+    @State private var hoverStartTime: Date?
     
     // 파일 드롭앤드래그시 사용되는 변수
     @State private var currentTab: NotchMainFeaturesView = .studio
@@ -44,7 +54,7 @@ struct ContentView: View {
     
     // first launch
     @State private var firstLaunch: Bool = true
-//    @State private var transitionNotchWidth: CGFloat = 200
+    
     var body: some View {
         ZStack(alignment: .top) {
             
@@ -56,7 +66,6 @@ struct ContentView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 8.5) {
                             // 1단계: 노치 크기를 점진적으로 줄이기 (200 -> 185)
                             withAnimation(.spring(response: 0.8, dampingFraction: 0.8)) {
-//                                transitionNotchWidth = 185
                             }
                             
                             // 2단계: 크기 변경 완료 후 firstLaunch를 false로 변경
@@ -72,6 +81,7 @@ struct ContentView: View {
             }
         }
         .frame(maxWidth: onNotchSize.width, maxHeight: onNotchSize.height, alignment: .top)
+        .environmentObject(fullscreenDetector)
         .onChange(of: musicManager.albumArt) { _, newAlbumArt in
             extractColor(from: newAlbumArt)
         }
@@ -121,43 +131,112 @@ struct ContentView: View {
         .frame(width: calculateNotchWidth(), height: vm.notchSize.height)
         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: calculateNotchWidth())
         .clipShape(NotchShape(cornerRadius: vm.notchState == .on ? 100 : 10))
+        
+        // 전체화면일 때 notch 숨기기
+        .opacity(fullscreenDetector.shouldHideNotch ? 0 : 1)
+        .scaleEffect(fullscreenDetector.shouldHideNotch ? 0.8 : 1.0)
+        .animation(.easeInOut(duration: 0.3), value: fullscreenDetector.shouldHideNotch)
+        
+        // off 상태에서만 호버 확대 애니메이션 (전체화면이 아닐 때만)
+        .scaleEffect(vm.notchState == .off && isHovering && !fullscreenDetector.shouldHideNotch ? hoverScale : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: hoverScale)
+        
         .onHover { hovering in
-            isHovering = hovering
+            // 전체화면일 때는 hover 비활성화
+            if !fullscreenDetector.shouldHideNotch {
+                handleHover(hovering: hovering)
+            }
         }
         .shadow(color: vm.notchState == .on ? .black.opacity(0.8) : .clear, radius: 3.2)
         .background(dragDetector)
-        .onChange(of: isHovering) { _, hovering in
+        
+        // 햅틱 피드백 트리거
+//       .sensoryFeedback(.impact(flexibility: .solid, intensity: 1.0), trigger: hapticFeedback) // Customizing impact feedback
+//       .sensoryFeedback(.success, trigger: hapticFeedback) // Standard success feedback
+        .sensoryFeedback(.alignment, trigger: hapticFeedback)
+        
+        .onChange(of: isDropTargeted) { _, isDragging in
+            // 전체화면일 때는 드래그 비활성화
+            if !fullscreenDetector.shouldHideNotch {
+                handleDropTargetChange(isDragging)
+            }
+        }
+    }
+    
+    // 드래그 처리를 별도 함수로 분리
+    private func handleDropTargetChange(_ isDragging: Bool) {
+        if isDragging {
+            print("드래그 시작 - Tray 탭으로 전환")
+            currentTab = .tray
+            
             withAnimation(.spring(response: 0.5, dampingFraction: 0.6)) {
-                if hovering {
-                    if vm.notchState == .off {
-                        vm.open()
-                        print("호버로 노치 열기")
-                    }
-                } else {
-                    if vm.notchState == .on && !isDropTargeted {
-                        vm.close()
-                        print("호버 해제로 노치 닫기")
-                    }
+                if vm.notchState == .off {
+                    vm.open()
+                    print("드래그로 노치 열기")
+                }
+            }
+        } else {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.6)) {
+                if vm.notchState == .on && !isHovering {
+                    vm.close()
+                    print("드래그 해제로 노치 닫기")
                 }
             }
         }
-        .onChange(of: isDropTargeted) { _, isDragging in
-            if isDragging {
-                print("드래그 시작 - Tray 탭으로 전환")
-                currentTab = .tray
+    }
+    
+    // 호버 처리 함수
+    private func handleHover(hovering: Bool) {
+        if hovering {
+            print("🖱️ 호버 시작")
+            isHovering = true
+            
+            // 닫힌 상태에서만 확대 애니메이션
+            if vm.notchState == .off {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    hoverAnimation = false
+                    hoverScale = 1.08  // 8% 확대
+                    hapticFeedback.toggle()
+                }
+            }
+            
+            // 기존 타이머 취소
+            hoverTask?.cancel()
+            
+            // 0.8초 후 노치 열기 타이머 설정
+            let task = DispatchWorkItem { [weak vm] in
+                guard let vm = vm, vm.notchState == .off else { return }
                 
-                withAnimation(.spring(response: 0.5, dampingFraction: 0.6)) {
-                    if vm.notchState == .off {
+                DispatchQueue.main.async {
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                         vm.open()
-                        print("드래그로 노치 열기")
+                        print("⏰ 0.8초 후 노치 자동 열기")
                     }
                 }
-            } else {
+            }
+            
+            hoverTask = task
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: task)
+            
+        } else {
+            print("🖱️ 호버 종료")
+            isHovering = false
+            
+            // 타이머 취소
+            hoverTask?.cancel()
+            hoverTask = nil
+            
+            // 항상 원래 크기로 복원 (상태와 무관)
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                hoverAnimation = false
+                hoverScale = 1.0
+            }
+            
+            // 노치가 열려있고 드래그 중이 아니라면 닫기
+            if vm.notchState == .on && !isDropTargeted {
                 withAnimation(.spring(response: 0.5, dampingFraction: 0.6)) {
-                    if vm.notchState == .on && !isHovering {
-                        vm.close()
-                        print("드래그 해제로 노치 닫기")
-                    }
+                    vm.close()
+                    print("🖱️ 호버 해제로 노치 닫기")
                 }
             }
         }
@@ -240,19 +319,19 @@ struct ContentView: View {
 //                .padding(.leading, 8)
 //                .padding(.trailing, 8)
 //                .padding(.bottom, 4)
-//            
+//
 //            // 중앙: 노치 기본 영역
 //            Rectangle()
 //                .fill(.black)
 //                .frame(width: vm.notchSize.width - 19)
 //                .padding(.trailing, 7)
-//            
+//
 //            ZStack(alignment: .leading) {
 //                // 배경
 //                RoundedRectangle(cornerRadius: 8)
 //                    .fill(.white.opacity(0.3))
 //                    .frame(width: 48, height: 3)
-//                
+//
 //                // 진행 (밝기 매니저가 있다면 해당 값 사용)
 //                RoundedRectangle(cornerRadius: 8)
 //                    .fill(.white)
@@ -402,3 +481,4 @@ struct ContentView: View {
         }
     }
 }
+
