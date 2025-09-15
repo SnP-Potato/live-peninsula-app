@@ -41,9 +41,9 @@ struct CalendarView: View {
                     }
                 }
             }
-            .frame(width: 120)
+            .frame(width: 140)
         }
-        .frame(width: 170, height: 130)
+        .frame(width: 190, height: 130)
         .onChange(of: selectedDate) { _, newDate in
             // CalendarManager의 updateFocusDate 사용
             calendarManager.updateFocusDate(newDate)
@@ -82,7 +82,10 @@ struct EventRowView: View {
     
     private var timeFormatter: DateFormatter {
         let formatter = DateFormatter()
-        formatter.timeStyle = .short
+        formatter.dateFormat = "h:mm a"
+        formatter.locale = Locale(identifier: "en_US_POSIX")  // 영어 AM/PM 강제
+        formatter.amSymbol = "AM"  // AM 심볼 명시적 설정
+        formatter.pmSymbol = "PM"  // PM 심볼 명시적 설정
         return formatter
     }
     

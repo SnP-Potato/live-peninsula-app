@@ -66,7 +66,7 @@ struct SwipeableDateSelector: View {
         VStack(spacing: 2) {
             // 월 표시
             Text(calendarManager.formattedMonth.uppercased())
-                .font(.system(size: 19, weight: .black))
+                .font(.system(size: 19, weight: .black, design: .rounded))
                 .foregroundColor(.white)
                 .frame(height: 40)
                 .transition(.asymmetric(

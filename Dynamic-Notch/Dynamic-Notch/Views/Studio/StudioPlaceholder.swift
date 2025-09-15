@@ -11,6 +11,7 @@ struct StudioPlaceholder: View {
     @State private var musicCardclick: Bool = false
     @EnvironmentObject var calendarManager: CalendarManager
     @ObservedObject var musicManager = MusicManager.shared
+    @StateObject var timerManager = TimerManager.shared
 //    @StateObject private var weatherManager = WeatherManager.shared // WeatherManager 추가
 //
     var body: some View {
@@ -34,32 +35,39 @@ struct StudioPlaceholder: View {
             VStack(alignment: .center, spacing: 0) {
                 CalendarView()
             }
-            .frame(width: 170, height: 130, alignment: .leading)
+            .frame(width: 190, height: 130, alignment: .leading)
             
             Spacer()
                 .frame(width: 18)
             
             // MARK: 액션버튼
-            if #available(macOS 15.0, *) {
-                Image(systemName: "faceid")
-                    .padding(.bottom, 12)
-                        .font(.system(size: 80))
-                        .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 5.0)).speed(2.0))
-                        .foregroundColor(.gray)
-                        .frame(width: 120, height: 110)
-                        
-                        
-            } else {
-                Image(systemName: "faceid")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 140, height: 110)
-                    .clipped()
-                    .padding(.bottom, 12)
+//            if #available(macOS 15.0, *) {
+//                Image(systemName: "faceid")
+//                    .padding(.bottom, 12)
+//                        .font(.system(size: 80))
+//                        .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 5.0)).speed(2.0))
+//                        .foregroundColor(.gray)
+//                        .frame(width: 120, height: 110)
+//                        
+//                        
+//            } else {
+//                Image(systemName: "faceid")
+//                    .resizable()
+//                    .scaledToFill()
+//                    .frame(width: 140, height: 110)
+//                    .clipped()
+//                    .padding(.bottom, 12)
+//            }
+            VStack {
+                Text("Pomodoro")
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .offset(x: -16, y: 15)
+                TimerView()
+                    .environmentObject(timerManager)
             }
-            
-            Spacer()
-                .frame(width: 18)
+            .frame(width: 120, height: 110)
+//            Spacer()
+//                .frame(width: 18)
         }
         .frame(width: 500, height: 130)
         .padding(.vertical, 8)

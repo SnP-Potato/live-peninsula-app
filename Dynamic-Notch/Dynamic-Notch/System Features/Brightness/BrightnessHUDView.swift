@@ -4,15 +4,6 @@
 //
 //  Created by PeterPark on 8/26/25.
 //
-
-
-//
-//  BrightnessHUDView.swift
-//  Dynamic-Notch
-//
-//  Created by PeterPark on 8/26/25.
-//
-
 import SwiftUI
 
 struct BrightnessHUDView: View {

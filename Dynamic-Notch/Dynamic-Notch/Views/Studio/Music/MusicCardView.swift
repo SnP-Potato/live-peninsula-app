@@ -32,31 +32,21 @@ struct MusicCardView: View {
                 } else {
                     
                     if #available(macOS 15.0, *) {
-                        RoundedRectangle(cornerRadius: 32)
-                            .foregroundColor(.white.opacity(0.2))
-                            .opacity(0.5)
+                        Image(systemName: "faceid")
+                            .padding(.bottom, 12)
+                            .font(.system(size: 80))
+                            .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 5.0)).speed(2.0))
+                            .foregroundColor(.gray)
                             .frame(width: 120, height: 110)
-                            .overlay {
-                                Image(systemName: "music.note")
-                                    .resizable()
-                                    .foregroundStyle(.white.opacity(0.3))
-                                    .scaledToFit()
-                                    .frame(width: 80, height: 80)
-                            }
-//                        Image("music")
-//                            .resizable()
-//                            .scaledToFill()
-//                                .font(.system(size: 80))
-//                                .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 5.0)).speed(2.0))
-//                                .foregroundColor(.gray)
-//                                .frame(width: 120, height: 110)
-                                
+                        
+                        
                     } else {
-                        Image("music")
+                        Image(systemName: "faceid")
                             .resizable()
                             .scaledToFill()
-                            .frame(width: 120, height: 110)
+                            .frame(width: 140, height: 110)
                             .clipped()
+                            .padding(.bottom, 12)
                     }
                        
                 }

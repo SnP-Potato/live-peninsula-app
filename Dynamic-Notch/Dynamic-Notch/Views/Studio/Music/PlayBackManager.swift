@@ -36,7 +36,7 @@ class PlaybackManager: ObservableObject {
         typealias MRMediaRemoteSetElapsedTimeFunction = @convention(c) (Double) -> Void
         MrMediaRemoteSetElapsedTimeFunction = unsafeBitCast(MRMediaRemoteSetElapsedTimePointer, to: MRMediaRemoteSetElapsedTimeFunction.self)
         
-        print("✅ MediaRemote API 로드 성공")
+        print("MediaRemote API 로드 성공")
     }
     
     deinit {
@@ -45,8 +45,8 @@ class PlaybackManager: ObservableObject {
     }
     
     func seekTrack(to time: TimeInterval) {
-        print("🎯 PlaybackManager.seekTrack 호출: \(time)초")
+        
         MrMediaRemoteSetElapsedTimeFunction(time)
-        print("✅ MediaRemote seek 명령 전송 완료")
+       
     }
 }

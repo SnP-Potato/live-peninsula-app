@@ -15,33 +15,30 @@ struct Dynamic_NotchApp: App {
     @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
     
     private let updaterController: SPUStandardUpdaterController
-
-        init() {
-            updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
-        }
+    
+    init() {
+        updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
+        SettingsWindowController.shared.setUpdaterController(updaterController)
+    }
     
     var body: some Scene {
-//        MenuBarExtra("Dynamic Notch", systemImage: "sparkle") {
-//            Button("Settings") {
-//                SettingsWindowController.shared.showWindow()
-//            }
-//            .keyboardShortcut(",", modifiers: .command)
-//
-//            CheckForUpdatesView(updater: updaterController.updater)
-//
-//            Divider()
-//
-//            //                    Button("Restart Dynamic Notch") {
-//            //                        restartApp()
-//            //                    }
-//
-//            Button("Quit", role: .destructive) {
-//                NSApplication.shared.terminate(nil)
-//            }
-//            .keyboardShortcut("q", modifiers: .command)
-//        }
-//
-//        // 빈 Settings 창 (실제로는 사용하지 않지만 필요)
+        MenuBarExtra("Dynamic Notch", systemImage: "sparkle") {
+            Button("Settings") {
+                SettingsWindowController.shared.showWindow()
+            }
+            .keyboardShortcut(",", modifiers: .command)
+
+            CheckForUpdatesView(updater: updaterController.updater)
+
+            Divider()
+
+            Button("Quit", role: .destructive) {
+                NSApplication.shared.terminate(nil)
+            }
+            .keyboardShortcut("q", modifiers: .command)
+        }
+
+        // 빈 Settings 창 (실제로는 사용하지 않지만 필요)
 //        Settings {
 //            EmptyView()
 //        }
@@ -57,14 +54,6 @@ struct Dynamic_NotchApp: App {
 //                .keyboardShortcut(",", modifiers: .command)
 //            }
 //        }
-        WindowGroup {
-            TestView()
-                }
-                .commands {
-                    CommandGroup(after: .appInfo) {
-                        CheckForUpdatesView(updater: updaterController.updater)
-                    }
-                }
     }
 }
 
@@ -75,14 +64,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow! // 기존 창 (메인 화면용)
     let vm: NotchViewModel = .init()
     
-//    private var cancellables = Set<AnyCancellable>()
-//    let fullScreenDetector = FullscreenDetector.shared
-    
     let calenarManager = CalendarManager.shared
     let musicManager = MusicManager.shared
     let volumeManager = VolumeManager.shared
-    let brightnessManager = BrightnessManager.shared
-//    let brightnessKeyMonitor = BrightnessKeyMonitor.shared
+    let chargeDetectManager = ChargeDetectManager.shared
+    let timerManager = TimerManager.shared
 //    let weatherManager = WeatherManager.shared
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -94,17 +80,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         //trayStorage 폴더 생성 확인
         _ = TrayManager.shared
-
         _ = CalendarManager.shared
-
-//        _ = WeatherManager.shared
-        
         _ = VolumeManager.shared
-        
-//        brightnessKeyMonitor.startMonitoring()
-//        _ = BrightnessManager.shared
-        
-//        _ = WeatherManager.shared
+        _ = ChargeDetectManager.shared
+        _ = TimerManager.shared
+        print("⚡️ ChargeDetectManager 초기화 완료")
         
         Task {
             await CalendarManager.shared.requestCalendarAccess()
@@ -135,9 +115,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     .environmentObject(calenarManager)
                     .environmentObject(musicManager)
                     .environmentObject(volumeManager)
-                    
-//                    .environmentObject(brightnessManager)
-//                    .environmentObject(weatherManager)
+                    .environmentObject(chargeDetectManager)
+                    .environmentObject(timerManager)
 
             )
 
@@ -182,10 +161,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             .environmentObject(musicManager)
                             .environmentObject(volumeManager)
                             .environmentObject(FullscreenDetector.shared)
-//                            .environmentObject(brightnessManager)
-//                            .environmentObject(weatherManager)
-
-
+                            .environmentObject(chargeDetectManager)
+                            .environmentObject(timerManager)
                     )
 
                     windows[screen] = window
@@ -220,11 +197,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // 디버깅용 함수 추가
     func printAllScreensInfo() {
-        print("\n🖥️ === 연결된 모니터 정보 ===")
+        print("\n === 연결된 모니터 정보 ===")
         print("총 모니터 개수: \(NSScreen.screens.count)")
 
         for (index, screen) in NSScreen.screens.enumerated() {
-            print("\n📺 모니터 \(index + 1):")
+            print("\n 모니터 \(index + 1):")
             print("  이름: \(screen.localizedName)")
             print("  해상도: \(Int(screen.frame.width)) x \(Int(screen.frame.height))")
             print("  위치: (\(Int(screen.frame.origin.x)), \(Int(screen.frame.origin.y)))")
@@ -239,7 +216,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             // 메인 화면 여부
             if screen == NSScreen.main {
-                print("  타입: 🌟 메인 화면")
+                print("  타입:  메인 화면")
             } else {
                 print("  타입: 외부 모니터")
             }
