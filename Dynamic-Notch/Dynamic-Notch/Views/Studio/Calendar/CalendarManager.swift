@@ -82,30 +82,27 @@ class CalendarManager: NSObject, ObservableObject {
         }
         
         // ✅ 날짜 변경 체크
-        private func checkForDateChange() {
-            let currentDate = Calendar.current.startOfDay(for: Date())
+    private func checkForDateChange() {
+        let currentDate = Calendar.current.startOfDay(for: Date())
+        
+        if !Calendar.current.isDate(lastKnownDate, inSameDayAs: currentDate) {
+            print("날짜가 변경되었습니다: \(lastKnownDate) → \(currentDate)")
             
-            if !Calendar.current.isDate(lastKnownDate, inSameDayAs: currentDate) {
-                print("🗓️ 날짜가 변경되었습니다: \(lastKnownDate) → \(currentDate)")
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    
-                    // 현재 포커스된 날짜가 어제(이전 날짜)였다면 자동으로 오늘로 업데이트
-                    if Calendar.current.isDate(self.focusDate, inSameDayAs: self.lastKnownDate) {
-                        print("🔄 포커스 날짜를 자동으로 오늘로 업데이트")
-                        self.updateFocusDate(currentDate)
-                    }
-                    
-                    // 오늘 이벤트 다시 로드 (날짜가 바뀌었으니 새로운 이벤트가 있을 수 있음)
-                    if Calendar.current.isDate(self.focusDate, inSameDayAs: currentDate) {
-                        self.loadEventForDate(self.focusDate)
-                    }
+                // ✅ 사용자가 어제를 보고 있을 때만 오늘로 자동 업데이트
+                if Calendar.current.isDate(self.focusDate, inSameDayAs: self.lastKnownDate) {
+                    print("포커스 날짜를 자동으로 오늘로 업데이트")
+                    self.updateFocusDate(currentDate)
+                } else {
+                    print("사용자가 다른 날짜 선택중 - 자동 업데이트 건너뜀")
                 }
-                
-                lastKnownDate = currentDate
             }
+            
+            lastKnownDate = currentDate
         }
+    }
         
         // ✅ 시스템 날짜 변경 알림 처리
         @objc private func systemDateChanged() {

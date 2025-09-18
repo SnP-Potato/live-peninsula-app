@@ -41,8 +41,6 @@
 				Info.plist,
 				"mediaremote/.clang-format",
 				"mediaremote/.cmake-format",
-				mediaremote/.gitignore,
-				mediaremote/.gitmodules,
 				mediaremote/.perltidyrc,
 				mediaremote/.vscode/extensions.json,
 				mediaremote/.vscode/settings.json,
@@ -446,6 +444,7 @@
 				AUTOMATION_APPLE_EVENTS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Dynamic-Notch/Dynamic-NotchDebug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 0.9;
@@ -523,6 +522,7 @@
 				AUTOMATION_APPLE_EVENTS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Dynamic-Notch/Dynamic-NotchDebug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 0.9;

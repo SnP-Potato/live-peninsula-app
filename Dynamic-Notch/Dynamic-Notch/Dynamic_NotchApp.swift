@@ -37,23 +37,6 @@ struct Dynamic_NotchApp: App {
             }
             .keyboardShortcut("q", modifiers: .command)
         }
-
-        // 빈 Settings 창 (실제로는 사용하지 않지만 필요)
-//        Settings {
-//            EmptyView()
-//        }
-//        .commands {
-//            CommandGroup(after: .appInfo) {
-//                CheckForUpdatesView(updater: updaterController.updater)
-//
-//                Divider()
-//
-//                Button("Settings...") {
-//                    SettingsWindowController.shared.showWindow()
-//                }
-//                .keyboardShortcut(",", modifiers: .command)
-//            }
-//        }
     }
 }
 

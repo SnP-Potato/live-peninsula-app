@@ -75,14 +75,6 @@ struct TimerView: View {
         }
         .frame(width: 120, height: 110)
         .padding(.bottom, 12)
-//        .background(
-//            RoundedRectangle(cornerRadius: 12)
-//                .fill(.orange.opacity(0.1))
-//                .overlay(
-//                    RoundedRectangle(cornerRadius: 12)
-//                        .strokeBorder(.orange.opacity(0.3), lineWidth: 1)
-//                )
-//        )
         .sensoryFeedback(.impact(flexibility: .soft), trigger: hapticFeedback)
         .contextMenu {
             contextMenu

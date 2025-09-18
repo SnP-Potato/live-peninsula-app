@@ -8,6 +8,7 @@
 import SwiftUI
 import EventKit
 
+
 // MARK: - 메인 캘린더 뷰
 struct CalendarView: View {
     @EnvironmentObject var calendarManager: CalendarManager
@@ -55,15 +56,17 @@ struct CalendarView: View {
             }
         }
         .onAppear {
-            // CalendarManager의 focusDate로 초기화
-            selectedDate = calendarManager.focusDate
+            // 항상 오늘 날짜로 초기화
+            let today = Calendar.current.startOfDay(for: Date())
+            selectedDate = today
+            calendarManager.updateFocusDate(today)
             
-            // CalendarManager의 기존 로직 사용
+            // 권한 체크
             Task {
                 if calendarManager.accessStatus == .notDetermined {
                     await calendarManager.requestCalendarAccess()
                 } else if calendarManager.accessStatus == .fullAccess {
-                    calendarManager.loadTodayEvent() // CalendarManager의 함수 사용
+                    calendarManager.loadTodayEvent()
                 }
             }
         }
@@ -277,4 +280,3 @@ struct NoAccessView: View {
     }
     
 }
-
