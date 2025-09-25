@@ -3,12 +3,12 @@
     <channel>
         <title>Live Peninsula</title>
         <item>
-            <title>1.2</title>
-            <pubDate>Fri, 19 Sep 2025 23:01:58 +0900</pubDate>
-            <sparkle:version>1.2</sparkle:version>
-            <sparkle:shortVersionString>1.2</sparkle:shortVersionString>
+            <title>1.2.2</title>
+            <pubDate>Thu, 25 Sep 2025 17:33:47 +0900</pubDate>
+            <sparkle:version>1.2.1</sparkle:version>
+            <sparkle:shortVersionString>1.2.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.6</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/SnP-Potato/live-peninsula-app/releases/download/prod/Live.Peninsula.dmg" length="3845242" type="application/octet-stream" sparkle:edSignature="FB1ePYQFE8NUhQ3O7U+QJhmclPSol+VgGSi/200/g+WkNeYiPWnK2H2Vu0RdvgUjlmFjk6o67KrjN4san7qSAQ=="/>
+            <enclosure url="https://github.com/SnP-Potato/live-peninsula-app/releases/download/prod/Live.Peninsula.dmg" length="4170647" type="application/octet-stream" sparkle:edSignature="VfxYnmWlYuMsMSsX95AcVi/FfvRRc+HkcqKUVrguogRKbSDSNvz82ydYu1U6vPfIicDo3nM/nFXzQ5384Pq5Cw=="/>
         </item>
     </channel>
 </rss>
